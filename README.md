@@ -17,7 +17,55 @@ This repository is the collaborative hub for our **Software Architecture and Des
 ---
 
 ## **Code of Conduct**
+This Code of Conduct outlines the principles and expectations for all team members to
+adopt a productive, respectful, and collaborative working environment throughout the
+project.
 
+1. Respect and Inclusivity
+• Treat all team members with respect and value their contributions.
+• Avoid discrimination, harassment, or offensive behaviour, ensuring an inclusive
+environment for everyone.
+• Communicate openly and listen to others' ideas without judgment.
+
+3. Accountability
+• Take ownership of your assigned tasks and deliver them within the agreed timelines.
+• Inform the team immediately if you encounter any issues or delays.
+• Commit to active participation in meetings, discussions, and decision-making
+processes.
+
+5. Collaboration
+• Work collaboratively and support one another in achieving the project goals.
+• Share knowledge and skills to help the team grow collectively.
+• Resolve conflicts constructively and focus on solutions rather than blame.
+
+7. Quality and Ethics
+• Adhere to ethical standards in writing, coding, and testing to ensure quality
+deliverables.
+• Ensure that all contributions are original and free from plagiarism.
+• Maintain the security and privacy of any data used in the project.
+
+9. Communication
+• Be clear, concise, and professional in all forms of communication.
+• Use agreed communication channels (e.g., email, WhatsApp) for team discussions.
+• Attend scheduled meetings and be prepared to provide updates on your work.
+
+11. Commitment
+• Follow the project timeline, respecting deadlines and milestones.
+• Contribute actively during sprints and complete assigned tasks with dedication.
+
+7. Conflict Resolution
+• Address disagreements respectfully and directly with the involved parties.
+• Seek assistance from the team or lecturer if conflicts cannot be resolved internally.
+
+Agreement
+By participating in this project, all team members agree to abide by this Code of Conduct
+and contribute positively to the team’s success.
+Team Member Names:
+1. Sumana Asgar
+2. Aneeta Olorode
+3. Maahia Rahman
+4. Shaiza Sultana
+Date: 29/01/2025
 
 ---
 
