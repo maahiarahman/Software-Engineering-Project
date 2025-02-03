@@ -1,5 +1,5 @@
-# **Software_Architecture_and_Design_Team**
-This repository is the collaborative hub for our **Software Architecture and Design Project**, where we learn and apply principles of software architecture and design to deliver a well-structured solution. The repository includes our **Code of Conduct**, project deliverables, and other key resources to ensure teamwork and success.
+# **Software_Engineering_Team**
+This repository is the collaborative hub for our **Software Engineering Project**, where we learn and apply principles of software engineering and design to deliver a well-structured solution. The repository includes our **Code of Conduct**, project deliverables, and other key resources to ensure teamwork and success.
 
 ---
 
