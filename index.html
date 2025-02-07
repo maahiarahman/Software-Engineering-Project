@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Swap Hub</title>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Welcome to Recipe Swap Hub</h1>
+        <p>Share and discover amazing recipes from around the world!</p>
+    </header>
+
+    <!-- Featured Recipes -->
+    <section>
+        <h2>Featured Recipes</h2>
+        <ul>
+            <li><a href="recipe1.html">Classic Spaghetti Bolognese</a></li>
+            <li><a href="recipe2.html">Homemade Margherita Pizza</a></li>
+            <li><a href="recipe3.html">Chocolate Chip Cookies</a></li>
+        </ul>
+    </section>
+
+    <!-- Recipe Categories -->
+    <section>
+        <h2>Recipe Categories</h2>
+        <ul>
+            <li><a href="vegetarian.html">Vegetarian</a></li>
+            <li><a href="desserts.html">Desserts</a></li>
+            <li><a href="quick-meals.html">Quick & Easy Meals</a></li>
+            <li><a href="drinks.html">Beverages</a></li>
+        </ul>
+    </section>
+
+    <!-- Submit a Recipe -->
+    <section>
+        <h2>Share Your Recipe</h2>
+        <p>Have a great recipe? Submit it below!</p>
+        <form action="submit-recipe.html" method="post">
+            <label for="name">Your Name:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
+
+            <label for="recipe-name">Recipe Name:</label><br>
+            <input type="text" id="recipe-name" name="recipe-name" required><br><br>
+
+            <label for="ingredients">Ingredients:</label><br>
+            <textarea id="ingredients" name="ingredients" rows="4" required></textarea><br><br>
+
+            <label for="instructions">Instructions:</label><br>
+            <textarea id="instructions" name="instructions" rows="4" required></textarea><br><br>
+
+            <button type="submit">Submit Recipe</button>
+        </form>
+    </section>
+
+    <!-- Community Table -->
+    <section>
+        <h2>Recent Recipe Submissions</h2>
+        <table border="1">
+            <tr>
+                <th>Submitted By</th>
+                <th>Recipe Name</th>
+                <th>Category</th>
+            </tr>
+            <tr>
+                <td>Emma</td>
+                <td>Vegan Pancakes</td>
+                <td>Vegetarian</td>
+            </tr>
+            <tr>
+                <td>Lucas</td>
+                <td>BBQ Chicken Wings</td>
+                <td>Main Course</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Recipe Swap Hub | Made with ❤️ for food lovers</p>
+    </footer>
+</body>
+</html>
