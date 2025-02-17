@@ -3,82 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipe Swap Hub</title>
+    <title>Recipe Swap | Home</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Header -->
     <header>
-        <h1>Welcome to Recipe Swap Hub</h1>
-        <p>Share and discover amazing recipes from around the world!</p>
+        <div class="logo">
+            <a href="index.html" style="text-decoration: none; color: white;">Recipe Swap</a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="africa.html">Africa</a></li>
+                <li><a href="asia.html">Asia</a></li>
+                <li><a href="europe.html">Europe</a></li>
+                <li><a href="north-america.html">North America</a></li>
+                <li><a href="south-america.html">South America</a></li>
+                <li><a href="australia.html">Australia</a></li>
+                <li><a href="antarctica.html">Antarctica</a></li>
+            </ul>
+        </nav>
+        <div class="dark-mode-container">
+            <label class="switch">
+                <input type="checkbox" id="dark-mode-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
     </header>
 
-    <!-- Featured Recipes -->
-    <section>
-        <h2>Featured Recipes</h2>
-        <ul>
-            <li><a href="recipe1.html">Classic Spaghetti Bolognese</a></li>
-            <li><a href="recipe2.html">Homemade Margherita Pizza</a></li>
-            <li><a href="recipe3.html">Chocolate Chip Cookies</a></li>
-        </ul>
-    </section>
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2>Discover, Swap & Create Fusion Recipes</h2>
+            <p>Explore unique flavors from different continents and share your own culinary creations!</p>
+            <a href="#explore" class="cta-button">Start Exploring</a>
+        </section>
 
-    <!-- Recipe Categories -->
-    <section>
-        <h2>Recipe Categories</h2>
-        <ul>
-            <li><a href="vegetarian.html">Vegetarian</a></li>
-            <li><a href="desserts.html">Desserts</a></li>
-            <li><a href="quick-meals.html">Quick & Easy Meals</a></li>
-            <li><a href="drinks.html">Beverages</a></li>
-        </ul>
-    </section>
+        <!-- Features Section -->
+        <section class="features-section">
+            <h3>Why Choose Recipe Swap?</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <img src="images/global-cuisine.svg" alt="Global Cuisine Icon">
+                    <h4>Global Cuisine</h4>
+                    <p>Explore recipes from every continent, blending diverse flavors and traditions.</p>
+                </div>
+                <div class="feature-card">
+                    <img src="images/community.svg" alt="Community Icon">
+                    <h4>Community-Driven</h4>
+                    <p>Share your own creations and learn from food enthusiasts worldwide.</p>
+                </div>
+                <div class="feature-card">
+                    <img src="images/ai-suggestions.svg" alt="AI Suggestions Icon">
+                    <h4>AI-Powered Suggestions</h4>
+                    <p>Get personalized recipe recommendations based on your preferences.</p>
+                </div>
+            </div>
+        </section>
 
-    <!-- Submit a Recipe -->
-    <section>
-        <h2>Share Your Recipe</h2>
-        <p>Have a great recipe? Submit it below!</p>
-        <form action="submit-recipe.html" method="post">
-            <label for="name">Your Name:</label><br>
-            <input type="text" id="name" name="name" required><br><br>
+        <!-- Explore Section -->
+        <section id="explore" class="explore-section">
+            <h3>Explore Recipes by Continent</h3>
+            <div class="continent-grid">
+                <div class="continent-card">
+                    <a href="africa.html">
+                        <h4>Africa</h4>
+                        <p>Rich spices and deep flavors from Morocco to South Africa.</p>
+                    </a>
+                </div>
+                <div class="continent-card">
+                    <a href="asia.html">
+                        <h4>Asia</h4>
+                        <p>Fusion of exotic ingredients from India, China, and Japan.</p>
+                    </a>
+                </div>
+                <div class="continent-card">
+                    <a href="europe.html">
+                        <h4>Europe</h4>
+                        <p>Traditional meets modern in French, Italian, and Spanish cuisines.</p>
+                    </a>
+                </div>
+                <div class="continent-card">
+                    <a href="north-america.html">
+                        <h4>North America</h4>
+                        <p>A melting pot of flavors from Mexico, Canada, and the US.</p>
+                    </a>
+                </div>
+                <div class="continent-card">
+                    <a href="south-america.html">
+                        <h4>South America</h4>
+                        <p>Vibrant dishes from Brazil, Argentina, and Peru.</p>
+                    </a>
+                </div>
+                <div class="continent-card">
+                    <a href="australia.html">
+                        <h4>Australia</h4>
+                        <p>Blending Aboriginal and modern Aussie flavors.</p>
+                    </a>
+                </div>
+                <div class="continent-card">
+                    <a href="antarctica.html">
+                        <h4>Antarctica</h4>
+                        <p>Survivalist meals and scientific expedition foods.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
 
-            <label for="recipe-name">Recipe Name:</label><br>
-            <input type="text" id="recipe-name" name="recipe-name" required><br><br>
+        <!-- Testimonials Section -->
+        <section class="testimonials-section">
+            <h3>What Our Users Are Saying</h3>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p>"Recipe Swap is a fantastic way to discover new and exciting recipes from around the world. My family loves it!"</p>
+                    <span>- Sarah, Food Enthusiast</span>
+                </div>
+                <div class="testimonial-card">
+                    <p>"The AI-powered suggestions have made cooking so much easier. I’ve found so many recipes I wouldn’t have tried otherwise!"</p>
+                    <span>- James, Amateur Chef</span>
+                </div>
+                <div class="testimonial-card">
+                    <p>"I’ve shared some of my favorite recipes here and connected with people who share the same passion for food."</p>
+                    <span>- Maria, Home Cook</span>
+                </div>
+            </div>
+        </section>
 
-            <label for="ingredients">Ingredients:</label><br>
-            <textarea id="ingredients" name="ingredients" rows="4" required></textarea><br><br>
-
-            <label for="instructions">Instructions:</label><br>
-            <textarea id="instructions" name="instructions" rows="4" required></textarea><br><br>
-
-            <button type="submit">Submit Recipe</button>
-        </form>
-    </section>
-
-    <!-- Community Table -->
-    <section>
-        <h2>Recent Recipe Submissions</h2>
-        <table border="1">
-            <tr>
-                <th>Submitted By</th>
-                <th>Recipe Name</th>
-                <th>Category</th>
-            </tr>
-            <tr>
-                <td>Emma</td>
-                <td>Vegan Pancakes</td>
-                <td>Vegetarian</td>
-            </tr>
-            <tr>
-                <td>Lucas</td>
-                <td>BBQ Chicken Wings</td>
-                <td>Main Course</td>
-            </tr>
-        </table>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>© 2025 Recipe Swap Hub | Made with ❤️ for food lovers</p>
-    </footer>
+        <!-- Footer Section -->
+        <footer>
+            <p>&copy; 2025 Recipe Swap | Created with ❤️ by NomNom</p>
+        </footer>
+    </main>
+    <script src="js/script.js"></script>
 </body>
 </html>
+
