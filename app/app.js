@@ -10,112 +10,121 @@ app.use(express.static("static"));
 // Get the functions in the db.js file to use
 const db = require('./services/db');
 
-// EXERCISE 1: Modify the root route to display your name
+// ✅ Root Route
 app.get("/", function(req, res) {
-    res.send("Hello Maahia");  
+    res.send("Hello world!");
 });
 
-// EXERCISE 2: Create a new route /roehampton
-app.get("/roehampton", function(req, res) {
-    res.send("Hello Roehampton!");
-});
-
-// EXERCISE 3: Debugging to console
-app.get("/roehampton", function(req, res) {
-    console.log(req.url);  // Logs the requested URL to console
-    res.send("Hello Roehampton!");
-});
-
-// EXERCISE 4: Process request path - Send first 3 letters of URL
-app.get("/roehampton", function(req, res) {
-    console.log(req.url);
-    let path = req.url;
-    res.send(path.substring(0, 3)); // Sends only "roe"
-});
-
-// EXERCISE 5: Create a dynamic route for /user/:id
-app.get("/user/:id", function(req, res) {
-    res.send("User ID: " + req.params.id);
-});
-
-// EXERCISE 6: Create a dynamic route for /student/:name/:id
-app.get("/student/:name/:id", function(req, res) {
-    res.send(`Student Name: ${req.params.name}, ID: ${req.params.id}`);
-});
-
-// EXERCISE 7: Display student info in an HTML table
-app.get("/student/:name/:id", function(req, res) {
-    res.send(`
-        <html>
-            <body>
-                <table border="1">
-                    <tr><th>Name</th><th>ID</th></tr>
-                    <tr><td>${req.params.name}</td><td>${req.params.id}</td></tr>
-                </table>
-            </body>
-        </html>
-    `);
-});
-
-// EXERCISE 8: Modify /db_test to use a dynamic ID
-app.get("/db_test/:id", function(req, res) {
-    let id = req.params.id;
-
-    let sql = `SELECT name FROM students WHERE id = ?`;
-    db.query(sql, [id]).then(results => {
-        if (results.length > 0) {
-            res.send(`<h1>Student Name: ${results[0].name}</h1>`);
-        } else {
-            res.send(`<h1>No student found with ID ${id}</h1>`);
-        }
-    }).catch(err => {
-        res.status(500).send("Database error");
-    });
-});
-
-// EXERCISE 9: Reverse "roehampton" when requested
-app.get("/roehampton", function(req, res) {
-    let path = req.url.substring(1);  // Remove leading "/"
-    let reversed = path.split("").reverse().join("");  // Reverse string
-    res.send(reversed);
-});
-
-// EXERCISE 10: Number Table from 0 to n
-app.get("/number/:n", function(req, res) {
-    let n = parseInt(req.params.n);
-    let table = "<table border='1'><tr><th>Numbers</th></tr>";
-
-    for (let i = 0; i <= n; i++) {
-        table += `<tr><td>${i}</td></tr>`;
-    }
-
-    table += "</table>";
-    res.send(table);
-});
-
-// Existing routes
-
-// Create a route for testing the db
-app.get("/db_test", function(req, res) {
-    sql = 'select * from test_table';
-    db.query(sql).then(results => {
+// ✅ Fixed `/db_test` Route (Database Connection Test)
+app.get("/db_test", async (req, res) => {
+    try {
+        const sql = 'SELECT * FROM test_table';
+        const results = await db.query(sql);
         console.log(results);
-        res.send(results);
-    });
+        res.json(results);
+    } catch (err) {
+        console.error("Database error:", err.message);
+        res.status(500).send("Database error: " + err.message);
+    }
 });
 
-// Create a route for /goodbye
+// ✅ Route to get all students (JSON)
+app.get("/api/students", async (req, res) => {
+    try {
+        const students = await db.query("SELECT * FROM Students");
+        res.json(students);
+    } catch (err) {
+        res.status(500).send("Database error: " + err.message);
+    }
+});
+
+// ✅ Route to display students in an HTML table
+app.get("/students", async (req, res) => {
+    try {
+        const students = await db.query("SELECT * FROM Students");
+        let html = `<html><head><title>Students</title></head><body>
+                    <h1>Students List</h1>
+                    <table border="1">
+                    <tr><th>ID</th><th>Name</th></tr>`;
+        students.forEach(student => {
+            html += `<tr>
+                        <td>${student.id}</td>
+                        <td><a href="/student/${student.id}">${student.name}</a></td>
+                     </tr>`;
+        });
+        html += `</table></body></html>`;
+        res.send(html);
+    } catch (err) {
+        res.status(500).send("Database error: " + err.message);
+    }
+});
+
+// ✅ Route to get all programmes (JSON)
+app.get("/api/programmes", async (req, res) => {
+    try {
+        const programmes = await db.query("SELECT * FROM Programmes");
+        res.json(programmes);
+    } catch (err) {
+        res.status(500).send("Database error: " + err.message);
+    }
+});
+
+// ✅ Route to display programmes in an HTML table
+app.get("/programmes", async (req, res) => {
+    try {
+        const programmes = await db.query("SELECT * FROM Programmes");
+        let html = `<html><head><title>Programmes</title></head><body>
+                    <h1>Programmes List</h1>
+                    <table border="1">
+                    <tr><th>ID</th><th>Name</th></tr>`;
+        programmes.forEach(prog => {
+            html += `<tr>
+                        <td>${prog.id}</td>
+                        <td><a href="/programme/${prog.id}">${prog.name}</a></td>
+                     </tr>`;
+        });
+        html += `</table></body></html>`;
+        res.send(html);
+    } catch (err) {
+        res.status(500).send("Database error: " + err.message);
+    }
+});
+
+// ✅ Route to get a specific programme and its modules
+app.get("/programme/:id", async (req, res) => {
+    try {
+        const programmeId = req.params.id;
+        const programme = await db.query("SELECT * FROM Programmes WHERE id = ?", [programmeId]);
+        const modules = await db.query(`
+            SELECT Modules.name FROM Modules
+            JOIN Programme_Modules ON Modules.code = Programme_Modules.module
+            WHERE Programme_Modules.programme = ?`, [programmeId]);
+
+        if (programme.length === 0) return res.send("Programme not found!");
+
+        let html = `<html><head><title>Programme Details</title></head><body>
+                    <h1>${programme[0].name}</h1>
+                    <h2>Modules:</h2><ul>`;
+        modules.forEach(m => { html += `<li>${m.name}</li>`; });
+        html += `</ul></body></html>`;
+        res.send(html);
+    } catch (err) {
+        res.status(500).send("Database error: " + err.message);
+    }
+});
+
+// ✅ Route for /goodbye
 app.get("/goodbye", function(req, res) {
     res.send("Goodbye world!");
 });
 
-// Create a dynamic route for /hello/:name
+// ✅ Route for /hello/<name>
 app.get("/hello/:name", function(req, res) {
     console.log(req.params);
     res.send("Hello " + req.params.name);
 });
 
-// Start server on port 3000
+// ✅ Start server on port 3000
 app.listen(3000, function() {
     console.log(`Server running at http://127.0.0.1:3000/`);
 });

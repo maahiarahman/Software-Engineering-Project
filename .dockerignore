@@ -1,3 +1,10 @@
-.git
 node_modules
-npm-debug.log
+.git
+.env
+logs
+temp
+.DS_Store
+Thumbs.db
+.vscode
+db/
+db/*
