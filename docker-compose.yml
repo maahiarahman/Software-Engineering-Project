@@ -1,27 +1,35 @@
+version: "3.8"
+
 services:
   web:
     build:
       context: ./
     volumes:
-      - .:/src
-    command: supervisor -e  'js,pug,html' index.js
+      - .:/src   # ✅ Mount the entire project directory
+    working_dir: /src  # ✅ Set the working directory inside the container
+    command: node app.js
     ports:
       - "3000:3000"
     depends_on:
       - db
+
   db:
-    image: mysql
+    image: mysql:latest
     restart: always
     env_file:
       - ./.env
     ports:
-      - "3308:3306"
+      - "3306:3306"
     volumes:
-      - ./db:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     restart: always
-    env_file:
-      - ./.env
     ports:
       - "8081:80"
+    environment:
+      PMA_HOST: db
+
+volumes:
+  mysql-data:
