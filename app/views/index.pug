@@ -2,4 +2,9 @@ extends layout
 
 block content
     h1 #{heading}
-    p First paragraph xxx
+    p Welcome to the student listing page.
+
+    h2 List of Students:
+    ul
+        each student in students
+            li #{student.name} (ID: #{student.id})
