@@ -1,0 +1,174 @@
+extends adminlayout.pug
+
+block content
+  h1 Admin Dashboard
+
+  // Admin Info
+  h2 Admin Info
+  table
+    thead
+      tr
+        th Admin ID
+        th Name
+        th Email
+    tbody
+      each admin in admins
+        tr
+          td= admin.admin_ID
+          td= admin.name
+          td= admin.email
+
+  // Users
+  h2 Users
+  table
+    thead
+      tr
+        th User ID
+        th First Name
+        th Last Name
+        th Email
+    tbody
+      each user in users
+        tr
+          td= user.user_ID
+          td= user.first_name
+          td= user.last_name
+          td= user.email
+
+  // Banned Users
+  h2 Banned Users
+  table
+    thead
+      tr
+        th Ban ID
+        th User ID
+        th Admin ID
+        th Ban Date
+    tbody
+      each bannedUser in bannedUsers
+        tr
+          td= bannedUser.ban_ID
+          td= bannedUser.user_ID
+          td= bannedUser.admin_ID
+          td= bannedUser.ban_date
+
+  // Approved Users
+  h2 Approved Users
+  table
+    thead
+      tr
+        th Approve ID
+        th User ID
+        th Admin ID
+    tbody
+      each approvedUser in approvedUsers
+        tr
+          td= approvedUser.approve_ID
+          td= approvedUser.user_ID
+          td= approvedUser.admin_ID
+
+  // Deleted Users
+  h2 Deleted Users
+  table
+    thead
+      tr
+        th Delete ID
+        th User ID
+        th Admin ID
+        th Delete State
+        th Delete Date
+    tbody
+      each deletedUser in deletedUsers
+        tr
+          td= deletedUser.delete_ID
+          td= deletedUser.user_ID
+          td= deletedUser.admin_ID
+          td= deletedUser.delete_states
+          td= deletedUser.delete_date
+
+  // Categories
+  h2 Categories
+  table
+    thead
+      tr
+        th Category ID
+        th Category Name
+    tbody
+      each category in categories
+        tr
+          td= category.category_id
+          td= category.name
+
+  // Favourites
+  h2 Favourites
+  table
+    thead
+      tr
+        th Favorite ID
+        th User ID
+        th Recipe ID
+        th Created At
+    tbody
+      each favourite in favourites
+        tr
+          td= favourite.favorite_id
+          td= favourite.user_id
+          td= favourite.recipe_id
+          td= favourite.created_at
+
+  // Posts
+  h2 Posts
+  table
+    thead
+      tr
+        th Post ID
+        th User ID
+        th Recipe ID
+        th Date Posted
+    tbody
+      each post in posts
+        tr
+          td= post.post_ID
+          td= post.user_ID
+          td= post.recipe_ID
+          td= post.date_posted
+
+  // Recipes
+  h2 Recipes
+  table
+    thead
+      tr
+        th Recipe ID
+        th User ID
+        th Name
+        th Category ID
+        th Image URL
+        th Created At
+    tbody
+      each recipe in recipes
+        tr
+          td= recipe.recipe_id
+          td= recipe.user_id
+          td= recipe.name
+          td= recipe.category_id
+          td= recipe.image_url
+          td= recipe.created_at
+
+  // Reviews
+  h2 Reviews
+  table
+    thead
+      tr
+        th Review ID
+        th Recipe ID
+        th User ID
+        th Rating
+        th Comment
+    tbody
+      each review in reviews
+        tr
+          td= review.review_ID
+          td= review.recipe_id
+          td= review.user_id
+          td= review.rating
+          td= review.comment
