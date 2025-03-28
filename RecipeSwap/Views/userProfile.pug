@@ -1,0 +1,19 @@
+// userProfile.pug
+extends layout.pug
+
+block content
+    .container
+        h1= user.first_name + " " + user.last_name
+        p Email: #{user.email}
+        p Age: #{user.age}
+        p Date of Birth: #{user.date_of_birth}
+
+        h2 Recipes
+        ul
+            each recipe in recipes
+                li= recipe.name
+
+        h2 Reviews
+        ul
+            each review in reviews
+                li= review.rating + "★ " + review.comment
