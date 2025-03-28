@@ -1,0 +1,104 @@
+doctype html
+html
+  head
+    // Page title shown in the browser tab
+    title Recipe List - Recipe Swap
+
+    // Link to your main CSS stylesheet
+    link(rel="stylesheet" href="/css/style.css")
+
+    // Font Awesome for icons (e.g., user, star, login)
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css")
+
+    // Link to external JS file (optional if using script block below)
+    script(src="/js/filter.js" defer)
+
+  body
+
+    // ========================
+    // NAVIGATION BAR
+    // ========================
+    nav.navbar
+      .container.nav-container
+
+        // Logo that links to homepage
+        a.logo-link(href="/") Recipe Swap
+
+        // Navigation links for all major pages
+        ul.nav-links
+          li: a(href="/") Home
+          li: a(href="/recipes") Recipes
+          li: a(href="/swap") Swap Recipes
+          li: a(href="/about") About Us
+          li: a(href="/contact") Contact
+
+          // Dropdown menu for cuisine types
+          li.dropdown
+            a(href="#") Cuisines ▾
+            ul.dropdown-menu
+              li: a(href="/cuisines/africa") African
+              li: a(href="/cuisines/asia") Asian
+              li: a(href="/cuisines/europe") European
+              li: a(href="/cuisines/north-america") North American
+              li: a(href="/cuisines/south-america") South American
+              li: a(href="/cuisines/australia") Australian
+              li: a(href="/cuisines/middle-eastern") Middle Eastern
+
+        // User-specific links (profile, reviews, login)
+        ul.nav-icons
+          li: a(href="/profile")
+            i.fas.fa-user
+            | Profile
+          li: a(href="/reviews")
+            i.fas.fa-star
+            | Reviews
+          li: a(href="/login")
+            i.fas.fa-sign-in-alt
+            | Login
+
+    // ========================
+    // FILTER SECTION
+    // Dropdown to filter visible recipes by category
+    // ========================
+    section.filter-container
+      h2 Recipe List
+
+      // Label for accessibility
+      label(for="filterCategory") Filter by Category:
+
+      // Dropdown selection triggers JS filter function
+      select(id="filterCategory" onchange="filterRecipes()")
+        option(value="All") All
+        option(value="Vegetarian") Vegetarian
+        option(value="Vegan") Vegan
+        option(value="Meat") Meat
+        option(value="Dessert") Dessert
+
+    // ========================
+    // RECIPE LISTINGS
+    // Loop through 'recipes' array and display cards
+    // ========================
+    section.recipe-grid(id="recipeGrid")
+      each recipe in recipes
+        // Recipe card with data-category for JS filtering
+        .recipe-card(data-category=recipe.category)
+
+          // Show image if available, otherwise use placeholder
+          if recipe.image
+            img.recipe-image(src=recipe.image alt=recipe.name)
+          else
+            img.recipe-image(src="/assets/images/placeholder.jpg" alt="No Image")
+
+          // Recipe name and description
+          h3 #{recipe.name}
+          p #{recipe.description}
+
+          // Button to view full recipe page
+          a.btn.btn-orange(href=`/recipes/${recipe.id}`) View Recipe
+
+    // ========================
+    // FOOTER
+    // ========================
+    footer
+      .container
+        p &copy; 2025 Recipe Swap. All Rights Reserved.
