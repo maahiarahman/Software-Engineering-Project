@@ -257,7 +257,7 @@ block scripts
         e.preventDefault();
         console.log("✅ NEW RECIPE FORM SUBMITTED");
         showConfirmation("Recipe Created & Swap Sent!", () => {
-          window.location.href = "/dashboard";
+          window.location.href = "/profile/#{user.user_ID}";
         });
       });
 

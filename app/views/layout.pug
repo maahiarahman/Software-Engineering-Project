@@ -6,31 +6,36 @@ html(lang="en")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css")
 
-    // External CSS
-    if !isAdminPage
+    // 🌿 Stylesheets
+    if isAdminPage
+      link(rel="stylesheet", href="/css/style.css") 
+    else
       link(rel="stylesheet", href="/css/style.css")
       link(rel="stylesheet", href="/css/dark-mode.css")
 
-  body
+  body(class=isAdminPage ? 'admin' : '')
     nav.navbar
-      a(href="/splash") Home
-      a(href="/about") About Us
-      a(href="/contact") Contact Us
-      a(href="/swap") Swap Recipe
-      if !user
-        a(href="/login") Login
-        a(href="/register") Register
-      else
-        a(href="/dashboard") Dashboard
-        a(href=`/profile/${user.id}`) View Profile
-        a(href="/logout") Logout
+      .navbar-content.container
+        a.navbar-brand(href=isAdminPage ? "/dashboard" : "/") Nom Nom
+        .nav-links
+          a(href="/splash") Home
+          a(href="/about") About Us
+          a(href="/contact") Contact Us
+          a(href="/swap") Swap Recipe
+          if !user
+            a(href="/login") Login
+            a(href="/register") Register
+          else
+            a(href="/dashboard") Dashboard
+            a(href=`/profile/${user.id || user.user_ID}`) View Profile
+            a(href="/logout") Logout
 
-    // 🔁 Dark mode toggle that matches existing JS (keep it as-is!)
+    // 🌗 Dark mode toggle
     button.dark(title="Toggle Dark Mode")
       i.fa-solid.fa-lightbulb
 
-    main.container
-      block content  // Content block for the page's main content
+    main.container.mt-4
+      block content
 
     footer.text-center.text-sm.text-gray-500.mt-10
       | © #{year} Nom Nom. All rights reserved.
@@ -46,7 +51,6 @@ html(lang="en")
     script(src="/js/swap.js")
     script(src="/js/api.js")
 
-    // Block for Swap Modal Script
     block scripts
       script.
         const modal = document.getElementById('swap-modal');

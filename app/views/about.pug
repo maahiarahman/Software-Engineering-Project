@@ -1,53 +1,58 @@
 extends layout
 
 block content
-    .about-container(style="background: linear-gradient(to right, #e8f5e9, #f1f8e9); padding: 4rem 0;")
-        .about-wrapper.max-w-4xl.mx-auto.bg-white.bg-opacity-10.p-10.rounded-xl.shadow-xl
-            h1(class="text-3xl font-bold text-[#2e7d32] mb-6") About Us
+  div(class="bg-gradient-to-r from-green-50 to-green-100 py-16")
+    div(class="max-w-5xl mx-auto bg-white/80 p-10 rounded-2xl shadow-xl")
 
-            p.text-lg.text-center.text-gray-800.leading-relaxed
-                | Recipe Swap was created by four Software Engineering students brought together by a passion for both technology and food —
-                span.font-semibold Sumana, Aneeta, Shaiza, and Maahia
-                | . What began as a class project turned into a mission to connect people through the joy of recipe sharing.
+      // 🎯 Intro
+      div(class="text-center mb-12")
+        h1(class="text-4xl font-bold text-green-800 mb-4") About Us
+        p(class="text-lg text-gray-800 leading-relaxed")
+          | Recipe Swap was created by four Software Engineering students brought together by a passion for both technology and food —
+          span(class="font-semibold") Sumana, Aneeta, Shaiza, and Maahia
+          | . What began as a class project turned into a mission to connect people through the joy of recipe sharing.
 
-            if teamMembers && teamMembers.length
-                .about-cards-wrapper.flex.gap-6.overflow-x-auto.px-6.max-w-full.mt-12
-                    each member in teamMembers
-                        .about-card(class="min-w-[280px] bg-white bg-opacity-10 shadow-md rounded-xl p-6 flex-shrink-0")
-                            img(src=`/images/${member.img}`, alt=member.name, class="w-full h-48 object-cover rounded-md mb-4")
-                            h3(class="text-xl font-semibold text-[#2e7d32] mb-2")= member.name
-                            p(class="text-sm font-semibold text-[#4caf50] mb-1")= member.role
-                            p.text-gray-100.text-sm= member.desc
-            else
-                p.text-center.text-gray-700.mt-6 No team members found.
+      // 👥 Team Grid
+      if teamMembers && teamMembers.length
+        h2(class="text-3xl font-bold text-center text-green-700 mb-10 mt-16") Meet the Team
 
-            hr.my-12.border-t.border-green-300
+        div(class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8")
+          each member in teamMembers
+            div(class="bg-white shadow-lg rounded-xl p-6 text-center transition hover:shadow-2xl hover:scale-105 duration-300")
+              img(src=`/images/${member.img}`, alt=member.name, class="w-full h-40 object-cover rounded-md mb-4")
+              h3(class="text-xl font-bold text-green-700 mb-1")= member.name
+              p(class="text-orange-500 font-medium mb-2")= member.role
+              p(class="text-sm text-gray-600 leading-snug")= member.desc
+      else
+        p(class="text-center text-gray-700 mt-6") No team members found.
 
-            p.text-center.text-base.text-gray-700.max-w-3xl.mx-auto.leading-relaxed
-                | We believe food brings people together. Through Recipe Swap, we hope to encourage sharing, cultural exchange, and the discovery of flavors that feel like home.
+      hr(class="my-16 border-t border-green-300")
 
-    // Follow Us Section
-    .follow-us-section.mt-16
-        h2.text-center.mb-8(class="text-[#2e7d32] text-2xl font-bold") Follow Us
+      p(class="text-center text-base text-gray-700 max-w-3xl mx-auto leading-relaxed")
+        | We believe food brings people together. Through Recipe Swap, we hope to encourage sharing, cultural exchange, and the discovery of flavors that feel like home.
 
-        div(class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto")
-            // Email
-            .follow-us-card.bg-white.bg-opacity-10.shadow-lg.rounded-xl.p-6.text-center
-                i.fas.fa-envelope.text-4xl.mb-4(class="text-orange-400")
-                h3.text-xl.font-semibold.text-orange-300.mb-2 Email Us
-                p.text-gray-100.mb-4 Send us your suggestions or questions via email.
-                a(href="mailto:recipeswap@team.com" class="btn-orange p-3") Email Now
+  // 🔗 Follow Us
+  div(class="mt-20")
+    h2(class="text-2xl font-bold text-center text-green-700 mb-8") Follow Us
 
-            // Instagram
-            .follow-us-card.bg-white.bg-opacity-10.shadow-lg.rounded-xl.p-6.text-center
-                i.fab.fa-instagram.text-4xl.mb-4(class="text-orange-400")
-                h3.text-xl.font-semibold.text-orange-300.mb-2 Instagram
-                p.text-gray-100.mb-4 Follow us on Instagram for the latest updates.
-                a(href="https://instagram.com/recipeswap" target="_blank" class="btn-orange p-3") Follow Us
+    div(class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-6")
+      // 📧 Email
+      div(class="bg-white shadow-lg rounded-xl p-6 text-center transition hover:shadow-xl hover:scale-105 duration-300")
+        i(class="fas fa-envelope text-4xl mb-4 text-orange-400")
+        h3(class="text-xl font-semibold text-orange-600 mb-2") Email Us
+        p(class="text-gray-700 mb-4") Send us your suggestions or questions via email.
+        a(href="mailto:recipeswap@team.com", class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full") Email Now
 
-            // GitHub
-            .follow-us-card.bg-white.bg-opacity-10.shadow-lg.rounded-xl.p-6.text-center
-                i.fab.fa-github.text-4xl.mb-4(class="text-orange-400")
-                h3.text-xl.font-semibold.text-orange-300.mb-2 GitHub
-                p.text-gray-100.mb-4 Contribute to our open-source project on GitHub.
-                a(href="https://github.com/recipeswap" target="_blank" class="btn-orange p-3") View on GitHub
+      // 📷 Instagram
+      div(class="bg-white shadow-lg rounded-xl p-6 text-center transition hover:shadow-xl hover:scale-105 duration-300")
+        i(class="fab fa-instagram text-4xl mb-4 text-orange-400")
+        h3(class="text-xl font-semibold text-orange-600 mb-2") Instagram
+        p(class="text-gray-700 mb-4") Follow us on Instagram for the latest updates.
+        a(href="https://instagram.com/recipeswap", target="_blank", class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full") Follow Us
+
+      // 🖥️ GitHub
+      div(class="bg-white shadow-lg rounded-xl p-6 text-center transition hover:shadow-xl hover:scale-105 duration-300")
+        i(class="fab fa-github text-4xl mb-4 text-orange-400")
+        h3(class="text-xl font-semibold text-orange-600 mb-2") GitHub
+        p(class="text-gray-700 mb-4") Contribute to our open-source project on GitHub.
+        a(href="https://github.com/recipeswap", target="_blank", class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full") View on GitHub

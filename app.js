@@ -41,14 +41,6 @@ app.use((req, res, next) => {
   next();
 });
 
-res.render('user-profile', {
-  user: userData,
-  recipes: userRecipes,
-  reviews: userReviews,
-  posts: userPosts,
-  swaps: swapRequests // ⬅️ You must include this array!
-});
-
 // Routes
 app.get('/', (req, res) => {
   res.redirect('/splash');
@@ -79,6 +71,7 @@ app.get('/swap', async (req, res) => {
     res.render('swap', {
       recipes,
       userRecipes,
+      user: req.session.user,
       messages: {
         success: req.flash('success'),
         error: req.flash('error')

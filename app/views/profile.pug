@@ -1,99 +1,124 @@
-extends adminlayout
+extends layout
 
 block content
-  .max-w-6xl.mx-auto.p-6.bg-white.shadow-lg.rounded-xl
-    h1.text-3xl.font-bold.text-green-800.mb-6.text-center User Profile Overview
+  main.container
 
-    // 👤 USER INFO
-    .grid.grid-cols-1.md:grid-cols-2.gap-6.mb-10
-      .flex.flex-col.gap-2
-        h2.text-xl.font-semibold.text-green-700 User Details
-        p.font-medium Name: #{user.first_name} #{user.last_name}
-        p Email: #{user.email}
-        p Age: #{user.age}
-        p DOB: #{user.date_of_birth}
-        p User ID: #{user.user_ID}
+    // 🌿 Profile Box
+    .profile-box.bg-white.shadow-lg.rounded-2xl.p-6.max-w-2xl.mx-auto.mt-10.text-center
+      img.profile-pic.mx-auto.mb-4(src="/img/user-default.png", alt="User Image")
+      h2.text-2xl.font-bold.text-green-800 #{user.first_name} #{user.last_name}
+      p.text-gray-700.text-sm.mt-1 #{user.email}
+      p.text-gray-600.mt-2 Age: #{user.age}
+      p.text-gray-600.mt-1 DOB: #{user.date_of_birth.toDateString()}
+      if user.last_login
+        p.text-gray-600.mt-1 Last login: #{user.last_login.toLocaleString()}
+      p.text-gray-600.mt-1 User ID: #{user.user_ID}
+
+      // 🔐 Admin Controls
+      if isAdmin
         if !user.isBanned
           form(action=`/user/${user.user_ID}/ban`, method="POST")
-            button.bg-yellow-500.text-white.px-4.py-2.rounded.hover\:bg-yellow-600(type="submit" onclick="return confirm('Ban this user?')") Ban User
+            button.request-swap-btn.mt-4(type="submit" onclick="return confirm('Ban this user?')") Ban User
         else
-          p.text-red-500.font-bold This user is banned.
+          p.text-red-500.font-bold.mt-4 This user is banned.
+
         form(action=`/user/${user.user_ID}/delete`, method="POST")
-          button.bg-red-600.text-white.px-4.py-2.rounded.hover\:bg-red-700(type="submit" onclick="return confirm('Delete this user permanently?')") Delete User
+          button.delete-btn.mt-2(type="submit" onclick="return confirm('Delete this user permanently?')") Delete User
 
-      .flex.flex-col.gap-4
-        h2.text-xl.font-semibold.text-green-700.text-center Account Status
-        ul.list-disc.list-inside.text-gray-700
-          li Account active: #{!user.isBanned ? 'Yes' : 'No'}
-          li Recipes uploaded: #{recipes?.length || 0}
-          li Reviews written: #{reviews?.length || 0}
-          li Posts made: #{posts?.length || 0}
+    // 📊 Account Stats Grid
+    h2.text-center.text-green-800.text-2xl.font-bold.mt-12.mb-6 Account Status
 
-    // 🍽️ RECIPE CONTRIBUTIONS
+    div(class="grid grid-cols-2 md:grid-cols-4 gap-6 justify-center text-center mx-auto max-w-5xl")
+      div(class="bg-white shadow-md p-6 rounded-xl")
+        p.text-sm.text-gray-500.font-medium Account Active
+        p.text-2xl.font-bold.text-green-700 #{!user.isBanned ? 'Yes' : 'No'}
+
+      div(class="bg-white shadow-md p-6 rounded-xl")
+        p.text-sm.text-gray-500.font-medium Recipes Uploaded
+        p.text-2xl.font-bold.text-green-700 #{(recipes || []).length}
+
+      div(class="bg-white shadow-md p-6 rounded-xl")
+        p.text-sm.text-gray-500.font-medium Reviews Written
+        p.text-2xl.font-bold.text-green-700 #{(reviews || []).length}
+
+      div(class="bg-white shadow-md p-6 rounded-xl")
+        p.text-sm.text-gray-500.font-medium Posts Made
+        p.text-2xl.font-bold.text-green-700 #{(posts || []).length}
+
+    // 🍽 Recipes
     if recipes && recipes.length
-      h3.text-green-800.mt-10.mb-4.text-xl.font-bold.text-center User Recipes
-      .grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-3.gap-4
+      h3.text-center.text-green-800.text-xl.font-bold.mt-10.mb-4 User Recipes
+      div(class="recipe-grid")
         each recipe in recipes
-          .bg-gray-100.p-4.rounded-lg.shadow
-            h4.text-lg.font-semibold.text-green-700.mb-1= recipe.name
-            p.text-gray-600.mb-2= recipe.description
-            form(action=`/user/${user.user_ID}/recipes/${recipe.recipe_id}/delete`, method="POST")
-              button.bg-red-500.text-white.px-3.py-1.rounded.hover\:bg-red-600(type="submit" onclick="return confirm('Delete this recipe?')") Delete Recipe
+          div(class="recipe-card")
+            h4= recipe.name
+            p= recipe.description
+            if isAdmin
+              form(action=`/user/${user.user_ID}/recipes/${recipe.recipe_id}/delete`, method="POST")
+                button(type="submit" class="delete-btn" onclick="return confirm('Delete this recipe?')") Delete Recipe
     else
-      p.text-center.text-gray-500.mt-6 No recipes found.
+      div(class="text-center text-gray-400 text-sm mt-6")
+        i.fa.fa-utensils.mr-2
+        | No recipes found.
 
-    // ⭐ USER REVIEWS
+    // 💬 Reviews
     if reviews && reviews.length
-      h3.text-green-800.mt-10.mb-4.text-xl.font-bold.text-center Reviews by User
-      .space-y-4
+      h3.text-center.text-green-800.text-xl.font-bold.mt-10.mb-4 Reviews by User
+      div(class="review-section")
         each review in reviews
-          .bg-white.border.border-gray-200.p-4.rounded.shadow
-            p.text-gray-800.mb-2= review.comment
-            p.text-sm.text-green-700.font-semibold Rating: #{review.rating} ⭐
-            p.text-xs.text-gray-500= `Posted on ${review.created_at}`
-            form(action=`/user/${user.user_ID}/review/${review.review_ID}/delete`, method="POST")
-              button.bg-red-500.text-white.px-3.py-1.rounded.hover\:bg-red-600(type="submit" onclick="return confirm('Delete this review?')") Delete Review
+          div(class="review-card")
+            div(class="review-content")
+              h4.font-semibold.text-green-700 Rating: #{review.rating} ⭐
+              p= review.comment
+              p.text-xs.text-gray-500 Posted on #{review.created_at}
+              if isAdmin
+                form(action=`/user/${user.user_ID}/review/${review.review_ID}/delete`, method="POST")
+                  button(type="submit" class="delete-btn" onclick="return confirm('Delete this review?')") Delete Review
     else
-      p.text-center.text-gray-500.mt-6 No reviews found.
+      div(class="text-center text-gray-400 text-sm mt-6")
+        i.fa.fa-comment-dots.mr-2
+        | No reviews found.
 
-    // 📝 POSTS MADE
+    // 📝 Posts
     if posts && posts.length
-      h3.text-green-800.mt-10.mb-4.text-xl.font-bold.text-center User Posts
-      table.w-full.border.text-sm
-        thead.bg-green-200
-          tr
-            th.px-3.py-2 Post ID
-            th.px-3.py-2 User ID
-            th.px-3.py-2 Recipe ID
-            th.px-3.py-2 Date Posted
-        tbody
-          each post in posts
-            tr.border-b
-              td.px-3.py-2= post.post_ID
-              td.px-3.py-2= post.user_ID
-              td.px-3.py-2= post.recipe_ID
-              td.px-3.py-2= post.date_posted
+      h3.text-center.text-green-800.text-xl.font-bold.mt-10.mb-4 User Posts
+      div(class="overflow-x-auto")
+        table.w-full.text-sm.border
+          thead
+            tr.bg-green-200.text-left
+              th.px-4.py-2 Post ID
+              th.px-4.py-2 User ID
+              th.px-4.py-2 Recipe ID
+              th.px-4.py-2 Date Posted
+          tbody
+            each post in posts
+              tr.border-b
+                td.px-4.py-2= post.post_ID
+                td.px-4.py-2= post.user_ID
+                td.px-4.py-2= post.recipe_ID
+                td.px-4.py-2= post.date_posted
     else
-      p.text-center.text-gray-500.mt-6 No posts found.
+      div(class="text-center text-gray-400 text-sm mt-6")
+        i.fa.fa-pen.mr-2
+        | No posts found.
 
-    // 🔁 INCOMING SWAP REQUESTS
+    // 🔁 Swap Requests
     if swaps && swaps.length
-      h3.text-green-800.mt-10.mb-4.text-xl.font-bold.text-center Incoming Swap Requests
-      .space-y-4
+      h3.text-center.text-green-800.text-xl.font-bold.mt-10.mb-4 Incoming Swap Requests
+      div(class="swap-section")
         each swap in swaps
-          .bg-yellow-50.border.border-yellow-300.p-4.rounded.shadow
-            p.text-sm.text-gray-800.font-medium Recipe requested: #{swap.recipe_name}
-            p.text-xs.text-gray-500 Sent by user ID: #{swap.requester_id}
-            p.text-xs.text-gray-500 Date: #{swap.created_at}
-            .flex.gap-3.mt-2
-              button.bg-green-600.text-white.px-3.py-1.rounded.hover\:bg-green-700 Accept
-              button.bg-red-500.text-white.px-3.py-1.rounded.hover\:bg-red-600 Reject
+          div(class="swap-card")
+            p Recipe requested: #{swap.recipe_name}
+            p.text-xs Sent by user ID: #{swap.requester_id}
+            p.text-xs Date: #{swap.created_at}
+            div(class="flex justify-center gap-4 mt-2")
+              button(type="button" class="request-swap-btn") Accept
+              button(type="button" class="delete-btn") Reject
     else
-      p.text-center.text-gray-500.mt-6 No incoming swap requests.
+      div(class="text-center text-gray-400 text-sm mt-6")
+        i.fa.fa-sync.mr-2
+        | No incoming swap requests.
 
-    // 📍 Footer / Status Bar
-    .mt-12.text-center.text-xs.text-gray-400.border-t.pt-4
-      p Nom Nom Admin Panel | Profile Summary | Updated #{new Date().toLocaleDateString()}
-
-block scripts
-  script(src="/js/profile.js")
+    // 🔻 Footer Info
+    div(class="mt-12 text-center text-xs text-gray-400 border-t pt-4")
+      p Nom Nom | Profile Summary | Updated #{new Date().toLocaleDateString()}
