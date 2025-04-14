@@ -1,20 +1,22 @@
-# Base image to use
+# Use Node.js base image
 FROM node:latest
 
-# set a working directory
+# Set a working directory inside the container
 WORKDIR /src
 
-# Copy across project configuration information
-# Install application dependencies
+# Copy package.json and package-lock.json to leverage caching
 COPY package*.json /src/
 
-# Ask npm to install the dependencies
-RUN npm install -g supervisor && npm install && npm install supervisor
+# Install application dependencies
+RUN npm install -g supervisor \
+    && npm install \
+    && npm install express-flash --save
 
-# Copy across all our files
+# Copy the rest of the application files
 COPY . /src
 
-# Expose our application port (3000)
+# Expose application port (3000)
 EXPOSE 3000
 
-
+# Start the application
+CMD ["supervisor", "app.js"]

@@ -1,0 +1,57 @@
+extends layout
+
+block content
+  h2 Recipe Details: #{recipe.name}
+
+  // Show the recipe's image if available
+  if recipe.image_url
+    img(src=recipe.image_url, alt=recipe.name)
+
+  // Show recipe's description
+  p= recipe.description
+
+  // Ingredients list
+  h3 Ingredients:
+  ul
+    each ingredient in recipe.ingredients.split(',')
+      li= ingredient
+
+  // Instructions list
+  h3 Instructions:
+  ol
+    each step in recipe.instructions.split(',')
+      li= step
+
+  // Reviews Section
+  h3 Reviews
+
+  // If reviews exist
+  if reviews && reviews.length > 0
+    each review in reviews
+      .review-card
+        h4= review.first_name + ' ' + review.last_name
+        p= review.comment
+        span= "⭐".repeat(review.rating) 
+
+  else
+    p No reviews yet. Be the first to review this recipe!
+
+  // Submit Review Form
+  h3 Leave a Review
+  form(action="/reviews" method="POST")
+    input(type="hidden" name="recipeId" value=recipe.recipe_id)
+    .form-group
+      label(for="review-text") Your Review:
+      textarea(id="review-text" name="reviewText" placeholder="Write your review here..." required)
+
+    .form-group
+      label(for="rating") Rating:
+      select(name="rating" id="rating" required)
+        option(value="5") ⭐⭐⭐⭐⭐ - Excellent
+        option(value="4") ⭐⭐⭐⭐ - Great
+        option(value="3") ⭐⭐⭐ - Good
+        option(value="2") ⭐⭐ - Average
+        option(value="1") ⭐ - Poor
+
+    .form-group
+      button.btn.btn-green(type="submit") Submit Review

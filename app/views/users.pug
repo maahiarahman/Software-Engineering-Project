@@ -1,0 +1,54 @@
+doctype html
+html
+  head
+    title Users Table
+    style.
+      body {
+        font-family: Helvetica;
+        background-color: rgb(230, 182, 154);
+      }
+      .table-container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 30px;
+        background-color: white;
+        box-shadow: 0 0 20px rgb(212, 99, 188);
+        border-radius: 25px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th, td {
+        border: 1px solid rgb(107, 107, 107);
+        padding: 10px;
+        text-align: left;
+      }
+      th {
+        background-color: rgb(216, 110, 110);
+        color: white;
+      }
+
+  body
+    .table-container
+      h1 Users List
+
+      table
+        thead
+          tr
+            th User ID
+            th First Name
+            th Last Name
+            th Email
+            th Date of Birth
+            th Age
+        tbody
+          each user in users
+            tr
+              td #{user.user_ID}
+              td #{user.first_name}
+              td #{user.last_name}
+              td #{user.email}
+              td #{user.formatted_dob}
+              td #{user.age}

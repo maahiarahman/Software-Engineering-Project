@@ -1,0 +1,270 @@
+extends layout
+
+block content
+  .max-w-7xl.mx-auto.px-6.py-12.bg-cream
+    if flash
+      div#toast.fixed.top-5.right-5.bg-green-500.text-white.py-2.px-4.rounded.shadow.z-50= flash.success
+
+    h1.text-4xl.font-bold.text-green-800.mb-4.text-center SWAP A RECIPE
+    p.text-center.text-green-700.mb-8 Browse, choose, and request to exchange recipes.
+
+    // 🔎 Filters
+    form(method="GET" action="/swap")
+      div(class="flex flex-wrap gap-6 justify-center mb-10")
+        div(class="flex flex-col")
+          label(for="category" class="text-sm font-medium mb-1 text-green-900") Category
+          select#category(name="category" class="border rounded p-2" onchange="this.form.submit()")
+            option(value="None") All
+            option(value="1") African
+            option(value="2") Asian
+            option(value="3") European
+            option(value="4") Middle Eastern
+            option(value="5") North American
+            option(value="6") South American
+            option(value="7") Australian
+        div(class="flex flex-col")
+          label(for="diet" class="text-sm font-medium mb-1 text-green-900") Dietary
+          select#diet(name="diet" class="border rounded p-2" onchange="this.form.submit()")
+            option(value="None") All
+            option(value="Vegan") Vegan
+            option(value="Vegetarian") Vegetarian
+            option(value="Halal") Halal
+            option(value="Gluten Free") Gluten Free
+            option(value="Dairy Free") Dairy Free
+            option(value="Nut Free") Nut Free
+
+    if recipes && recipes.length
+      div(class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6")
+        each recipe in recipes
+          div(class="recipe-card bg-white p-4 rounded-xl shadow flex flex-col items-center text-center")
+            - var imageSrc = (recipe.image_url && recipe.image_url.trim() !== '') ? recipe.image_url : '/images/placeholder.jpg'
+            div(class="w-full h-48 object-cover rounded mb-3")
+              img(src=imageSrc, alt="Recipe Image" class="w-full h-full object-cover rounded")
+            h3.text-lg.font-semibold.text-green-800.mb-1= recipe.name
+            p.text-sm.text-gray-700.mb-2= recipe.description
+            if recipe.dietary_category
+              span(class=`badge badge-${recipe.dietary_category.replace(/[\s\-]/g, '').toLowerCase()}`)= recipe.dietary_category
+            button.swap-button(
+              type="button"
+              class="bg-green-600 text-white px-4 py-2 mt-3 rounded hover:bg-green-700 w-full"
+              data-id=recipe.recipe_id
+              data-name=recipe.name
+              data-user=recipe.user_id
+            ) Request Swap
+    else
+      p.text-center.text-gray-500.mt-10 No matching recipes found.
+
+    // 🌿 Modal
+    #swap-modal.hidden.flex.fixed.inset-0.items-center.justify-center.bg-black.bg-opacity-50.z-50
+      div(class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-xl relative transition-all duration-300")
+        button(type="button" class="absolute top-2 right-3 text-gray-400 text-xl font-bold" onclick="closeModal()") ×
+        h2.text-2xl.font-bold.text-green-800.mb-4.text-center Swap Request
+        p#modal-recipe-name.text-center.text-gray-600.mb-4
+
+        div(class="flex justify-center gap-4 mb-6")
+          button#choose-existing(type="button" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600") Use Existing Recipe
+          button#choose-new(type="button" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700") Create New Recipe
+
+        // ✅ Existing Recipe Form
+        form#existing-form.hidden(method="POST" action="/swap/send")
+          input(type="hidden" name="target_recipe_id" id="targetRecipeId")
+          input(type="hidden" name="target_user_id" id="targetUserId")
+          button#back-from-existing(type="button" class="text-sm text-blue-600 hover:underline mb-3") ← Back to options
+          label(for="yourRecipe" class="block mb-1 font-semibold") Select your recipe:
+          select#yourRecipe(name="your_recipe_id" required class="w-full border rounded p-2 mb-3")
+            if userRecipes && userRecipes.length
+              each recipe in userRecipes
+                option(value=recipe.recipe_id)= recipe.name
+            else
+              option(disabled selected value='') You have no recipes to swap
+          button(type="submit" class="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 w-full") Send Swap Request
+
+        // 🆕 New Recipe Form
+        form#new-form.hidden(method="POST" action="/recipes" enctype="multipart/form-data")
+          input(type="hidden" name="target_recipe_id" id="targetRecipeIdNew")
+          input(type="hidden" name="target_user_id" id="targetUserIdNew")
+          button#back-from-new(type="button" class="text-sm text-blue-600 hover:underline mb-3") ← Back to options
+
+          div(class="form-group mb-3")
+            label(for="name") Name:
+            input#name(type="text" name="name" required class="w-full border p-2 rounded")
+
+          div(class="form-group mb-3")
+            label(for="description") Description:
+            textarea#description(name="description" required class="w-full border p-2 rounded")
+
+          div(class="form-group mb-3")
+            label(for="ingredients") Ingredients:
+            textarea#ingredients(name="ingredients" required class="w-full border p-2 rounded")
+
+          div(class="form-group mb-3")
+            label(for="instructions") Instructions:
+            textarea#instructions(name="instructions" required class="w-full border p-2 rounded")
+
+          div(class="form-group mb-3")
+            label(for="category") Category:
+            select#category(name="category" class="w-full border p-2 rounded")
+              option(value="1") Asian
+              option(value="2") European
+              option(value="3") African
+              option(value="4") Australian
+              option(value="5") Middle Eastern
+              option(value="6") North American
+              option(value="7") South American
+
+          div(class="form-group mb-3")
+            label(for="dietary_category") Dietary:
+            select#dietary_category(name="dietary_category" class="w-full border p-2 rounded")
+              option(value="") All Categories
+              option(value="Vegan") Vegan
+              option(value="Halal") Halal
+              option(value="Gluten-Free") Gluten-Free
+              option(value="Dairy-Free") Dairy-Free
+              option(value="Nut-Free") Nut-Free
+
+          div(class="form-group mb-3")
+            label(for="image") Image:
+            input#image(type="file" name="image" accept="image/*" class="w-full")
+
+          button(type="submit" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 w-full") Submit Recipe & Swap
+
+    // 🍰 Dessert Image
+    img#dessertImage(alt="Dessert Image" class="w-full h-48 object-cover rounded mb-3")
+
+block scripts
+  script.
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log("Recipe Swap Loaded!");
+
+      const modal = document.getElementById('swap-modal');
+      const recipeName = document.getElementById('modal-recipe-name');
+      const recipeIdField = document.getElementById('targetRecipeId');
+      const userIdField = document.getElementById('targetUserId');
+      const recipeIdFieldNew = document.getElementById('targetRecipeIdNew');
+      const userIdFieldNew = document.getElementById('targetUserIdNew');
+
+      const existingForm = document.getElementById('existing-form');
+      const newForm = document.getElementById('new-form');
+      const chooseExisting = document.getElementById('choose-existing');
+      const chooseNew = document.getElementById('choose-new');
+
+      const backExisting = document.getElementById('back-from-existing');
+      const backNew = document.getElementById('back-from-new');
+
+      if (!modal || !chooseExisting || !chooseNew || !existingForm || !newForm) {
+        console.warn("Missing DOM elements – form toggle logic will not run.");
+        return;
+      }
+
+      document.querySelectorAll('.swap-button').forEach(button => {
+        button.addEventListener('click', () => {
+          console.log("Swap button clicked ✅");
+
+          const recipeId = button.dataset.id;
+          const recipeNameValue = button.dataset.name;
+          const recipeUser = button.dataset.user;
+
+          recipeName.textContent = `You’re requesting a swap for: ${recipeNameValue}`;
+
+          recipeIdField.value = recipeId;
+          userIdField.value = recipeUser;
+
+          recipeIdFieldNew.value = recipeId;
+          userIdFieldNew.value = recipeUser;
+
+          modal.classList.remove('hidden');
+          modal.style.display = 'flex';
+
+          existingForm.classList.add('hidden');
+          existingForm.style.display = 'none';
+          newForm.classList.add('hidden');
+          newForm.style.display = 'none';
+        });
+      });
+
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) {
+          modal.classList.add('hidden');
+          modal.style.display = 'none';
+        }
+      });
+
+      chooseExisting.addEventListener('click', () => {
+        console.log("Chose existing recipe");
+        existingForm.classList.remove('hidden');
+        existingForm.style.display = 'block';
+        newForm.classList.add('hidden');
+        newForm.style.display = 'none';
+      });
+
+      chooseNew.addEventListener('click', () => {
+        console.log("Chose new recipe");
+        newForm.classList.remove('hidden');
+        newForm.style.display = 'block';
+        existingForm.classList.add('hidden');
+        existingForm.style.display = 'none';
+      });
+
+      backExisting?.addEventListener('click', () => {
+        existingForm.classList.add('hidden');
+        existingForm.style.display = 'none';
+      });
+
+      backNew?.addEventListener('click', () => {
+        newForm.classList.add('hidden');
+        newForm.style.display = 'none';
+      });
+
+      function validateSwapForm() {
+        const selected = document.getElementById('yourRecipe');
+        if (!selected?.value) {
+          alert('Please select a recipe to swap.');
+          return false;
+        }
+        return true;
+      }
+
+      function showConfirmation(message, callback) {
+        const confirmBox = document.createElement("div");
+        confirmBox.className = "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50";
+        confirmBox.innerHTML = `
+          <div class="bg-white p-6 rounded-xl shadow-lg text-center max-w-sm">
+            <h3 class="text-lg font-semibold text-green-700 mb-4">${message}</h3>
+            <p class="mb-6 text-gray-600">You’ll be redirected shortly 🎉</p>
+            <button id="confirm-ok" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+              Back to Dashboard
+            </button>
+          </div>
+        `;
+        document.body.appendChild(confirmBox);
+
+        document.getElementById("confirm-ok").onclick = () => {
+          confirmBox.remove();
+          if (callback) callback();
+        };
+      }
+
+      existingForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!validateSwapForm()) return;
+        console.log("✅ EXISTING FORM SUBMITTED");
+        showConfirmation("Swap request sent!", () => {
+          window.location.href = "/dashboard";
+        });
+      });
+
+      newForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        console.log("✅ NEW RECIPE FORM SUBMITTED");
+        showConfirmation("Recipe Created & Swap Sent!", () => {
+          window.location.href = "/dashboard";
+        });
+      });
+
+      const toast = document.getElementById('toast');
+      if (toast) {
+        setTimeout(() => {
+          toast.style.display = 'none';
+        }, 3000);
+      }
+    });

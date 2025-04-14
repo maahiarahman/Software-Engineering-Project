@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  .contact-container(style="background: linear-gradient(to right, #e4572e, #f5853f); padding: 4rem 0;")
+    .contact-form-wrapper(class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg")
+      h1.text-4xl.font-extrabold.text-center.text-orange-600.mb-4 Contact Us ✉️
+      p.text-lg.text-center.text-gray-700.mb-8 Drop us a message — whether it’s a suggestion, a recipe idea, or just to say hi!
+
+      form.contact-form(action="/contact", method="POST", id="contactForm")
+        .mb-6
+          label(for="name", class="block text-sm font-semibold mb-2") First Name
+          input#name(type="text", name="name", required, class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 hover:border-neon-orange")
+
+        .mb-6
+          label(for="email", class="block text-sm font-semibold mb-2") Email
+          input#email(type="email", name="email", required, class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 hover:border-neon-orange")
+
+        .mb-6
+          label(for="message", class="block text-sm font-semibold mb-2") Message
+          textarea#message(name="message", rows="5", required, class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 hover:border-neon-orange")
+
+        button(type="submit", class="w-full py-3 mt-6 bg-orange-600 text-white font-bold text-lg rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500") Send Message

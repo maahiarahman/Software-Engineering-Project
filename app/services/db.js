@@ -1,31 +1,15 @@
-require("dotenv").config();
 const mysql = require('mysql2/promise');
+require('dotenv').config();
 
-const config = {
-  db: {
-    host: process.env.MYSQL_HOST || "db",  // Ensure MySQL connects via the container name "db"
-    port: process.env.DB_PORT || 3306, 
-    user: process.env.MYSQL_ROOT_USER || "root",
-    password: process.env.MYSQL_ROOT_PASSWORD || "password",
-    database: process.env.MYSQL_DATABASE || "sd2-db",
-    waitForConnections: true,
-    connectionLimit: 10,  // Increase pool size for better performance
-    queueLimit: 0,
-    socketPath: null  // Explicitly disable Unix socket usage
-  },
-};
+const pool = mysql.createPool({
+  host: process.env.DB_CONTAINER || 'db',         // ✅ Must match docker service name
+  port: process.env.DB_PORT || 3306,
+  user: process.env.MYSQL_ROOT_USER || 'root',
+  password: process.env.MYSQL_ROOT_PASSWORD || 'password',
+  database: process.env.MYSQL_DATABASE || 'nom_nom',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
 
-const pool = mysql.createPool(config.db);
-
-// Utility function to query the database
-async function query(sql, params) {
-  try {
-    const [rows, fields] = await pool.execute(sql, params);
-    return rows;
-  } catch (err) {
-    console.error("❌ Database Query Error:", err.message);
-    throw err;
-  }
-}
-
-module.exports = { query };
+module.exports = pool;

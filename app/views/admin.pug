@@ -1,0 +1,246 @@
+extends adminlayout.pug
+
+block content
+    .container
+        .header Admin Dashboard
+
+        if admin
+            p(style="text-align: right; font-weight: bold;")
+                | 👨‍💼 Admin:
+                span(style="color: #ff5733;") #{admin.name}
+
+        .admin-dashboard 
+            .sidebar 
+                h2 Admin Panel 
+                ul 
+                    li 
+                        a(href="#admin-users" onclick="showSection('admin-users')") Admin Users
+                    li
+                        a(href="#users" onclick="showSection('users')") Users
+                    li 
+                        a(href="#approve-users" onclick="showSection('approve-users')") Approved Users
+                    li 
+                        a(href="#deleted-users" onclick="showSection('deleted-users')") Deleted Users
+                    li 
+                        a(href="#banned-users" onclick="showSection('banned-users')") Banned Users
+                    li 
+                        a(href="#favourites" onclick="showSection('favourites')") Favourites
+                    li 
+                        a(href="#reviews" onclick="showSection('reviews')") Reviews
+                    li 
+                        a(href="#posts" onclick="showSection('posts')") Posts
+                    li 
+                        a(href="#categories" onclick="showSection('categories')") Categories
+                    li 
+                        a(href="#recipes" onclick="showSection('recipes')") Recipes
+
+            h1 Admin Dashboard 
+
+            // Admin Users Section
+            .section#admin-users
+                h2 Admin Users
+                table(border=1)
+                    thead
+                        tr
+                            th ID
+                            th Name
+                            th Email
+                    tbody
+                        each admin in admins
+                            tr
+                                td= admin.admin_ID
+                                td
+                                    a(href='/adminSingle/' + admin.admin_ID)= admin.name  
+                                td= admin.email
+
+    // Users Section
+    .section#users(style="display:none;")
+        h2 Users
+        table(border=2)
+            thead
+                tr
+                    th ID
+                    th First Name
+                    th Last Name 
+                    th Email 
+                    th DOB
+                    th Age 
+                    th User Password
+            tbody
+                each user in users
+                    tr
+                        td= user.user_ID
+                        td 
+                            a(href='/user/' + user.user_ID)= user.first_name  
+                        td= user.last_name 
+                        td= user.email
+                        td= user.format_DOB
+                        td= user.age
+                        td= user.user_password
+
+    // Approved Users Section
+    .section#approve-users(style="display:none;")
+        h2 Approved Users
+        table(border=2)
+            thead
+                tr
+                    th Approve ID
+                    th User ID
+                    th Approval Status
+                    th Admin 
+            tbody
+                each user in approvedUsers
+                    tr
+                        td= user.approve_ID
+                        td= user.user_ID
+                        td= user.approve 
+                        td= user.admin_ID
+
+    // Deleted Users Section
+    .section#deleted-users(style="display:none;")
+        h2 Deleted Users
+        table(border=2)
+            thead
+                tr
+                    th ID
+                    th User ID
+                    th Admin ID
+                    th Reason
+                    th Date
+            tbody
+                each user in deletedUsers
+                    tr
+                        td= user.delete_ID
+                        td 
+                            a(href='/deleted-user/' + user.delete_ID)= user.user_ID  
+                        td= user.admin_ID
+                        td= user.delete_states
+                        td= user.delete_date
+
+    // Banned Users Section
+    .section#banned-users(style="display:none;")
+        h2 Banned Users
+        table(border=2)
+            thead
+                tr
+                    th ID
+                    th User
+                    th Admin 
+                    th Ban Date
+            tbody
+                each user in bannedUsers
+                    tr
+                        td= user.ban_ID
+                        td 
+                            a(href='/banned-user/' + user.ban_ID)= user.user_ID  
+                        td= user.admin_ID
+                        td= user.ban_date
+
+    // Favourites Section
+    .section#favourites(style="display:none;")
+        h2 Favourites
+        table(border=2)
+            thead
+                tr
+                    th fav ID
+                    th User ID
+                    th Recipe
+                    th Created At
+            tbody
+                each fav in favourites
+                    tr
+                        td= fav.favorite_id
+                        td= fav.user_id  
+                        td= fav.recipe_id 
+                        td= fav.created_at
+
+    // Recipe Section
+    .section#recipes(style="display:none;")
+        h2 Recipes
+        table(border=2)
+            thead
+                tr
+                    th Recipe ID
+                    th User ID
+                    th Name
+                    th Description 
+                    th Ingredients 
+                    th Instructions 
+                    th Category 
+                    th Image URL 
+                    th Date
+            tbody 
+                each recipe in recipes
+                    tr 
+                        td= recipe.recipe_id
+                        td= recipe.user_id
+                        td= recipe.name 
+                        td= recipe.description 
+                        td= recipe.ingredients 
+                        td= recipe.instructions
+                        td= recipe.category_id 
+                        td= recipe.image_url 
+                        td= recipe.created_at
+
+    // Reviews Section
+    .section#reviews(style="display:none;")
+        h2 Reviews
+        table(border=2)
+            thead
+                tr 
+                    th review ID 
+                    th Recipe ID
+                    th User ID
+                    th Rating 
+                    th Comments 
+                    th Date
+            tbody  
+                each review in reviews     
+                    tr 
+                        td= review.review_ID
+                        td= review.recipe_id   
+                        td= review.user_id      
+                        td= review.rating 
+                        td= review.comment 
+                        td= review.created_at
+
+    // Post Section
+    .section#posts(style="display:none;")
+        h2 Posts
+        table(border=2)
+            thead
+                tr 
+                    th post ID 
+                    th User ID
+                    th Recipe ID 
+                    th Date 
+            tbody      
+                each post in posts 
+                    tr    
+                        td= post.post_ID 
+                        td= post.user_ID 
+                        td= post.recipe_ID 
+                        td= post.date_posted 
+
+    // Category Section
+    .section#categories(style="display:none;")
+        h2 Categories
+        table(border=2)
+            thead 
+                tr 
+                    th ID 
+                    th Name 
+            tbody 
+                each cat in categories 
+                    tr
+                        td= cat.category_id 
+                        td= cat.name
+
+    // JavaScript for section toggling
+    script.
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }

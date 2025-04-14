@@ -1,0 +1,21 @@
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-orange {
+    background-color: #ff7e5f;
+    color: white;
+}
+
+.btn-red {
+    background-color: #ff4444;
+    color: white;
+}
+
+.btn-green {
+    background-color: #28a745;
+    color: white;
+}

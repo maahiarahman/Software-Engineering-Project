@@ -1,0 +1,53 @@
+extends layout
+
+block content
+    .about-container(style="background: linear-gradient(to right, #e8f5e9, #f1f8e9); padding: 4rem 0;")
+        .about-wrapper.max-w-4xl.mx-auto.bg-white.bg-opacity-10.p-10.rounded-xl.shadow-xl
+            h1(class="text-3xl font-bold text-[#2e7d32] mb-6") About Us
+
+            p.text-lg.text-center.text-gray-800.leading-relaxed
+                | Recipe Swap was created by four Software Engineering students brought together by a passion for both technology and food —
+                span.font-semibold Sumana, Aneeta, Shaiza, and Maahia
+                | . What began as a class project turned into a mission to connect people through the joy of recipe sharing.
+
+            if teamMembers && teamMembers.length
+                .about-cards-wrapper.flex.gap-6.overflow-x-auto.px-6.max-w-full.mt-12
+                    each member in teamMembers
+                        .about-card(class="min-w-[280px] bg-white bg-opacity-10 shadow-md rounded-xl p-6 flex-shrink-0")
+                            img(src=`/images/${member.img}`, alt=member.name, class="w-full h-48 object-cover rounded-md mb-4")
+                            h3(class="text-xl font-semibold text-[#2e7d32] mb-2")= member.name
+                            p(class="text-sm font-semibold text-[#4caf50] mb-1")= member.role
+                            p.text-gray-100.text-sm= member.desc
+            else
+                p.text-center.text-gray-700.mt-6 No team members found.
+
+            hr.my-12.border-t.border-green-300
+
+            p.text-center.text-base.text-gray-700.max-w-3xl.mx-auto.leading-relaxed
+                | We believe food brings people together. Through Recipe Swap, we hope to encourage sharing, cultural exchange, and the discovery of flavors that feel like home.
+
+    // Follow Us Section
+    .follow-us-section.mt-16
+        h2.text-center.mb-8(class="text-[#2e7d32] text-2xl font-bold") Follow Us
+
+        div(class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto")
+            // Email
+            .follow-us-card.bg-white.bg-opacity-10.shadow-lg.rounded-xl.p-6.text-center
+                i.fas.fa-envelope.text-4xl.mb-4(class="text-orange-400")
+                h3.text-xl.font-semibold.text-orange-300.mb-2 Email Us
+                p.text-gray-100.mb-4 Send us your suggestions or questions via email.
+                a(href="mailto:recipeswap@team.com" class="btn-orange p-3") Email Now
+
+            // Instagram
+            .follow-us-card.bg-white.bg-opacity-10.shadow-lg.rounded-xl.p-6.text-center
+                i.fab.fa-instagram.text-4xl.mb-4(class="text-orange-400")
+                h3.text-xl.font-semibold.text-orange-300.mb-2 Instagram
+                p.text-gray-100.mb-4 Follow us on Instagram for the latest updates.
+                a(href="https://instagram.com/recipeswap" target="_blank" class="btn-orange p-3") Follow Us
+
+            // GitHub
+            .follow-us-card.bg-white.bg-opacity-10.shadow-lg.rounded-xl.p-6.text-center
+                i.fab.fa-github.text-4xl.mb-4(class="text-orange-400")
+                h3.text-xl.font-semibold.text-orange-300.mb-2 GitHub
+                p.text-gray-100.mb-4 Contribute to our open-source project on GitHub.
+                a(href="https://github.com/recipeswap" target="_blank" class="btn-orange p-3") View on GitHub

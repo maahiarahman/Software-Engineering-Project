@@ -1,0 +1,14 @@
+.navbar {
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+    background: linear-gradient(to bottom right, #feb47b, #ff7e5f);
+    color: white;
+}

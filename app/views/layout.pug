@@ -1,5 +1,72 @@
-html
-    head    
-        title #{title}
-    body 
-        block content
+doctype html
+html(lang="en")
+  head
+    title Recipe Swap
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css")
+
+    // External CSS
+    if !isAdminPage
+      link(rel="stylesheet", href="/css/style.css")
+      link(rel="stylesheet", href="/css/dark-mode.css")
+
+  body
+    nav.navbar
+      a(href="/splash") Home
+      a(href="/about") About Us
+      a(href="/contact") Contact Us
+      a(href="/swap") Swap Recipe
+      if !user
+        a(href="/login") Login
+        a(href="/register") Register
+      else
+        a(href="/dashboard") Dashboard
+        a(href=`/profile/${user.id}`) View Profile
+        a(href="/logout") Logout
+
+    // 🔁 Dark mode toggle that matches existing JS (keep it as-is!)
+    button.dark(title="Toggle Dark Mode")
+      i.fa-solid.fa-lightbulb
+
+    main.container
+      block content  // Content block for the page's main content
+
+    footer.text-center.text-sm.text-gray-500.mt-10
+      | © #{year} Nom Nom. All rights reserved.
+      br
+      a(class="text-blue-600 hover:underline" href="/terms") Terms & Conditions
+
+    // Scripts
+    script(src="/js/search.js")
+    script(src="/js/script.js")
+    script(src="/js/dark-mode.js")
+    script(src="/js/reviews.js")
+    script(src="/js/recipe.js")
+    script(src="/js/swap.js")
+    script(src="/js/api.js")
+
+    // Block for Swap Modal Script
+    block scripts
+      script.
+        const modal = document.getElementById('swap-modal');
+        const recipeName = document.getElementById('modal-recipe-name');
+        const recipeIdField = document.getElementById('targetRecipeId');
+        const userIdField = document.getElementById('targetUserId');
+
+        function closeModal() {
+          modal.classList.add('hidden');
+        }
+
+        document.querySelectorAll('.swap-button').forEach(button => {
+          button.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+            recipeName.textContent = `You’re requesting a swap for: ${button.dataset.name}`;
+            recipeIdField.value = button.dataset.id;
+            userIdField.value = button.dataset.user;
+          });
+        });
+
+        modal.addEventListener('click', e => {
+          if (e.target === modal) closeModal();
+        });

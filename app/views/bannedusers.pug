@@ -1,0 +1,22 @@
+extends adminlayout
+
+block content
+  h2 Banned Users
+  table(border=2)
+    thead
+      tr
+        th Ban ID
+        th User ID
+        th Admin 
+        th Ban Date
+        th Action
+    tbody
+      each user in bannedUsers
+        tr
+          td= user.ban_ID
+          td= user.user_ID  
+          td= user.admin_ID
+          td= user.ban_date
+          td
+            form(action="/banned-user/" + user.ban_ID + "/unban", method="POST")
+              button(type="submit" onclick="return confirm('Are you sure you want to unban this user?')") Unban
