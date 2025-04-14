@@ -34,6 +34,9 @@ block content
             img(src=recipe.image_url, alt=recipe.name)
             h3= recipe.name
             p= recipe.description
+            p
+              a(href=`/profile/${recipe.user_id}`) Recipe by #{recipe.first_name}
+            
   else
     p No recipes found.
 
