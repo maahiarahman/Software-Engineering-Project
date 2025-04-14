@@ -152,7 +152,11 @@ app.get('/logout', (req, res) => {
 app.get('/dashboard', async (req, res) => {
   if (!req.session.user) return res.redirect('/login');
   try {
-    const [recipes] = await db.query('SELECT * FROM recipes');
+    const [recipes] = await db.query(`
+      SELECT r.*, u.first_name, u.user_id
+      FROM recipes r
+      JOIN users u ON r.user_id = u.user_id
+    `);
     res.render('dashboard', { recipes });
   } catch (err) {
     console.error('Error fetching dashboard:', err);
