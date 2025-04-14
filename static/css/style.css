@@ -159,6 +159,26 @@ form.login-form a:hover {
     border-radius: 8px;
 }
 
+.recipe-card h3 {
+    color: white;
+}
+
+.recipe-card p {
+    color: white;
+}
+
+.recipe-card a {
+    text-decoration: none;
+}
+
+.recipe-card p a {
+    color: white;
+}
+
+.recipe-card p a:hover {
+    color: rgb(0, 0, 0);
+}
+
 /* ✅ Reviews Section */
 .review-section {
     margin-top: 30px;
