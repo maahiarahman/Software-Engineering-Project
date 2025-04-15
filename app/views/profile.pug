@@ -1,124 +1,95 @@
 extends layout
 
 block content
-  main.container
+  .dashboard-container
+    // 🌈 Sidebar with user info & dynamic data
+    aside.sidebar
+      .user-info
+        img.profile-thumb(src="/img/user-default.png", alt="User Avatar")
+        h3 #{user.first_name} #{user.last_name}
+        p.email #{user.email}
 
-    // 🌿 Profile Box
-    .profile-box.bg-white.shadow-lg.rounded-2xl.p-6.max-w-2xl.mx-auto.mt-10.text-center
-      img.profile-pic.mx-auto.mb-4(src="/img/user-default.png", alt="User Image")
-      h2.text-2xl.font-bold.text-green-800 #{user.first_name} #{user.last_name}
-      p.text-gray-700.text-sm.mt-1 #{user.email}
-      p.text-gray-600.mt-2 Age: #{user.age}
-      p.text-gray-600.mt-1 DOB: #{user.date_of_birth.toDateString()}
-      if user.last_login
-        p.text-gray-600.mt-1 Last login: #{user.last_login.toLocaleString()}
-      p.text-gray-600.mt-1 User ID: #{user.user_ID}
+        // 🔰 Badge Icon
+        if user.badge === 'Gold'
+          div.user-badge
+            i.fa-solid.fa-medal.text-yellow-400
+            span Gold Member
+        else if user.badge === 'Silver'
+          div.user-badge
+            i.fa-solid.fa-trophy.text-gray-400
+            span Silver Member
+        else if user.badge === 'Bronze'
+          div.user-badge
+            i.fa-solid.fa-award.text-orange-400
+            span Bronze Member
 
-      // 🔐 Admin Controls
-      if isAdmin
-        if !user.isBanned
-          form(action=`/user/${user.user_ID}/ban`, method="POST")
-            button.request-swap-btn.mt-4(type="submit" onclick="return confirm('Ban this user?')") Ban User
-        else
-          p.text-red-500.font-bold.mt-4 This user is banned.
+      // 📌 User-Specific Sidebar
+      nav
+        ul
+          li.active: a(href="#dashboard") Dashboard Overview
+          if recipes && recipes.length
+            li: a(href="#user-recipes") My Recipes (#{recipes.length})
+          if reviews && reviews.length
+            li: a(href="#user-reviews") My Reviews (#{reviews.length})
+          if posts && posts.length
+            li: a(href="#user-posts") My Posts (#{posts.length})
+          if swaps && swaps.length
+            li: a(href="#user-swaps") My Swaps (#{swaps.length})
 
-        form(action=`/user/${user.user_ID}/delete`, method="POST")
-          button.delete-btn.mt-2(type="submit" onclick="return confirm('Delete this user permanently?')") Delete User
+    // 🧍 Main Content
+    main.content
+      header.profile-header
+        .profile-meta
+          h2 #{user.first_name} #{user.last_name}
+          p Age: #{user.age} | DOB: #{user.date_of_birth.toDateString()}
+          p User ID: #{user.user_ID}
 
-    // 📊 Account Stats Grid
-    h2.text-center.text-green-800.text-2xl.font-bold.mt-12.mb-6 Account Status
+        if isAdmin
+          .admin-actions
+            if !user.isBanned
+              form(action=`/user/${user.user_ID}/ban`, method="POST")
+                button.ban-btn(type="submit") Ban User
+            else
+              p.text-red-600.font-bold This user is banned.
+            form(action=`/user/${user.user_ID}/delete`, method="POST")
+              button.delete-btn(type="submit") Delete User
 
-    div(class="grid grid-cols-2 md:grid-cols-4 gap-6 justify-center text-center mx-auto max-w-5xl")
-      div(class="bg-white shadow-md p-6 rounded-xl")
-        p.text-sm.text-gray-500.font-medium Account Active
-        p.text-2xl.font-bold.text-green-700 #{!user.isBanned ? 'Yes' : 'No'}
+      // 📊 Stats Overview
+      section#dashboard.metrics
+        .card
+          h3 Recipes Uploaded
+          p #{(recipes || []).length}
+        .card
+          h3 Reviews Written
+          p #{(reviews || []).length}
+        .card
+          h3 Posts Made
+          p #{(posts || []).length}
+        .card
+          h3 Swap Requests
+          p #{(swaps || []).length}
 
-      div(class="bg-white shadow-md p-6 rounded-xl")
-        p.text-sm.text-gray-500.font-medium Recipes Uploaded
-        p.text-2xl.font-bold.text-green-700 #{(recipes || []).length}
+      // 📂 Dynamic Sections
+      if recipes && recipes.length
+        section#user-recipes
+          h3 User Recipes
+          each recipe in recipes
+            p= recipe.title
 
-      div(class="bg-white shadow-md p-6 rounded-xl")
-        p.text-sm.text-gray-500.font-medium Reviews Written
-        p.text-2xl.font-bold.text-green-700 #{(reviews || []).length}
+      if reviews && reviews.length
+        section#user-reviews
+          h3 User Reviews
+          each review in reviews
+            p= review.comment
 
-      div(class="bg-white shadow-md p-6 rounded-xl")
-        p.text-sm.text-gray-500.font-medium Posts Made
-        p.text-2xl.font-bold.text-green-700 #{(posts || []).length}
+      if posts && posts.length
+        section#user-posts
+          h3 User Posts
+          each post in posts
+            p= post.content
 
-    // 🍽 Recipes
-    if recipes && recipes.length
-      h3.text-center.text-green-800.text-xl.font-bold.mt-10.mb-4 User Recipes
-      div(class="recipe-grid")
-        each recipe in recipes
-          div(class="recipe-card")
-            h4= recipe.name
-            p= recipe.description
-            if isAdmin
-              form(action=`/user/${user.user_ID}/recipes/${recipe.recipe_id}/delete`, method="POST")
-                button(type="submit" class="delete-btn" onclick="return confirm('Delete this recipe?')") Delete Recipe
-    else
-      div(class="text-center text-gray-400 text-sm mt-6")
-        i.fa.fa-utensils.mr-2
-        | No recipes found.
-
-    // 💬 Reviews
-    if reviews && reviews.length
-      h3.text-center.text-green-800.text-xl.font-bold.mt-10.mb-4 Reviews by User
-      div(class="review-section")
-        each review in reviews
-          div(class="review-card")
-            div(class="review-content")
-              h4.font-semibold.text-green-700 Rating: #{review.rating} ⭐
-              p= review.comment
-              p.text-xs.text-gray-500 Posted on #{review.created_at}
-              if isAdmin
-                form(action=`/user/${user.user_ID}/review/${review.review_ID}/delete`, method="POST")
-                  button(type="submit" class="delete-btn" onclick="return confirm('Delete this review?')") Delete Review
-    else
-      div(class="text-center text-gray-400 text-sm mt-6")
-        i.fa.fa-comment-dots.mr-2
-        | No reviews found.
-
-    // 📝 Posts
-    if posts && posts.length
-      h3.text-center.text-green-800.text-xl.font-bold.mt-10.mb-4 User Posts
-      div(class="overflow-x-auto")
-        table.w-full.text-sm.border
-          thead
-            tr.bg-green-200.text-left
-              th.px-4.py-2 Post ID
-              th.px-4.py-2 User ID
-              th.px-4.py-2 Recipe ID
-              th.px-4.py-2 Date Posted
-          tbody
-            each post in posts
-              tr.border-b
-                td.px-4.py-2= post.post_ID
-                td.px-4.py-2= post.user_ID
-                td.px-4.py-2= post.recipe_ID
-                td.px-4.py-2= post.date_posted
-    else
-      div(class="text-center text-gray-400 text-sm mt-6")
-        i.fa.fa-pen.mr-2
-        | No posts found.
-
-    // 🔁 Swap Requests
-    if swaps && swaps.length
-      h3.text-center.text-green-800.text-xl.font-bold.mt-10.mb-4 Incoming Swap Requests
-      div(class="swap-section")
-        each swap in swaps
-          div(class="swap-card")
-            p Recipe requested: #{swap.recipe_name}
-            p.text-xs Sent by user ID: #{swap.requester_id}
-            p.text-xs Date: #{swap.created_at}
-            div(class="flex justify-center gap-4 mt-2")
-              button(type="button" class="request-swap-btn") Accept
-              button(type="button" class="delete-btn") Reject
-    else
-      div(class="text-center text-gray-400 text-sm mt-6")
-        i.fa.fa-sync.mr-2
-        | No incoming swap requests.
-
-    // 🔻 Footer Info
-    div(class="mt-12 text-center text-xs text-gray-400 border-t pt-4")
-      p Nom Nom | Profile Summary | Updated #{new Date().toLocaleDateString()}
+      if swaps && swaps.length
+        section#user-swaps
+          h3 User Swaps
+          each swap in swaps
+            p Swap with User ID #{swap.other_user_id}

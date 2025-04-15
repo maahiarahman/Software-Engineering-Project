@@ -92,3 +92,23 @@ exports.adminLogin = async (req, res) => {
     res.status(500).send('Error logging in.');
   }
 };
+// User Dashboard/Profile
+exports.getUserDashboard = async (req, res) => {
+  const userID = req.session.user?.id;
+  if (!userID) return res.redirect('/login');
+
+  const [[user]] = await db.query('SELECT * FROM users WHERE user_ID = ?', [userID]);
+  const [recipes] = await db.query('SELECT * FROM recipes WHERE user_ID = ?', [userID]);
+  const [reviews] = await db.query('SELECT * FROM reviews WHERE user_ID = ?', [userID]);
+  const [posts] = await db.query('SELECT * FROM posts WHERE user_ID = ?', [userID]);
+  const [swaps] = await db.query('SELECT * FROM swaps WHERE user_ID = ?', [userID]);
+
+  res.render('user-profile', {
+    user,
+    recipes,
+    reviews,
+    posts,
+    swaps,
+    isAdmin: !!req.session.admin
+  });
+};

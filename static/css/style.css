@@ -844,3 +844,184 @@ table {
 .follow-card a:hover {
   background: #ef6c00;
 }
+
+/* ========== Profile Page Styling ============ */
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 2rem 1rem;
+}
+
+.sidebar .logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 1rem 0;
+}
+
+.sidebar li a {
+  color: #4b5563;
+}
+
+.sidebar li.active a {
+  color: #10b981;
+  font-weight: bold;
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+}
+
+.user-info {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.profile-thumb {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+
+.user-info h3 {
+  font-size: 1rem;
+  margin: 0.25rem 0;
+  color: #111827;
+}
+
+.user-info .email {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.profile-meta h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #1f2937;
+}
+
+.admin-actions {
+  margin-left: auto;
+}
+
+.ban-btn, .delete-btn {
+  background: #ef4444;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+.ban-btn:hover {
+  background: #dc2626;
+}
+
+.delete-btn:hover {
+  background: #b91c1c;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+}
+
+.card h3 {
+  color: #10b981;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #9ca3af;
+}
+
+.empty-state p.icon {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+/* ========== USER BADGE ========== */
+.user-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  font-size: 1rem;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: absolute;
+  right: 2rem;
+  top: 1.5rem;
+}
+
+/* Color Variants */
+.user-badge .badge-label {
+  color: #fff;
+}
+
+.user-badge.gold {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
+.user-badge.silver {
+  background: linear-gradient(135deg, #9ca3af, #d1d5db);
+}
+
+.user-badge.bronze {
+  background: linear-gradient(135deg, #d97706, #92400e);
+}
+.user-badge {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+  padding: 0.5rem;
+  background: #f3f4f6;
+  border-radius: 999px;
+  justify-content: center;
+  color: #374151;
+}
+.user-badge i {
+  font-size: 1.2rem;
+}
