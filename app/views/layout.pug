@@ -4,52 +4,111 @@ html(lang="en")
     title Nom Nom — Recipe Swap
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
+
+    // ✅ Fonts + Icons
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
     link(rel="preconnect", href="https://fonts.googleapis.com")
     link(rel="preconnect", href="https://fonts.gstatic.com" crossorigin)
     link(href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet")
 
-    // Stylesheets
+    // ✅ Stylesheets
     link(rel="stylesheet", href="/css/style.css")
     if !isAdminPage
       link(rel="stylesheet", href="/css/dark-mode.css")
 
+    // ✅ Google Translate API
+    script(src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit")
+
   body(class=isAdminPage ? 'admin' : '')
+
+    // 🍔 Sidebar Toggle & Overlay
+    button#hamburger.sidebar-toggle(title="Cooking Tips")
+      i.fa-solid.fa-bars
+
+    div#overlay.overlay(onclick="closeSidebar()")
+
+    aside#sidebar.sidebar
+      div.sidebar-header
+        h2 Tips & Videos
+        button#closeSidebar(onclick="closeSidebar()") ×
+
+      h3 Cooking Articles
+      ul
+        li: a(href="#") 10 Spices Every Home Cook Should Know
+        li: a(href="#") Fermentation Around the World
+        li: a(href="#") Essential Techniques in Indian Cuisine
+        li: a(href="#") Plant-Based Traditions from Asia
+        li: a(href="#") Watch: The Art of Turkish Breadmaking
+
+      h3.mt-4 Video Inspiration
+      each video, i in ["X_2NnFAfHOo", "0qSm029ROn4", "p_YFkEB6B8A", "BWv5eQUazdg"]
+        .video-card
+          iframe(
+            src=`https://www.youtube.com/embed/${video}`,
+            allowfullscreen,
+            style="width: 100%; height: 180px; border-radius: 0.5rem; margin-bottom: 0.5rem;"
+          )
+          p.text-xs.text-white.text-center.mt-1
+            if i === 0
+              | 🇬🇧 English
+            else if i === 1
+              | 🇮🇳 Indian
+            else if i === 2
+              | 🇹🇷 Turkish
+            else
+              | 🇸🇦 Arabic
+
+    // ✅ NAVBAR
     nav.navbar
       .navbar-content.container
         a.navbar-brand(href="/")
-          span.logo-text Nom<span class="highlight">Nom</span>
+          span.logo-text Nom
+          span.highlight Nom
+
         .nav-links
           a(href="/splash") Home
           a(href="/about") About
           a(href="/contact") Contact
           a(href="/swap") Swap
-          if !user
-            a(href="/login") Login
-            a(href="/register") Register
-          else
-            a(href="/dashboard") Dashboard
+          a(href="/dashboard") Dashboard
+
+        .user-nav
+          if user
             a(href=`/profile/${user.id || user.user_ID}`) Profile
             a(href="/logout") Logout
+            if user.profile_pic
+              img.profile-icon(src=user.profile_pic, alt="Profile", width="35", height="35")
+            else
+              img.profile-icon(src="/img/user-default.png", alt="Default", width="35", height="35")
+          else
+            a(href="/login") Login
+            a(href="/register") Register
+
+        // 🌍 Google Translate
+        #google_translate_element(style="margin-left: 1rem;")
+
+        // 🌘 Dark Mode Toggle
+        button.dark(title="Toggle Dark Mode")
+          i.fa-solid.fa-lightbulb
+
+        // 🏅 Badge
         if user && user.badge
           span.user-badge(class=user.badge.toLowerCase())
-            i(class="fa-solid fa-medal")
-            |  #{user.badge.toUpperCase()} MEMBER
+            i.fa-solid.fa-medal
+            | #{user.badge.toUpperCase()} MEMBER
 
-    // 🌗 Dark mode toggle
-    button.dark(title="Toggle Dark Mode")
-      i.fa-solid.fa-lightbulb
-
+    // 🧠 Main Page Content
     main.container.mt-4
       block content
 
+    // 🦶 Footer
     footer.site-footer
       .footer-container
         p © #{year} Nom Nom. All rights reserved.
         p
           a(href="/terms") Terms & Conditions
 
-    // Scripts
+    // ✅ Scripts
     script(src="/js/search.js")
     script(src="/js/script.js")
     script(src="/js/dark-mode.js")
@@ -58,26 +117,28 @@ html(lang="en")
     script(src="/js/swap.js")
     script(src="/js/api.js")
 
-    block scripts
-      script.
-        const modal = document.getElementById('swap-modal');
-        const recipeName = document.getElementById('modal-recipe-name');
-        const recipeIdField = document.getElementById('targetRecipeId');
-        const userIdField = document.getElementById('targetUserId');
+    // ✅ Google Translate Init + Sidebar Logic
+    script.
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+      }
 
-        function closeModal() {
-          modal.classList.add('hidden');
-        }
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      const toggle = document.getElementById("hamburger");
+      const closeBtn = document.getElementById("closeSidebar");
 
-        document.querySelectorAll('.swap-button').forEach(button => {
-          button.addEventListener('click', () => {
-            modal.classList.remove('hidden');
-            recipeName.textContent = `You’re requesting a swap for: ${button.dataset.name}`;
-            recipeIdField.value = button.dataset.id;
-            userIdField.value = button.dataset.user;
-          });
-        });
+      toggle.addEventListener("click", () => {
+        sidebar.style.transform = "translateX(0)";
+        overlay.style.display = "block";
+      });
 
-        modal.addEventListener('click', e => {
-          if (e.target === modal) closeModal();
-        });
+      function closeSidebar() {
+        sidebar.style.transform = "translateX(-100%)";
+        overlay.style.display = "none";
+      }
+
+      closeBtn.addEventListener("click", closeSidebar);
