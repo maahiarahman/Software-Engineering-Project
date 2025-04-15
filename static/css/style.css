@@ -1,894 +1,218 @@
 /* 🌿 Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    font-family: 'Roboto', sans-serif; /* Modern font */
-    line-height: 1.6;
-    background-color: #f9f9f9; /* Soft background */
-    color: #333;
-    margin: 0;
-    padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to bottom right, #e8f5e9, #ffffff);
+  color: #333;
+  line-height: 1.6;
+  scroll-behavior: smooth;
 }
 
-/* 🌿 Dark Mode */
+/* 🌙 Dark Mode */
 body.dark {
-    background-color: #121212;
-    color: #ffffff;
+  background-color: #121212;
+  color: #eee;
 }
-
 body.dark .navbar {
-    background-color: #1b5e20;
+  background-color: #1f2937;
+}
+body.dark .card,
+body.dark .footer,
+body.dark .review-card {
+  background-color: #1e1e1e;
+  color: #ddd;
 }
 
-body.dark .btn {
-    background-color: #555;
-    color: white;
-}
-
-/* ✅ Dark Mode Toggle Button */
-button.dark {
-    background-color: #2e7d32;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 6px;
-    margin: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-button.dark:hover {
-    background-color: #256429;
-}
-
-/* ✅ Navbar (Clean and Professional) */
+/* 🧭 Navbar */
 .navbar {
-    background-color: #ffffff;
-    border-bottom: 2px solid #2e7d32;
-    padding: 16px 32px;
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-}
-.navbar a {
-    color: #2e7d32;
-    font-weight: 600;
-    text-decoration: none;
-    font-size: 16px;
-    transition: color 0.3s ease;
-}
-.navbar a:hover {
-    color: #1b5e20;
-    text-decoration: underline;
-}
-.navbar-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.nav-links {
-  display: flex;
-  gap: 20px;
-}
-
-
-/* Container */
-.container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-/* ✅ Login Form */
-form.login-form {
-    background-color: #ffffff;
-    padding: 3rem;
-    max-width: 400px;
-    margin: 5rem auto;
-    border-radius: 12px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e0e0e0;
-}
-form.login-form h2 {
-    margin-bottom: 1.5rem;
-    color: #2e7d32;
-    font-size: 1.5rem;
-    text-align: center;
-}
-form.login-form label {
-    font-weight: 500;
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #333;
-    text-align: left;
-}
-form.login-form input {
-    width: 100%;
-    padding: 0.75rem;
-    margin-bottom: 1.25rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 0.95rem;
-}
-form.login-form button {
-    background-color: #2e7d32;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    padding: 0.75rem;
-    width: 100%;
-    border-radius: 6px;
-    transition: background-color 0.2s ease-in-out;
-}
-form.login-form button:hover {
-    background-color: #256429;
-}
-form.login-form p {
-    margin-top: 1.5rem;
-    font-size: 0.9rem;
-    color: #555;
-    text-align: center;
-}
-form.login-form a {
-    color: #2e7d32;
-    font-weight: 500;
-    text-decoration: none;
-}
-form.login-form a:hover {
-    text-decoration: underline;
-}
-
-/* ✅ Recipe Grid */
-.recipe-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 20px;
-    padding-top: 50px;
-    gap: 20px;
-}
-
-/* ✅ Recipe Card */
-.recipe-card {
-    background-color: #ffffff;
-    border: 1px solid #c8e6c9;
-    border-radius: 10px;
-    padding: 15px;
-    width: 300px;
-    text-align: left;
-    color: #2e2e2e;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.3s ease;
-}
-.recipe-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-.recipe-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-/* ✅ Reviews Section */
-.review-section {
-    margin-top: 30px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-}
-.review-card {
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
-    padding: 15px;
-    margin: 15px auto;
-    width: 50%;
-    text-align: left;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-}
-.review-card img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 15px;
-}
-.review-content {
-    flex: 1;
-}
-.review-content h4 {
-    margin: 0;
-    color: #2e7d32;
-}
-.review-content p {
-    font-style: italic;
-    color: #555;
-}
-
-/* ✅ Search Components */
-/* 🌿 Search Bar Styling */
-#usersearchcontainer {
-    width: 100%;
-    display: flex;
-    justify-content: center; /* Center the search bar */
-    position: relative;
-    margin-bottom: 20px;
-}
-
-#usersearchcontainer input {
-    width: 60%; /* Adjust the width to make it wider */
-    padding: 12px 20px;
-    font-size: 16px;
-    border: 2px solid #ddd;
-    border-radius: 50px; /* Rounded corners like Google */
-    outline: none;
-    background-color: #fff; /* Ensure input field has a white background */
-    color: #333; /* Dark text color for better visibility */
-    transition: border-color 0.3s;
-}
-
-#usersearchcontainer input:focus {
-    border-color: #2e7d32; /* Highlight border on focus */
-    background-color: #f9f9f9; /* Slightly change background color on focus */
-}
-
-#searchcontainer {
-    width: 60%; /* Same width as the search bar */
-    position: absolute;
-    top: 45px; /* Place the results just below the search bar */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: white;
-    border-radius: 6px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: none;
-    max-height: 300px; /* Limit the height of the results */
-    overflow-y: auto; /* Add scroll if the results overflow */
-    z-index: 10;
-}
-
-.searchresults {
-    padding: 12px 16px;
-    font-size: 16px;
-    color: #333; /* Ensure text is dark for visibility */
-    cursor: pointer;
-    border-bottom: 1px solid #ddd;
-}
-
-.searchresults a {
-    color: #333;
-    text-decoration: none;
-    display: block;
-}
-
-.searchresults a:hover {
-    background-color: #f1f1f1; /* Highlight on hover */
-}
-
-/* 🌿 Result Items */
-.searchresults {
-    padding: 12px 16px;
-    font-size: 16px;
-    color: #333; /* Dark text color for readability */
-    cursor: pointer;
-}
-
-.searchresults a:hover {
-    background-color: #f5f5f5;
-}
-
-/* 🌿 Input text visibility fix */
-#usersearchcontainer input::placeholder {
-    color: #888; /* Light gray placeholder color */
-}
-
-#usersearchcontainer input {
-    color: #333; /* Dark color for text */
-}
-
-/* 🌿 Responsive Styling for Search Bar and Results */
-@media (max-width: 768px) {
-    #usersearchcontainer input {
-        width: 80%; /* Make the search bar wider on smaller screens */
-    }
-
-    #searchcontainer {
-        width: 80%; /* Also make the search result box wider */
-    }
-}
-
-
-/* ✅ Misc */
-ul {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-    text-align: center;
-    display: block;
-}
-#imageContainer img {
-    width: 300px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-.dark {
-    width: 50px;
-    display: block;
-    margin-left: 10px;
-}
-
-/* ✅ Responsive */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        gap: 16px;
-    }
-    .nav-links,
-    .nav-icons {
-        flex-direction: column;
-        align-items: center;
-    }
-    .recipe-grid {
-        flex-direction: column;
-        align-items: center;
-    }
-    .recipe-card {
-        width: 80%;
-    }
-}
-/* ===========================
-🌿 SWAP MODAL CLEAN + COMPACT
-=========================== */
-/* 🌿 Request Swap Button Styling */
-.request-swap-btn {
-  background-color: #22c55e;           /* vibrant green */
-  color: white;                        /* white text */
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.request-swap-btn:hover {
-  background-color: #16a34a;          /* darker green on hover */
-  transform: translateY(-1px);
-}
-
-.request-swap-btn:active {
-  background-color: #15803d;          /* active press */
-  transform: translateY(0);
-}
-
-/* 🌿 Modal Backdrop */
-/* ===========================
-🌿 SWAP PAGE STYLING — UPDATED
-=========================== */
-
-#swap-modal {
-  position: fixed;
-  inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(6px);
-  z-index: 9999;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-#swap-modal.show {
-  display: flex;
-  opacity: 1;
-  transform: scale(1);
-}
-
-#swap-modal .bg-white {
+  padding: 1rem 2rem;
   background-color: #ffffff;
-  border-radius: 16px;
-  padding: 1.5rem;
-  width: 100%;
-  max-width: 500px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  position: relative;
-  animation: fadeIn 0.3s ease;
+  border-bottom: 3px solid #4caf50;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 
-#swap-modal h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 0.5rem;
-  text-align: center;
-}
-
-#modal-recipe-name {
-  text-align: center;
-  font-size: 1rem;
-  color: #4b5563;
-  margin-bottom: 1.25rem;
-}
-
-#swap-modal button[onclick="closeModal()"] {
-  position: absolute;
-  top: 14px;
-  right: 18px;
-  background: none;
-  border: none;
-  font-size: 1.25rem;
-  color: #9ca3af;
-  cursor: pointer;
-}
-
-#swap-modal button[onclick="closeModal()"]:hover {
-  color: #374151;
-}
-
-#choose-existing,
-#choose-new {
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  border-radius: 8px;
+.navbar a {
+  color: #2e7d32;
   font-weight: 600;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  margin-left: 1.5rem;
+  transition: color 0.3s ease;
 }
 
-#choose-existing {
-  background-color: #3b82f6;
-  color: white;
+.navbar a:hover {
+  color: #1b5e20;
+  text-decoration: underline;
 }
 
-#choose-existing:hover {
-  background-color: #2563eb;
+.navbar-brand {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #388e3c;
 }
 
-#choose-new {
-  background-color: #8b5cf6;
-  color: white;
-}
-
-#choose-new:hover {
-  background-color: #7c3aed;
-}
-
-/* Forms */
-form#existing-form,
-form#new-form {
-  display: none;
-  margin-top: 1.25rem;
-  animation: fadeIn 0.3s ease;
-}
-
-form input,
-form textarea,
-form select {
-  width: 100%;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  margin-bottom: 0.75rem;
-  font-size: 0.95rem;
-  background-color: #f9fafb;
-}
-
-form label {
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-  display: block;
-  color: #374151;
-}
-
-/* 🌿 Green Swap Button */
-form button[type="submit"] {
-  width: 100%;
-  background-color: #059669;
-  color: white;
-  padding: 0.75rem;
-  border-radius: 8px;
-  border: none;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-form button[type="submit"]:hover {
-  background-color: #047857;
-}
-
-/* 🌿 Back Button */
-button.back-btn,
-#back-from-new,
-#back-from-existing {
-  background-color: #e5e7eb;
-  color: #374151;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
-}
-
-button.back-btn:hover,
-#back-from-new:hover,
-#back-from-existing:hover {
-  background-color: #d1d5db;
-}
-
-/* 🌿 Confirmation Modal */
-.confirmation-modal {
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  max-width: 400px;
-  text-align: center;
-  margin: auto;
-}
-
-/* 🌿 Toast Popup */
-.flash-popup {
-  position: fixed;
-  top: 10px;
-  right: 10px;
+/* 🔘 Dark Mode Toggle */
+button.dark {
   background-color: #4caf50;
   color: white;
-  padding: 10px 16px;
-  border-radius: 8px;
-  display: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.flash-popup.show {
-  display: block;
-  opacity: 1;
-}
-
-.flash-popup.hidden {
-  display: none;
-}
-
-/* 🌿 Dietary Badges */
-.badge {
-  display: inline-block;
-  font-size: 0.7rem;
-  padding: 0.25rem 0.6rem;
-  border-radius: 9999px;
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-top: 4px;
-}
-
-.badge-vegan { background-color: #a5d6a7; color: #1b5e20; }
-.badge-halal { background-color: #ffe082; color: #795548; }
-.badge-gluten { background-color: #b2ebf2; color: #006064; }
-.badge-dairy { background-color: #ffe0b2; color: #e65100; }
-.badge-nut { background-color: #f8bbd0; color: #880e4f; }
-
-/* 🌿 Responsive Layout */
-@media (max-width: 640px) {
-  #swap-modal .bg-white {
-    padding: 1.25rem;
-    max-width: 95vw;
-  }
-
-  .flex.justify-center.gap-4,
-  .flex.justify-center.mb-6.gap-4 {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: stretch;
-  }
-
-  #choose-existing,
-  #choose-new {
-    width: 100%;
-  }
-}
-
-/* Utility */
-.hidden {
-  display: none !important;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.97); }
-  to { opacity: 1; transform: scale(1); }
-}
-.confirmation-modal {
-  z-index: 9999;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.96); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.25s ease-out;
-}
-
-/* 🌿 User Profile Box */
-.profile-box {
-  background-color: #ffffff;
-  border: 1px solid #cce5cc;
-  padding: 2rem;
-  border-radius: 16px;
-  max-width: 700px;
-  margin: 2rem auto;
-  text-align: center;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-}
-.profile-pic {
-  width: 120px;
-  height: 120px;
-  border-radius: 9999px;
-  object-fit: cover;
-  margin-bottom: 1rem;
-}
-.profile-name {
-  color: #1b5e20;
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-.profile-email,
-.profile-age {
-  font-size: 0.95rem;
-  color: #555;
-}
-
-/* 🌿 Swap & Review Cards */
-.swap-card,
-.review-card {
-  background-color: #ffffff;
-  border-left: 4px solid #2e7d32;
-  padding: 1rem;
-  margin: 1rem auto;
-  border-radius: 10px;
-  max-width: 600px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-.swap-section,
-.review-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* 🌿 Delete Buttons */
-.delete-btn {
-  margin-top: 0.5rem;
-  background-color: #dc2626;
-  color: white;
   border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  margin-left: auto;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-.delete-btn:hover {
-  background-color: #b91c1c;
-}
-/* Optional enhancements */
-
-ul {
-  list-style-type: disc;
-  padding-left: 1.5rem;
-  margin-top: 0.5rem;
+  transition: background-color 0.3s ease;
 }
 
-table th, table td {
-  text-align: left;
+button.dark:hover {
+  background-color: #388e3c;
 }
 
-table {
-  border-collapse: collapse;
-  margin: auto;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-.grid {
-  display: grid;
-  gap: 1.5rem;
-}
-.grid-cols-2 {
-  grid-template-columns: repeat(2, 1fr);
-}
-.md\:grid-cols-4 {
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-/* ===== About Us Page Styling ===== */
-/* 🌿 Container Background */
-.about-container {
-  background: linear-gradient(to right, #e8f5e9, #f1f8e9);
-  padding: 4rem 0;
-}
-
-/* 🧱 Main Wrapper */
-.about-wrapper {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 2.5rem;
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 1.5rem;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
-}
-
-/* 🔖 Typography */
-.about-wrapper h1,
-.about-wrapper h2 {
-  color: #2e7d32;
-}
-
-.about-wrapper h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-}
-
-.about-wrapper h2 {
-  font-size: 2rem;
-  font-weight: 600;
-}
-
-.about-wrapper p {
-  color: #333;
-  font-size: 1rem;
-  line-height: 1.7;
-}
-
-.about-wrapper .highlight {
-  font-weight: bold;
-  color: #43a047;
-}
-
-/* 👥 Team Grid */
-.team-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
-}
-
-.team-card {
+/* 🔐 Auth Form */
+form.login-form {
   background: white;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  padding: 1.5rem;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.team-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-}
-
-.team-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 0.75rem;
-  margin-bottom: 1rem;
-}
-
-.team-card h3 {
-  font-size: 1.25rem;
-  color: #2e7d32;
-  margin-bottom: 0.5rem;
-}
-
-.team-card .role {
-  font-weight: 600;
-  color: #fb8c00;
-  margin-bottom: 0.5rem;
-}
-
-/* 🔗 Follow Us Section */
-.follow-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-  padding: 0 2rem;
-}
-
-.follow-card {
-  background: white;
-  border-radius: 1rem;
   padding: 2rem;
+  max-width: 400px;
+  margin: 3rem auto;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid #d4edda;
+}
+
+form.login-form h2 {
   text-align: center;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  transition: 0.3s;
+  color: #2e7d32;
+  margin-bottom: 1.5rem;
 }
 
-.follow-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+form.login-form input {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 0.5rem 0 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }
 
-.follow-card i {
-  font-size: 2rem;
-  color: #fb8c00;
-  margin-bottom: 1rem;
+form.login-form button {
+  background: #43a047;
+  color: white;
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 8px;
+  font-weight: bold;
+  border: none;
 }
 
-.follow-card h3 {
-  color: #ef6c00;
-  font-size: 1.25rem;
+form.login-form button:hover {
+  background: #388e3c;
+}
+/* 🧾 Recipe Grid */
+.recipe-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+/* 🥘 Recipe Card */
+.recipe-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  width: 300px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.recipe-card:hover {
+  transform: scale(1.02);
+}
+
+.recipe-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.recipe-card h4 {
+  margin: 1rem;
+  color: #388e3c;
+}
+
+/* 🎖️ User Badge */
+.user-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f3f4f6;
+  color: #374151;
+  font-weight: bold;
+  padding: 0.4rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.user-badge i {
+  font-size: 1.1rem;
+}
+
+.user-badge.gold {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: white;
+}
+
+.user-badge.silver {
+  background: linear-gradient(135deg, #b0bec5, #cfd8dc);
+  color: #263238;
+}
+
+.user-badge.bronze {
+  background: linear-gradient(135deg, #d97706, #92400e);
+  color: white;
+}
+
+/* 📈 Dashboard Metrics */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.card {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.card h3 {
+  color: #2e7d32;
   margin-bottom: 0.5rem;
 }
 
-.follow-card p {
-  color: #444;
-  font-size: 0.95rem;
-  margin-bottom: 1rem;
-}
-
-.follow-card a {
-  background: #fb8c00;
-  color: white;
-  font-weight: 600;
-  padding: 0.5rem 1.25rem;
-  border-radius: 2rem;
-  text-decoration: none;
-  transition: 0.2s ease-in-out;
-}
-
-.follow-card a:hover {
-  background: #ef6c00;
-}
-
-/* ========== Profile Page Styling ============ */
-
-.dashboard-container {
-  display: flex;
-  min-height: 100vh;
-}
-
+/* 📇 Profile Sidebar */
 .sidebar {
   width: 220px;
-  background: #ffffff;
-  border-right: 1px solid #e5e7eb;
-  padding: 2rem 1rem;
+  background-color: #ffffff;
+  padding: 1.5rem 1rem;
+  border-right: 1px solid #ccc;
 }
 
-.sidebar .logo {
-  font-weight: bold;
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar li {
-  margin: 1rem 0;
-}
-
-.sidebar li a {
-  color: #4b5563;
-}
-
-.sidebar li.active a {
-  color: #10b981;
-  font-weight: bold;
-}
-
-.content {
-  flex: 1;
-  padding: 2rem;
-}
-
-.user-info {
+.sidebar .user-info {
   text-align: center;
   margin-bottom: 2rem;
 }
@@ -896,132 +220,621 @@ table {
 .profile-thumb {
   width: 70px;
   height: 70px;
-  border-radius: 50%;
   object-fit: cover;
+  border-radius: 50%;
   margin-bottom: 0.5rem;
 }
 
-.user-info h3 {
-  font-size: 1rem;
-  margin: 0.25rem 0;
-  color: #111827;
+/* 🦶 Footer */
+footer {
+  text-align: center;
+  background: #ffffff;
+  border-top: 1px solid #d1d5db;
+  padding: 1.5rem 0;
+  color: #4b5563;
+  font-size: 0.9rem;
 }
 
-.user-info .email {
-  font-size: 0.8rem;
-  color: #6b7280;
+footer a {
+  color: #2e7d32;
+  text-decoration: none;
 }
 
-.profile-header {
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .recipe-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .user-badge {
+    justify-content: center;
+  }
+}
+
+/* 🔍 Enhanced Search Bar */
+#usersearchcontainer {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  position: relative;
+  margin: 1.5rem 0;
+}
+
+#usersearchcontainer input {
+  width: 60%;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  border-radius: 50px;
+  border: 2px solid #cce5cc;
+  outline: none;
+  transition: border 0.3s ease, background 0.3s;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+#usersearchcontainer input:focus {
+  border-color: #2e7d32;
+  background: #f0fff0;
+}
+
+#searchcontainer {
+  position: absolute;
+  top: 3.2rem;
+  width: 60%;
+  max-height: 300px;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  display: none;
+}
+
+.searchresults {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.searchresults:hover {
+  background: #f4fdf4;
+}
+
+/* 🔄 Swap Modal Styling */
+#swap-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
   align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  animation: fadeIn 0.25s ease-in;
+}
+
+#swap-modal.show {
+  display: flex;
+}
+
+#swap-modal .bg-white {
   background: #fff;
-  border-radius: 1rem;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  max-width: 500px;
+  width: 95%;
+  position: relative;
+  text-align: center;
 }
 
-.profile-meta h2 {
-  margin: 0;
-  font-size: 1.4rem;
-  color: #1f2937;
+#swap-modal h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #2e7d32;
 }
 
-.admin-actions {
-  margin-left: auto;
+#modal-recipe-name {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 1rem;
 }
 
-.ban-btn, .delete-btn {
-  background: #ef4444;
-  color: #fff;
-  padding: 0.5rem 1rem;
+#swap-modal button.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  font-size: 1.25rem;
   border: none;
-  border-radius: 0.5rem;
-  margin-left: 0.5rem;
+  background: none;
+  color: #888;
   cursor: pointer;
 }
 
-.ban-btn:hover {
-  background: #dc2626;
+#swap-modal button.close-btn:hover {
+  color: #333;
 }
 
-.delete-btn:hover {
-  background: #b91c1c;
+/* ⭐ Review Cards */
+.review-section {
+  background-color: #f6fff7;
+  border-radius: 1rem;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 800px;
+}
+
+.review-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: white;
+  padding: 1.2rem;
+  border-left: 5px solid #2e7d32;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+  margin-bottom: 1.25rem;
+}
+
+.review-card img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.review-content h4 {
+  font-weight: 600;
+  color: #1b5e20;
+  margin-bottom: 0.25rem;
+}
+
+.review-content p {
+  font-style: italic;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+/* 📝 Form Styling */
+form {
+  background: #ffffff;
+  padding: 2rem;
+  max-width: 500px;
+  margin: 2rem auto;
+  border-radius: 1rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+form h2 {
+  text-align: center;
+  color: #2e7d32;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+form label {
+  display: block;
+  margin: 0.5rem 0 0.25rem;
+  font-weight: 500;
+}
+
+form input,
+form textarea,
+form select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+}
+
+form button {
+  background: #2e7d32;
+  color: white;
+  padding: 0.75rem;
+  width: 100%;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  transition: background 0.3s ease;
+}
+
+form button:hover {
+  background: #256429;
+}
+
+/* 🌊 Splash Hero Section */
+.splash-hero {
+  background: linear-gradient(to right, #dcedc8, #f1f8e9);
+  padding: 6rem 2rem;
+  text-align: center;
+  border-bottom: 3px solid #c8e6c9;
+}
+
+.splash-hero h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #2e7d32;
+  margin-bottom: 1rem;
+}
+
+.splash-hero p {
+  font-size: 1.25rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.splash-hero a.btn {
+  background: #2e7d32;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.splash-hero a.btn:hover {
+  background: #256429;
+}
+
+/* ✉️ Contact Form */
+.contact-container {
+  max-width: 700px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.contact-container h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #2e7d32;
+  margin-bottom: 1.5rem;
+}
+
+.contact-container input,
+.contact-container textarea {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.contact-container button {
+  background: #2e7d32;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.contact-container button:hover {
+  background: #1b5e20;
+}
+
+/* 🛠️ Admin Dashboard Layout */
+.admin-dashboard {
+  padding: 3rem 2rem;
+}
+
+.admin-dashboard h1 {
+  font-size: 2rem;
+  color: #1b5e20;
+  margin-bottom: 1.5rem;
+}
+
+.admin-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+}
+
+.admin-card {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  text-align: center;
+  border-left: 4px solid #2e7d32;
+}
+
+.admin-card h3 {
+  color: #2e7d32;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.admin-card p {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* 🦶 Revamped Footer */
+footer {
+  background-color: #2e7d32;
+  color: white;
+  padding: 2rem 0;
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 0.95rem;
+  position: relative;
+  z-index: 1;
+}
+
+footer a {
+  color: #dcedc8;
+  margin: 0 0.5rem;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+footer .footer-brand {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+/* 👤 Profile Layout */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 2rem 1rem;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.05);
+}
+
+.sidebar .user-info {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.profile-thumb {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.75rem;
+}
+
+.user-info h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+  color: #1f2937;
+}
+
+.user-info .email {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.user-badge {
+  margin-top: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f3f4f6;
+  padding: 0.4rem 0.8rem;
+  border-radius: 2rem;
+  font-size: 0.85rem;
+  color: #374151;
+}
+
+.sidebar nav ul {
+  padding: 0;
+  list-style: none;
+  margin-top: 2rem;
+}
+
+.sidebar nav li {
+  margin: 0.8rem 0;
+}
+
+.sidebar nav li a {
+  color: #2e2e2e;
+  font-weight: 500;
+  text-decoration: none;
+  display: block;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.sidebar nav li a:hover,
+.sidebar nav li.active a {
+  background: #dcedc8;
+  color: #1b5e20;
+  font-weight: bold;
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  background: #f9fafb;
+}
+
+/* 👤 Profile Meta Section */
+.profile-header {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-meta h2 {
+  font-size: 1.75rem;
+  margin: 0;
+  color: #1b5e20;
+}
+
+.profile-meta p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+  color: #444;
 }
 
 .metrics {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
 }
 
 .card {
-  background: #ffffff;
-  padding: 1rem;
+  background: white;
+  padding: 1.25rem;
   border-radius: 1rem;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+  border-left: 5px solid #2e7d32;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
 }
 
 .card h3 {
-  color: #10b981;
+  color: #2e7d32;
+  font-size: 1.2rem;
   margin-bottom: 0.5rem;
+}
+
+.card p {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #111827;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.ban-btn,
+.delete-btn {
+  background-color: #ef4444;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.ban-btn:hover {
+  background-color: #dc2626;
+}
+
+.delete-btn:hover {
+  background-color: #b91c1c;
+}
+
+/* 📂 Section Titles */
+section[id^="user-"] h3 {
+  font-size: 1.5rem;
+  color: #2e7d32;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #dcedc8;
+  padding-bottom: 0.5rem;
+}
+
+/* 📄 Recipe List */
+section#user-recipes p,
+section#user-reviews p,
+section#user-posts p,
+section#user-swaps p {
+  background: white;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.8rem;
+  border-left: 4px solid #2e7d32;
+  border-radius: 0.75rem;
+  font-size: 0.95rem;
+  color: #444;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+/* ✍️ Posts */
+section#user-posts p::before {
+  content: "📝 ";
+}
+
+/* 💬 Reviews */
+section#user-reviews p::before {
+  content: "💬 ";
+}
+
+/* 🔁 Swaps */
+section#user-swaps p::before {
+  content: "🔁 ";
 }
 
 .empty-state {
   text-align: center;
-  font-size: 0.95rem;
   color: #9ca3af;
+  font-size: 0.95rem;
+  margin-top: 2rem;
 }
 
 .empty-state p.icon {
-  margin: 0.5rem 0;
-  font-size: 1.1rem;
-}
-/* ========== USER BADGE ========== */
-.user-badge {
-  padding: 0.5rem 1rem;
-  border-radius: 2rem;
-  font-weight: bold;
-  font-size: 1rem;
-  text-transform: uppercase;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  position: absolute;
-  right: 2rem;
-  top: 1.5rem;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
 }
 
-/* Color Variants */
-.user-badge .badge-label {
-  color: #fff;
+hr.divider {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 2rem 0;
 }
 
-.user-badge.gold {
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+a.btn-link {
+  color: #2e7d32;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-.user-badge.silver {
-  background: linear-gradient(135deg, #9ca3af, #d1d5db);
+a.btn-link:hover {
+  color: #1b5e20;
+  text-decoration: underline;
 }
 
-.user-badge.bronze {
-  background: linear-gradient(135deg, #d97706, #92400e);
-}
-.user-badge {
-  margin-top: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: bold;
-  padding: 0.5rem;
-  background: #f3f4f6;
-  border-radius: 999px;
-  justify-content: center;
-  color: #374151;
-}
-.user-badge i {
-  font-size: 1.2rem;
-}

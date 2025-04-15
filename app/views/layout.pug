@@ -1,35 +1,40 @@
 doctype html
 html(lang="en")
   head
-    title Recipe Swap
+    title Nom Nom — Recipe Swap
     meta(charset="UTF-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+    link(rel="preconnect", href="https://fonts.googleapis.com")
+    link(rel="preconnect", href="https://fonts.gstatic.com" crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet")
 
-    // 🌿 Stylesheets
-    if isAdminPage
-      link(rel="stylesheet", href="/css/style.css") 
-    else
-      link(rel="stylesheet", href="/css/style.css")
+    // Stylesheets
+    link(rel="stylesheet", href="/css/style.css")
+    if !isAdminPage
       link(rel="stylesheet", href="/css/dark-mode.css")
 
   body(class=isAdminPage ? 'admin' : '')
     nav.navbar
       .navbar-content.container
-        a.navbar-brand(href=isAdminPage ? "/dashboard" : "/") Nom Nom
+        a.navbar-brand(href="/")
+          span.logo-text Nom<span class="highlight">Nom</span>
         .nav-links
           a(href="/splash") Home
-          a(href="/about") About Us
-          a(href="/contact") Contact Us
-          a(href="/swap") Swap Recipe
+          a(href="/about") About
+          a(href="/contact") Contact
+          a(href="/swap") Swap
           if !user
             a(href="/login") Login
             a(href="/register") Register
           else
             a(href="/dashboard") Dashboard
-            a(href=`/profile/${user.id || user.user_ID}`) View Profile
+            a(href=`/profile/${user.id || user.user_ID}`) Profile
             a(href="/logout") Logout
+        if user && user.badge
+          span.user-badge(class=user.badge.toLowerCase())
+            i(class="fa-solid fa-medal")
+            |  #{user.badge.toUpperCase()} MEMBER
 
     // 🌗 Dark mode toggle
     button.dark(title="Toggle Dark Mode")
@@ -38,10 +43,11 @@ html(lang="en")
     main.container.mt-4
       block content
 
-    footer.text-center.text-sm.text-gray-500.mt-10
-      | © #{year} Nom Nom. All rights reserved.
-      br
-      a(class="text-blue-600 hover:underline" href="/terms") Terms & Conditions
+    footer.site-footer
+      .footer-container
+        p © #{year} Nom Nom. All rights reserved.
+        p
+          a(href="/terms") Terms & Conditions
 
     // Scripts
     script(src="/js/search.js")
