@@ -4,34 +4,26 @@ html(lang="en")
     title Nom Nom — Recipe Swap
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-
-    // ✅ Fonts + Icons
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
     link(rel="preconnect", href="https://fonts.googleapis.com")
     link(rel="preconnect", href="https://fonts.gstatic.com" crossorigin)
     link(href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet")
-
-    // ✅ Stylesheets
     link(rel="stylesheet", href="/css/style.css")
     if !isAdminPage
       link(rel="stylesheet", href="/css/dark-mode.css")
-
-    // ✅ Google Translate API
     script(src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit")
 
   body(class=isAdminPage ? 'admin' : '')
-
-    // 🍔 Sidebar Toggle & Overlay
+    // 🍔 Sidebar Trigger + Overlay
     button#hamburger.sidebar-toggle(title="Cooking Tips")
       i.fa-solid.fa-bars
-
     div#overlay.overlay(onclick="closeSidebar()")
 
+    // 📚 Sidebar Content
     aside#sidebar.sidebar
       div.sidebar-header
         h2 Tips & Videos
         button#closeSidebar(onclick="closeSidebar()") ×
-
       h3 Cooking Articles
       ul
         li: a(href="#") 10 Spices Every Home Cook Should Know
@@ -39,7 +31,6 @@ html(lang="en")
         li: a(href="#") Essential Techniques in Indian Cuisine
         li: a(href="#") Plant-Based Traditions from Asia
         li: a(href="#") Watch: The Art of Turkish Breadmaking
-
       h3.mt-4 Video Inspiration
       each video, i in ["X_2NnFAfHOo", "0qSm029ROn4", "p_YFkEB6B8A", "BWv5eQUazdg"]
         .video-card
@@ -58,7 +49,7 @@ html(lang="en")
             else
               | 🇸🇦 Arabic
 
-    // ✅ NAVBAR
+    // 🔗 Navbar
     nav.navbar
       .navbar-content.container
         a.navbar-brand(href="/")
@@ -84,20 +75,14 @@ html(lang="en")
             a(href="/login") Login
             a(href="/register") Register
 
-        // 🌍 Google Translate
-        #google_translate_element(style="margin-left: 1rem;")
+          // 💡 Dark Mode
+          button.dark(title="Toggle Dark Mode")
+            i.fa-solid.fa-lightbulb
 
-        // 🌘 Dark Mode Toggle
-        button.dark(title="Toggle Dark Mode")
-          i.fa-solid.fa-lightbulb
+          // 🌍 Google Translate (Mini)
+          #google_translate_element.translate-mini
 
-        // 🏅 Badge
-        if user && user.badge
-          span.user-badge(class=user.badge.toLowerCase())
-            i.fa-solid.fa-medal
-            | #{user.badge.toUpperCase()} MEMBER
-
-    // 🧠 Main Page Content
+    // 💻 Page Content
     main.container.mt-4
       block content
 
@@ -108,7 +93,7 @@ html(lang="en")
         p
           a(href="/terms") Terms & Conditions
 
-    // ✅ Scripts
+        // ✅ Scripts
     script(src="/js/search.js")
     script(src="/js/script.js")
     script(src="/js/dark-mode.js")
@@ -142,3 +127,5 @@ html(lang="en")
       }
 
       closeBtn.addEventListener("click", closeSidebar);
+
+    block scripts

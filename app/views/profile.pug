@@ -2,14 +2,12 @@ extends layout
 
 block content
   .dashboard-container
-    // 🌈 Sidebar with user info & dynamic data
+    // 🧍‍♀️ Sidebar
     aside.sidebar
       .user-info
         img.profile-thumb(src="/img/user-default.png", alt="User Avatar")
         h3 #{user.first_name} #{user.last_name}
         p.email #{user.email}
-
-        // 🔰 Badge Icon
         if user.badge === 'Gold'
           div.user-badge
             i.fa-solid.fa-medal.text-yellow-400
@@ -22,8 +20,6 @@ block content
           div.user-badge
             i.fa-solid.fa-award.text-orange-400
             span Bronze Member
-
-      // 📌 User-Specific Sidebar
       nav
         ul
           li.active: a(href="#dashboard") Dashboard Overview
@@ -36,14 +32,17 @@ block content
           if swaps && swaps.length
             li: a(href="#user-swaps") My Swaps (#{swaps.length})
 
-    // 🧍 Main Content
+    // 📄 Main Content
     main.content
       header.profile-header
         .profile-meta
           h2 #{user.first_name} #{user.last_name}
           p Age: #{user.age} | DOB: #{user.date_of_birth.toDateString()}
           p User ID: #{user.user_ID}
-
+          if user.badge
+            span.user-badge(class=user.badge.toLowerCase())
+              i.fa-solid.fa-medal
+              | #{user.badge.toUpperCase()} MEMBER
         if isAdmin
           .admin-actions
             if !user.isBanned
@@ -54,7 +53,7 @@ block content
             form(action=`/user/${user.user_ID}/delete`, method="POST")
               button.delete-btn(type="submit") Delete User
 
-      // 📊 Stats Overview
+      // 📊 Summary Metrics
       section#dashboard.metrics
         .card
           h3 Recipes Uploaded
@@ -69,27 +68,36 @@ block content
           h3 Swap Requests
           p #{(swaps || []).length}
 
-      // 📂 Dynamic Sections
+      // 🍽️ Recipes Section
       if recipes && recipes.length
         section#user-recipes
           h3 User Recipes
           each recipe in recipes
-            p= recipe.title
+            .recipe-card
+              if recipe.image_url
+                img(src=recipe.image_url, alt=recipe.name, style="width: 100%; max-width: 250px; border-radius: 12px;")
+              h4 #{recipe.name}
+              p
+                small Category: #{recipe.category_id}
+              p= recipe.description.length > 100 ? recipe.description.substring(0, 100) + '...' : recipe.description
 
+      // 💬 Reviews Section
       if reviews && reviews.length
         section#user-reviews
           h3 User Reviews
           each review in reviews
             p= review.comment
 
+      // 📝 Posts Section
       if posts && posts.length
         section#user-posts
           h3 User Posts
           each post in posts
             p= post.content
 
+      // 🔁 Swaps Section
       if swaps && swaps.length
         section#user-swaps
           h3 User Swaps
           each swap in swaps
-            p Swap with User ID #{swap.other_user_id}
+            p Swap with Recipe ID #{swap.swapped_recipe_id}

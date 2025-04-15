@@ -71,6 +71,43 @@ app.get('/about', (req, res) => {
   res.render('about', { teamMembers });
 });
 
+// ✅ View profile page
+app.get('/profile/:id', async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const [userResult] = await db.query(
+      `SELECT *, DATE_FORMAT(date_of_birth,"%Y-%m-%d") as date_of_birth FROM users WHERE user_ID = ?`,
+      [userId]
+    );
+    const user = userResult[0];
+
+    if (!user) return res.status(404).send("User not found");
+
+    const [recipes] = await db.query('SELECT * FROM recipes WHERE user_id = ?', [user.user_ID]);
+    const [reviews] = await db.query('SELECT * FROM reviews WHERE user_id = ?', [user.user_ID]);
+    const [posts] = await db.query('SELECT * FROM posts WHERE user_id = ?', [user.user_ID]);
+    const [swaps] = await db.query(`
+      SELECT * FROM swaps WHERE user_id = ? OR swapped_recipe_id IN (
+        SELECT recipe_id FROM recipes WHERE user_id = ?
+      )
+    `, [user.user_ID, user.user_ID]);
+
+    res.render('profile', {
+      user,
+      recipes,
+      reviews,
+      posts,
+      swaps,
+      isAdmin: req.session.admin || false
+    });
+  } catch (err) {
+    console.error('Error loading profile:', err);
+    res.status(500).send('Failed to load profile.');
+  }
+});
+
+
 // Recipe posting
 const upload = multer({ dest: 'public/images/' });
 app.get('/recipe-post', (req, res) => res.render('recipe_post'));
@@ -86,7 +123,7 @@ app.post('/recipes', upload.single('image'), async (req, res) => {
       'INSERT INTO recipes (name, description, ingredients, instructions, category_id, image_url, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
       [name, description, ingredients, instructions, category, imageUrl, userId]
     );
-    res.redirect('/dashboard');
+    res.redirect('/profile/' + userId); // 👈 after insert & optional swap insert
   } catch (err) {
     console.error('Error inserting recipe:', err);
     res.status(500).send('Error inserting recipe');
@@ -201,6 +238,7 @@ app.post('/swap/send', async (req, res) => {
 
 // ✅ User dashboard redirect (real logic lives in /user/dashboard)
 app.get('/dashboard', (req, res) => res.redirect('/user/dashboard'));
+
 // ✅ Admin auth check
 function isAdmin(req, res, next) {
   if (req.session.admin) return next();
@@ -287,42 +325,46 @@ app.get("/user/:id", async (req, res) => {
   try {
     const userId = req.params.id;
 
+    // 🔍 Debug log
+    console.log("Fetching profile for user ID:", userId);
+
     const userQuery = `
-      SELECT u.user_ID, u.first_name, u.last_name, u.email, DATE_FORMAT(u.date_of_birth,"%m/%d/%Y") AS format_dob,
-             u.date_of_birth, u.age, u.user_password, u.badge,
-             CASE WHEN b.user_ID IS NOT NULL THEN 1 ELSE 0 END AS isBanned
+      SELECT u.user_ID, u.first_name, u.last_name, u.email, u.date_of_birth, u.age, u.user_password, u.badge,
+        CASE WHEN b.user_ID IS NOT NULL THEN 1 ELSE 0 END AS isBanned
       FROM users u
       LEFT JOIN Banned_users b ON u.user_ID = b.user_ID
       WHERE u.user_ID = ?;
     `;
 
-    const recipesQuery = `SELECT * FROM recipes WHERE user_ID = ?`;
-    const reviewsQuery = `SELECT * FROM reviews WHERE user_ID = ?`;
-    const postsQuery = `SELECT * FROM posts WHERE user_ID = ?`;
+    const recipesQuery = `SELECT * FROM recipes WHERE user_id = ?`;
+    const reviewsQuery = `SELECT * FROM reviews WHERE user_id = ?`;
+    const postsQuery = `SELECT * FROM posts WHERE user_id = ?`;
+    const swapsQuery = `SELECT * FROM swaps WHERE user_id = ?`;
 
-    const [userResult, recipes, posts, reviews] = await Promise.all([
-      db.query(userQuery, [userId]),
-      db.query(recipesQuery, [userId]),
-      db.query(postsQuery, [userId]),
-      db.query(reviewsQuery, [userId])
-    ]);
-
-    const user = userResult[0][0];
+    const [[user]] = await db.query(userQuery, [userId]);
+    const [recipes] = await db.query(recipesQuery, [userId]);
+    const [reviews] = await db.query(reviewsQuery, [userId]);
+    const [posts] = await db.query(postsQuery, [userId]);
+    const [swaps] = await db.query(swapsQuery, [userId]);
 
     if (!user) return res.status(404).send("User not found");
 
     res.render("userProfile", {
       user,
-      recipes: recipes[0],
-      posts: posts[0],
-      reviews: reviews[0]
+      recipes,
+      reviews,
+      posts,
+      swaps,
+      isAdmin: req.session.admin ? true : false
     });
-
   } catch (error) {
-    console.error("Database error:", error);
-    res.status(500).send("Failed to fetch user data.");
+    console.error("Error fetching user profile:", error);
+    res.status(500).send("Internal server error");
   }
 });
+
+
+
 // ✅ Ban a user
 app.post("/user/:id/ban", async (req, res) => {
   try {
