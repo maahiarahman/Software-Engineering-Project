@@ -54,16 +54,18 @@ block content
     else
       p(class="text-center text-gray-500 mt-10") No matching recipes found.
 
-    div#swap-modal(class="hidden fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center")
-      div(class="modal-content bg-white rounded-xl shadow-2xl p-6 w-full max-w-xl relative max-h-[90vh] overflow-y-auto transition-all duration-300" data-user-id=user.user_ID)
-        button(type="button" class="absolute top-2 right-3 text-gray-400 text-xl font-bold" onclick="document.getElementById('swap-modal').classList.add('hidden')") ×
-        h2(class="text-2xl font-bold text-green-800 mb-4 text-center") Swap Request
-        p#modal-recipe-name(class="text-center text-gray-600 mb-4")
+    // 🌿 Modal
+    div#swap-modal.hidden.fixed.inset-0.z-50.bg-black.bg-opacity-50.flex.items-center.justify-center
+      div.modal-content(class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-xl relative overflow-y-auto transition-all duration-300 max-h-[90vh]")(data-user-id=user.user_ID)
+        button.absolute.top-2.right-3.text-gray-400.text-xl.font-bold(type="button" onclick="closeModal()") ×
+        h2.text-2xl.font-bold.text-green-800.mb-4.text-center Swap Request
+        p#modal-recipe-name.text-center.text-gray-600.mb-4
 
-        div#option-buttons(class="flex justify-center gap-4 mb-6")
+        div#option-buttons.flex.justify-center.gap-4.mb-6
           button#choose-existing(type="button" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600") Use Existing Recipe
           button#choose-new(type="button" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700") Create New Recipe
 
+        // 🔁 Existing Form
         form#existing-form.hidden(method="POST" action="/swap/send")
           input(type="hidden" name="target_recipe_id" id="targetRecipeId")
           input(type="hidden" name="target_user_id" id="targetUserId")
@@ -77,20 +79,21 @@ block content
               option(disabled selected value='') You have no recipes to swap
           button(type="submit" class="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 w-full") Send Swap Request
 
+        // 🆕 New Recipe Form
         form#new-form.hidden(method="POST" action="/recipes" enctype="multipart/form-data")
           input(type="hidden" name="target_recipe_id" id="targetRecipeIdNew")
           input(type="hidden" name="target_user_id" id="targetUserIdNew")
           button#back-from-new(type="button" class="text-sm text-blue-600 hover:underline mb-3") ← Back to options
 
           each field in ['name', 'description', 'ingredients', 'instructions']
-            div(class="form-group mb-3")
-              label(for=field)= field.charAt(0).toUpperCase() + field.slice(1)
+            div.form-group.mb-3
+              label(for=field.charAt(0).toUpperCase() + field.slice(1)) #{field.charAt(0).toUpperCase() + field.slice(1)}:
               if field === 'description' || field === 'ingredients' || field === 'instructions'
                 textarea(name=field required class="w-full border p-2 rounded")
               else
                 input(type="text" name=field required class="w-full border p-2 rounded")
 
-          div(class="form-group mb-3")
+          div.form-group.mb-3
             label(for="category") Category:
             select#category(name="category" class="w-full border p-2 rounded")
               option(value="1") Asian
@@ -101,7 +104,7 @@ block content
               option(value="6") North American
               option(value="7") South American
 
-          div(class="form-group mb-3")
+          div.form-group.mb-3
             label(for="dietary_category") Dietary:
             select#dietary_category(name="dietary_category" class="w-full border p-2 rounded")
               option(value="") All Categories
@@ -111,7 +114,7 @@ block content
               option(value="Dairy-Free") Dairy-Free
               option(value="Nut-Free") Nut-Free
 
-          div(class="form-group mb-3")
+          div.form-group.mb-3
             label(for="image") Image:
             input#image(type="file" name="image" accept="image/*" class="w-full")
 
