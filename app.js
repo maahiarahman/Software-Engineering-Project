@@ -87,18 +87,13 @@ app.get('/profile/:id', async (req, res) => {
     const [recipes] = await db.query('SELECT * FROM recipes WHERE user_id = ?', [user.user_ID]);
     const [reviews] = await db.query('SELECT * FROM reviews WHERE user_id = ?', [user.user_ID]);
     const [posts] = await db.query('SELECT * FROM posts WHERE user_id = ?', [user.user_ID]);
-    const [swaps] = await db.query(`
-      SELECT * FROM swaps WHERE user_id = ? OR swapped_recipe_id IN (
-        SELECT recipe_id FROM recipes WHERE user_id = ?
-      )
-    `, [user.user_ID, user.user_ID]);
+
 
     res.render('profile', {
       user,
       recipes,
       reviews,
       posts,
-      swaps,
       isAdmin: req.session.admin || false
     });
   } catch (err) {
@@ -237,7 +232,21 @@ app.post('/swap/send', async (req, res) => {
 });
 
 // ✅ User dashboard redirect (real logic lives in /user/dashboard)
-app.get('/dashboard', (req, res) => res.redirect('/user/dashboard'));
+app.get('/dashboard', async (req, res) => {
+  if (!req.session.user) return res.redirect('/login');
+    
+  try {
+    const [recipes] = await db.query(`
+      SELECT r.*, u.first_name, u.user_id
+      FROM recipes r
+      JOIN users u ON r.user_id = u.user_id
+    `);
+    res.render('dashboard', { recipes });
+  } catch (err) {
+    console.error('Error fetching dashboard:', err);
+    res.status(500).send('Error loading dashboard.');
+  }
+});
 
 // ✅ Admin auth check
 function isAdmin(req, res, next) {
