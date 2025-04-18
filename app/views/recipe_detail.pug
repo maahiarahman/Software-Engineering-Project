@@ -3,55 +3,58 @@ extends layout
 block content
   h2 Recipe Details: #{recipe.name}
 
-  // Show the recipe's image if available
+  // 📸 Recipe Image
   if recipe.image_url
-    img(src=recipe.image_url, alt=recipe.name)
+    img(src=recipe.image_url, alt=recipe.name, style="width: 300px; border-radius: 10px;")
 
-  // Show recipe's description
-  p= recipe.description
+  // 📄 Description
+  p #{recipe.description}
 
-  // Ingredients list
+  // 🧂 Ingredients
   h3 Ingredients:
   ul
     each ingredient in recipe.ingredients.split(',')
-      li= ingredient
+      li= ingredient.trim()
 
-  // Instructions list
+  // 🔪 Instructions
   h3 Instructions:
   ol
     each step in recipe.instructions.split(',')
-      li= step
+      li= step.trim()
 
-  // Reviews Section
+  // ⭐ Average Rating
+  if typeof averageRating !== 'undefined' && reviews.length
+    h3 Average Rating: #{averageRating} / 5 ⭐
+
+  // 💬 Reviews Section
   h3 Reviews
 
-  // If reviews exist
   if reviews && reviews.length > 0
     each review in reviews
-      .review-card
+      .review-card(style="padding: 10px; margin-bottom: 10px; background: #f6f6f6; border-radius: 8px;")
         h4= review.first_name + ' ' + review.last_name
-        p= review.comment
-        span= "⭐".repeat(review.rating) 
-
+        p= `"${review.comment}"`
+        span(style="color: gold")= '⭐'.repeat(review.rating)
   else
     p No reviews yet. Be the first to review this recipe!
 
-  // Submit Review Form
+  // ✍️ Submit Review Form
   h3 Leave a Review
-  form(action="/reviews" method="POST")
-    input(type="hidden" name="recipeId" value=recipe.recipe_id)
-    .form-group
-      label(for="review-text") Your Review:
-      textarea(id="review-text" name="reviewText" placeholder="Write your review here..." required)
 
-    .form-group
+  form(action="/reviews" method="POST" style="margin-top: 20px;")
+    input(type="hidden" name="recipeId" value=recipe.recipe_id)
+
+    .form-group(style="margin-bottom: 15px;")
+      label(for="review-text") Your Review:
+      textarea(id="review-text" name="reviewText" required placeholder="Write your review..." rows="4" style="width: 100%; padding: 10px; border-radius: 6px;")
+
+    .form-group(style="margin-bottom: 15px;")
       label(for="rating") Rating:
-      select(name="rating" id="rating" required)
+      select(name="rating" id="rating" required style="padding: 6px; border-radius: 6px;")
         option(value="5") ⭐⭐⭐⭐⭐ - Excellent
         option(value="4") ⭐⭐⭐⭐ - Great
         option(value="3") ⭐⭐⭐ - Good
-        option(value="2") ⭐⭐ - Average
+        option(value="2") ⭐⭐ - Okay
         option(value="1") ⭐ - Poor
 
-    .form-group
-      button.btn.btn-green(type="submit") Submit Review
+    button(type="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 6px;") Submit Review

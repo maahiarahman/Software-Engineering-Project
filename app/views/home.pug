@@ -1,0 +1,67 @@
+extends layout
+
+block content
+  // Load Poppins font
+  link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap")
+  
+  style.
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    @keyframes bounceAround {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-8px) rotate(-2deg); }
+      50% { transform: translateY(4px) rotate(2deg); }
+      75% { transform: translateY(-6px) rotate(-1deg); }
+    }
+
+    .bounce-hover:hover {
+      animation: bounceAround 1.2s ease-in-out infinite;
+    }
+
+  .bg-gradient-to-r.from-green-100.to-green-200.min-h-screen.flex.items-center.justify-center.px-8
+    .max-w-7xl.w-full.bg-white.bg-opacity-95.p-12.rounded-xl.shadow-md.flex.flex-col.gap-10(class="md:flex-row items-center")
+
+      // 📄 Left Side: Text content
+      .flex-1.text-center(class="md:text-left")
+        h1(class="text-4xl md:text-5xl font-light mb-6", style="color: #2e7d32; text-shadow: 0 0 1px #a9d5a2;")
+          span Welcome to ✨ 
+          span(style="color:#ff00ff; text-shadow: 0 0 10px rgba(255, 0, 255, 1), 0 0 20px rgba(255, 0, 255, 0.8); font-weight: 500;") NomNom 
+          span ✨
+
+        p(class="text-lg font-bold text-gray-800 leading-relaxed mt-4")
+          | NomNom is a calm, elegant platform for recipe sharing and swapping.
+          br
+          | Discover unique and authentic recipes, post your creations, connect with passionate food lovers, and swap dishes to try something new.
+          br
+          | Built to inspire creativity in the kitchen, NomNom celebrates home cooking across cultures and generations.
+
+        p(class="text-lg font-bold text-gray-800 leading-relaxed mt-6")
+          | NomNom was developed by Aneeta, Maahia, Sumana, and Shaiza — a team of passionate developers who wanted to bring cultures together with a twist.
+          br
+          | It was built during the Software Engineering module as a way to combine great food, community, and technology.
+          br
+          | To learn more about the team you can click 
+          a(href="/video", class="text-blue-600 hover:underline font-bold") here.
+
+        // 🟩 Features
+        ul.mt-8.text-left.text-gray-700.text-base.font-medium
+          li.mb-2 * Share your recipes with ease
+          li.mb-2 * Swap meals from all cultures
+          li.mb-2 * Leave reviews, give ratings
+          li.mb-2 * Build your culinary profile
+
+        // 🔹 CTA Button
+        a(
+          href="/dashboard",
+          class="mt-10 inline-block bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-600 hover:from-pink-600 hover:to-indigo-700 text-white font-extrabold tracking-wide py-3 px-10 rounded-full shadow-xl transition-all duration-300 ease-in-out transform hover:scale-110 hover:rotate-1"
+        ) Start Exploring
+
+      // 🖼️ Right Side: Floating Animated Image
+      .flex-1.flex.justify-center(class="md:justify-end")
+        img(
+          src="/homepage.jpg",
+          alt="Chef Icon",
+          class="w-48 h-48 md:w-60 md:h-60 object-cover rounded-full shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-2xl cursor-pointer bounce-hover opacity-95"
+        )
