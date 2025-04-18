@@ -5,7 +5,7 @@ block content
     // 🧍‍♀️ Sidebar
     aside.sidebar
       .user-info
-        img.profile-thumb(src="/img/user-default.png", alt="User Avatar")
+        img.profile-thumb(src="/user-default.png", alt="User Avatar")
         h3 #{user.first_name} #{user.last_name}
         p.email #{user.email}
         if user.badge === 'Gold'
@@ -37,7 +37,7 @@ block content
       header.profile-header
         .profile-meta
           h2 #{user.first_name} #{user.last_name}
-          p Age: #{user.age} | DOB: #{user.date_of_birth.toDateString()}
+          p Age: #{user.age}
           p User ID: #{user.user_ID}
           if user.badge
             span.user-badge(class=user.badge.toLowerCase())
