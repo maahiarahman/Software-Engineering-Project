@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('swap-modal');
-  const userId = modal?.dataset?.userId;
   const recipeName = document.getElementById('modal-recipe-name');
   const recipeIdField = document.getElementById('targetRecipeId');
   const userIdField = document.getElementById('targetUserId');
@@ -85,15 +84,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  existingForm.addEventListener('submit', e => {
+  existingForm?.addEventListener('submit', e => {
     e.preventDefault();
     showConfirmation("Swap request sent!", () => {
       window.location.href = "/dashboard";
     });
   });
 
-  newForm.addEventListener('submit', e => {
+  newForm?.addEventListener('submit', e => {
     e.preventDefault();
+    const userId = modal?.dataset?.userId || '';
     showConfirmation("Recipe created & swap sent!", () => {
       window.location.href = `/profile/${userId}`;
     });
