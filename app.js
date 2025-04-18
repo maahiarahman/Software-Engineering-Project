@@ -73,6 +73,9 @@ app.get('/about', (req, res) => {
 
 app.get('/home', (req, res) => res.render('home'));
 
+app.get('/video', (req, res) => {
+  res.render('video'); 
+});
 
 // ✅ View profile page
 app.get('/profile/:id', async (req, res) => {
