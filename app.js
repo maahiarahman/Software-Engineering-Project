@@ -86,7 +86,7 @@ app.get('/about', (req, res) => {
     }
   ];
 
-  res.render('about', { team }); // 👈 pass it in here
+  res.render('about', { team }); // Pass the team array to the template
 });
 
 
