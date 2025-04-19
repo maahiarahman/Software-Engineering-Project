@@ -1,0 +1,48 @@
+extends layout 
+
+block content
+  .membership-container
+    h1 Become a Sustainability Buddy 🌱
+
+    p Join our community and unlock exclusive benefits as you contribute more!
+
+    .tiers
+      .tier.bronze
+        h2 🥉 Bronze Member
+        p Everyone starts here.
+        ul
+          li Automatically unlocked upon joining.
+          li Access to recipe swaps.
+          li View basic dashboard stats.
+
+      .tier.silver
+        h2 🥈 Silver Member
+        p Unlock at 50 swaps OR 100 reviews!
+        ul
+          li Priority access to new recipe swaps.
+          li Special silver flair on your profile.
+          li Highlighted contributions in community feeds.
+
+      .tier.gold
+        h2 🥇 Gold Member
+        p Unlock at 100 swaps OR 200 reviews!
+        ul
+          li Recognition on our featured contributors list.
+          li Exclusive gold flair on your profile.
+          li Early sneak-peeks at new categories or badges.
+
+      .tier.diamond
+        h2 💎 Diamond Member 
+        span.badge(style="background: #bbb; color: #333; padding: 0.2rem 0.5rem; border-radius: 5px; margin-left: 0.5rem") Coming Soon
+        p The ultimate status for elite contributors!
+        ul
+          li Personalized analytics.
+          li Secret seasonal challenges.
+          li 🎁 Surprise perks just for Diamond members.
+
+    .progress-info
+      h3 How to Level Up 🚀
+      p Every 50 swaps or 100 reviews unlocks the next tier. Track your journey on your dashboard!
+
+    .cta
+      a.button(href="/dashboard") View My Progress →

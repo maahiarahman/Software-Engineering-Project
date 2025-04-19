@@ -1,7 +1,8 @@
 extends layout
 
 block content
-  h2 Recipe Dashboard
+  #recipedashboard
+    h2 Recipe Dashboard
 
   // Welcome Modal
   if userName
@@ -13,7 +14,7 @@ block content
 
   // Search
   #usersearchcontainer
-    input(type="search" id="usersearch" onkeyup="searchFunction()" placeholder="Search for a recipe here")
+    input(type="search" id="usersearch" onkeyup="searchFunction()" placeholder="Search for a recipe here...")
     ul#searchcontainer
       each recipe in recipes
         .searchresults
@@ -28,8 +29,17 @@ block content
             img(src=recipe.image_url, alt=recipe.name)
             h3= recipe.name
             p= recipe.description
+            p
+              a(href=`/profile/${recipe.user_id}`) Recipe by #{recipe.first_name}
   else
     p No recipes found.
+
+  // 🍰 Dessert Challenge
+  #dessertcontainer.mt-10.text-center
+    h3.text-lg.font-bold.text-purple-700 Try to recreate me!
+    #imageContainer.mt-4
+      img#dessertImage(src="", alt="Dessert Image", class="w-64 h-64 object-cover rounded border mx-auto")
+    p.mt-2.text-orange-300.font-bold.uppercase NO HINTS!
 
   // 🧭 Floating Daily Challenge Button
   button#challengeBtn(class="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 z-50")
@@ -60,14 +70,10 @@ block content
     else
       p No reviews available.
 
-  // Dessert Container
-  #dessertcontainer
-    p Try to recreate me!
-    #imageContainer
-      img(src="" alt="Dessert Image")
-    p NO HINTS!
-
   // Scripts
+  script(src="/js/filter.js", defer)
+  script(src="/js/api.js", defer) // 🍰 Dessert image logic
+
   script.
     document.addEventListener('DOMContentLoaded', function () {
       // WELCOME MODAL

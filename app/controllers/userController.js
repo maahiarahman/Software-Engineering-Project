@@ -50,7 +50,7 @@ exports.login = async (req, res) => {
     }
 
     req.session.user = {
-      id: user.user_ID,
+      id: user.user_id,
       email: user.email,
       name: `${user.first_name} ${user.last_name}`
     };
@@ -97,11 +97,11 @@ exports.getUserDashboard = async (req, res) => {
   const userID = req.session.user?.id;
   if (!userID) return res.redirect('/login');
 
-  const [[user]] = await db.query('SELECT * FROM users WHERE user_ID = ?', [userID]);
-  const [recipes] = await db.query('SELECT * FROM recipes WHERE user_ID = ?', [userID]);
-  const [reviews] = await db.query('SELECT * FROM reviews WHERE user_ID = ?', [userID]);
-  const [posts] = await db.query('SELECT * FROM posts WHERE user_ID = ?', [userID]);
-  const [swaps] = await db.query('SELECT * FROM swaps WHERE user_ID = ?', [userID]);
+  const [[user]] = await db.query('SELECT * FROM users WHERE user_id = ?', [userID]);
+  const [recipes] = await db.query('SELECT * FROM recipes WHERE user_id = ?', [userID]);
+  const [reviews] = await db.query('SELECT * FROM reviews WHERE user_id = ?', [userID]);
+  const [posts] = await db.query('SELECT * FROM posts WHERE user_id = ?', [userID]);
+  const [swaps] = await db.query('SELECT * FROM swaps WHERE user_id = ?', [userID]);
 
   res.render('user-profile', {
     user,
