@@ -45,16 +45,15 @@ main.container {
 
 
 /* 🌙 Dark Mode */
-body.dark {
-  background-color: #121212;
-  color: #eee;
+body.dark-mode {
+  background: #333;
 }
-body.dark .navbar {
-  background-color: #1f2937;
+body.dark-mode .navbar {
+  background-color: #0c0c0c;
 }
-body.dark .card,
-body.dark .footer,
-body.dark .review-card {
+body.dark-mode .card,
+body.dark-mode .footer,
+body.dark-mode .review-card {
   background-color: #1e1e1e;
   color: #ddd;
 }
@@ -133,6 +132,14 @@ body {
   top: 0px !important;
 }
 
+#recipedashboard {
+  text-align: center;
+}
+
+ .dark-mode #recipedashboard{
+  color: rgb(202, 221, 204)
+}
+
 /* Optional: Clean up the translate element itself */
 #google_translate_element select {
   padding: 4px 8px;
@@ -172,18 +179,19 @@ body {
   margin-left: auto;
 }
 /* 🔘 Dark Mode Toggle */
-button.dark {
+.dark button {
   background-color: #4caf50;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 15px;
+  margin-top: 10px;
   border-radius: 8px;
-  margin-left: auto;
+  margin-right: auto;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-button.dark:hover {
+.dark button:hover {
   background-color: #388e3c;
 }
 
@@ -229,19 +237,21 @@ form.login-form button:hover {
 .recipe-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
   justify-content: center;
-  margin-top: 2rem;
+  padding: 20px;
+  padding-top: 50px;
 }
 
 /* 🥘 Recipe Card */
 .recipe-card {
-  background: #fff;
+  background-color: rgb(202, 221, 204);
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  padding: 15px;
+  margin: 15px;
   width: 300px;
-  overflow: hidden;
-  transition: transform 0.3s ease;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
 }
 
 .recipe-card:hover {
@@ -252,13 +262,38 @@ form.login-form button:hover {
   width: 100%;
   height: 200px;
   object-fit: cover;
+  border-radius: 8px;
 }
 
-.recipe-card h4 {
-  margin: 1rem;
-  color: #388e3c;
+.recipe-card h3 {
+  color: #2e7d32;
 }
 
+.recipe-card p {
+  color: #2e4e30;
+}
+
+.recipe-card a {
+  text-decoration: none;
+}
+
+.recipe-card p a {
+  color: #2e7d32;
+}
+
+.recipe-card p a:hover {
+  color: rgb(0, 0, 0);
+}
+
+#imageContainer img {
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode #dessertcontainer {
+  color: rgb(202, 221, 204)
+}
 /* 🎖️ User Badge */
 .user-badge {
   display: inline-flex;
@@ -434,6 +469,12 @@ footer.site-footer {
   cursor: pointer;
   transition: background 0.2s;
 }
+
+.searchresults a {
+  text-decoration: none;
+  color: #000;
+}
+
 
 .searchresults:hover {
   background: #f4fdf4;
@@ -1068,14 +1109,14 @@ a.btn-link:hover {
   border-radius: 8px;
 }
 
-body.dark #sidebar {
+body.dark-mode #sidebar {
   background: #1e1e1e;
   color: #eee;
 }
-body.dark #sidebar a {
+body.dark-mode #sidebar a {
   color: #90caf9;
 }
-body.dark .sidebar-toggle {
+body.dark-mode .sidebar-toggle {
   background: #388e3c;
 }
 @media (max-width: 768px) {
