@@ -44,6 +44,7 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => res.redirect('/splash'));
 app.get('/splash', (req, res) => res.render('splash'));
 app.get('/contact', (req, res) => res.render('contact'));
+app.get('/membership', (req, res) => res.render('membership'));
 app.get('/terms', (req, res) => res.render('terms'));
 
 app.get('/register', (req, res) => res.render('register'));
@@ -62,14 +63,32 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/about', (req, res) => {
-  const teamMembers = [
-    { name: 'Sumana', role: 'The Creative Force', desc: 'Sumana crafted the branding...', img: 'sumana.jpg' },
-    { name: 'Shaiza', role: 'The Technical Chef', desc: 'Shaiza engineered the backend...', img: 'shaiza.jpg' },
-    { name: 'Aneeta', role: 'The Perfectionist', desc: 'Aneeta refined the UI...', img: 'aneeta.jpg' },
-    { name: 'Maahia', role: 'The Architect', desc: 'Maahia tied it all together...', img: 'maahia.jpg' }
+  const team = [
+    {
+      name: "Sumana",
+      role: "Design & UX",
+      desc: "Led the visual design and user experience. Took care of the details that bring the site together – from styling to layouts and UI polish."
+    },
+    {
+      name: "Shaiza",
+      role: "Backend & Database",
+      desc: "Engineered the backend. Set up the database, API routes, and made sure the whole app runs smoothly under the hood."
+    },
+    {
+      name: "Maahia",
+      role: "User Systems",
+      desc: "Built the authentication system and user-facing features like login, registration, and the dashboard experience."
+    },
+    {
+      name: "Aneeta",
+      role: "Recipes & Profiles",
+      desc: "Focused on recipes and profile functionalities, making sure users could create, view, and interact with personalized content."
+    }
   ];
-  res.render('about', { teamMembers });
+
+  res.render('about', { team }); // 👈 pass it in here
 });
+
 
 // ✅ View profile page
 app.get('/profile/:id', async (req, res) => {
@@ -238,6 +257,7 @@ app.post('/swap/send', async (req, res) => {
 
 // ✅ User dashboard redirect (real logic lives in /user/dashboard)
 app.get('/dashboard', (req, res) => res.redirect('/user/dashboard'));
+app.get('/user/dashboard', userController.getUserDashboard);
 
 // ✅ Admin auth check
 function isAdmin(req, res, next) {

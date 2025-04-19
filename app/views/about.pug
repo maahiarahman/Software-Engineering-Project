@@ -1,58 +1,32 @@
 extends layout
 
 block content
-  div(class="bg-gradient-to-r from-green-50 to-green-100 py-16")
-    div(class="max-w-5xl mx-auto bg-white/80 p-10 rounded-2xl shadow-xl")
+  .about-page-wrapper
+    .hero-section
+      h1 About NomNom
+      p
+        | NomNom is the product of four Software Engineering students brought together by a shared love of food, tech, and solving real-world problems.
+        br
+        | What began as a class assignment quickly turned into a platform built to connect communities through sustainable recipe sharing.
 
-      // 🎯 Intro
-      div(class="text-center mb-12")
-        h1(class="text-4xl font-bold text-green-800 mb-4") About Us
-        p(class="text-lg text-gray-800 leading-relaxed")
-          | Recipe Swap was created by four Software Engineering students brought together by a passion for both technology and food —
-          span(class="font-semibold") Sumana, Aneeta, Shaiza, and Maahia
-          | . What began as a class project turned into a mission to connect people through the joy of recipe sharing.
+    .origin-section
+      h2 How It Started
+      p
+        | The idea came to us during a brainstorming session. We wanted to build something meaningful, something everyone could relate to — food.
+        br
+        | But not just recipes. We wanted to encourage people to think sustainably, reuse ingredients, and celebrate diverse cuisines.
+        br
+        | That’s how NomNom was born — a space where users can swap recipes, track sustainable actions, and engage with a growing food-loving community.
 
-      // 👥 Team Grid
-      if teamMembers && teamMembers.length
-        h2(class="text-3xl font-bold text-center text-green-700 mb-10 mt-16") Meet the Team
+    .team-section
+      h2.section-heading Meet the Team
 
-        div(class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8")
-          each member in teamMembers
-            div(class="bg-white shadow-lg rounded-xl p-6 text-center transition hover:shadow-2xl hover:scale-105 duration-300")
-              img(src=`/images/${member.img}`, alt=member.name, class="w-full h-40 object-cover rounded-md mb-4")
-              h3(class="text-xl font-bold text-green-700 mb-1")= member.name
-              p(class="text-orange-500 font-medium mb-2")= member.role
-              p(class="text-sm text-gray-600 leading-snug")= member.desc
-      else
-        p(class="text-center text-gray-700 mt-6") No team members found.
+      .grid-team
+        each member in team
+          .team-box
+            h3.member-name= member.name
+            p.member-role= member.role
+            p.member-desc= member.desc
 
-      hr(class="my-16 border-t border-green-300")
-
-      p(class="text-center text-base text-gray-700 max-w-3xl mx-auto leading-relaxed")
-        | We believe food brings people together. Through Recipe Swap, we hope to encourage sharing, cultural exchange, and the discovery of flavors that feel like home.
-
-  // 🔗 Follow Us
-  div(class="mt-20")
-    h2(class="text-2xl font-bold text-center text-green-700 mb-8") Follow Us
-
-    div(class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-6")
-      // 📧 Email
-      div(class="bg-white shadow-lg rounded-xl p-6 text-center transition hover:shadow-xl hover:scale-105 duration-300")
-        i(class="fas fa-envelope text-4xl mb-4 text-orange-400")
-        h3(class="text-xl font-semibold text-orange-600 mb-2") Email Us
-        p(class="text-gray-700 mb-4") Send us your suggestions or questions via email.
-        a(href="mailto:recipeswap@team.com", class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full") Email Now
-
-      // 📷 Instagram
-      div(class="bg-white shadow-lg rounded-xl p-6 text-center transition hover:shadow-xl hover:scale-105 duration-300")
-        i(class="fab fa-instagram text-4xl mb-4 text-orange-400")
-        h3(class="text-xl font-semibold text-orange-600 mb-2") Instagram
-        p(class="text-gray-700 mb-4") Follow us on Instagram for the latest updates.
-        a(href="https://instagram.com/recipeswap", target="_blank", class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full") Follow Us
-
-      // 🖥️ GitHub
-      div(class="bg-white shadow-lg rounded-xl p-6 text-center transition hover:shadow-xl hover:scale-105 duration-300")
-        i(class="fab fa-github text-4xl mb-4 text-orange-400")
-        h3(class="text-xl font-semibold text-orange-600 mb-2") GitHub
-        p(class="text-gray-700 mb-4") Contribute to our open-source project on GitHub.
-        a(href="https://github.com/recipeswap", target="_blank", class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full") View on GitHub
+      p.signature 
+        em NomNom reflects our combined skills, creativity, and passion – and we’re proud of how it all came together.
