@@ -58,12 +58,12 @@ html(lang="en")
           span.highlight Nom
 
         .nav-links
-          a(href="/splash") Home
-          a(href="/about") About
-          a(href="/contact") Contact
-          a(href="/membership") Membership
-          a(href="/swap") Swap
-          a(href="/dashboard") Dashboard
+          a(href="/splash", class=((currentPath && currentPath.startsWith('/splash')) ? 'nav-link active' : 'nav-link')) Home
+          a(href="/about", class=((currentPath && currentPath.startsWith('/about')) ? 'nav-link active' : 'nav-link')) About
+          a(href="/contact", class=((currentPath && currentPath.startsWith('/contact')) ? 'nav-link active' : 'nav-link')) Contact
+          a(href="/membership", class=((currentPath && currentPath.startsWith('/membership')) ? 'nav-link active' : 'nav-link')) Membership
+          a(href="/swap", class=((currentPath && currentPath.startsWith('/swap')) ? 'nav-link active' : 'nav-link')) Swap
+          a(href="/dashboard", class=((currentPath && currentPath.startsWith('/dashboard')) ? 'nav-link active' : 'nav-link')) Dashboard
 
         .user-nav
           if user

@@ -33,12 +33,17 @@ app.use(session({
 }));
 
 // Global locals
+// Set global locals for all templates
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   res.locals.year = new Date().getFullYear();
   res.locals.isAdminPage = req.originalUrl.startsWith('/admin');
+  res.locals.currentPath = req.path; // 👈 must be here and early
   next();
 });
+
+
+
 
 // Routes
 app.get('/', (req, res) => res.redirect('/splash'));
@@ -61,6 +66,7 @@ app.get('/logout', (req, res) => {
     res.redirect('/login');
   });
 });
+
 
 app.get('/about', (req, res) => {
   const team = [
@@ -88,6 +94,7 @@ app.get('/about', (req, res) => {
 
   res.render('about', { team }); // Pass the team array to the template
 });
+
 
 
 // ✅ View profile page

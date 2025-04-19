@@ -22,6 +22,27 @@ body {
 main.container {
   flex: 1;
 }
+.nav-link.active {
+  color: #ff7a00;
+  font-weight: 600;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  transform: translateX(-50%);
+  width: 50%;
+  height: 3px;
+  background: linear-gradient(to right, #ffa94d, #ff7a00);
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(255, 122, 0, 0.5);
+}
+
+
 
 /* 🌙 Dark Mode */
 body.dark {
