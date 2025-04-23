@@ -143,8 +143,8 @@ app.get('/recipes', async (req, res) => {
   }
 });
 
-// ✅ Recipe details with reviews
-// ✅ Recipe details with reviews
+// Recipe details with reviews
+// Recipe details with reviews
 app.get('/recipes/:id', async (req, res) => {
   const recipeId = req.params.id;
   try {
