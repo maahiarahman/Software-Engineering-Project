@@ -2,11 +2,32 @@ extends layout
 
 block content
   // Load Poppins font
-  link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap")
-  
+  link(
+    rel="stylesheet",
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+  )
+
   style.
     body {
       font-family: 'Poppins', sans-serif;
+    }
+
+    .description-container {
+      background-color: #ecfdf5; /* MATCH background */
+      padding: 40px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      max-width: 600px;
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .description-container p {
+      font-size: 18px;
+      color: #333;
+      line-height: 1.7;
+      margin-bottom: 20px;
     }
 
     @keyframes bounceAround {
@@ -20,46 +41,38 @@ block content
       animation: bounceAround 1.2s ease-in-out infinite;
     }
 
-  .bg-gradient-to-r.from-green-100.to-green-200.min-h-screen.flex.items-center.justify-center.px-8
-    .max-w-7xl.w-full.bg-white.bg-opacity-95.p-12.rounded-xl.shadow-md.flex.flex-col.gap-10(class="md:flex-row items-center")
+  // 🌿 Page Wrapper
+  .min-h-screen.bg-gradient-to-r.from-green-100.to-green-200.flex.items-center.justify-center.px-8
+    .max-w-7xl.w-full.flex.flex-col(class="md:flex-row items-center justify-between gap-10")
 
-      // 📄 Left Side: Text content
-      .flex-1.text-center(class="md:text-left")
-        h1(class="text-4xl md:text-5xl font-light mb-6", style="color: #2e7d32; text-shadow: 0 0 1px #a9d5a2;")
-          span Welcome to ✨ 
-          span(style="color:#ff00ff; text-shadow: 0 0 10px rgba(255, 0, 255, 1), 0 0 20px rgba(255, 0, 255, 0.8); font-weight: 500;") NomNom 
-          span ✨
+      // 📄 Left Side: Title + Description
+      .flex-1.flex.flex-col.items-start.justify-center.gap-8
 
-        p(class="text-lg font-bold text-gray-800 leading-relaxed mt-4")
-          | NomNom is a calm, elegant platform for recipe sharing and swapping.
-          br
-          | Discover unique and authentic recipes, post your creations, connect with passionate food lovers, and swap dishes to try something new.
-          br
-          | Built to inspire creativity in the kitchen, NomNom celebrates home cooking across cultures and generations.
+        // ✨ Title
+        h1.text-4xl.font-semibold(style="color: #2e7d32; text-shadow: 0 0 1px #a9d5a2;")
+          | ✨ Welcome to 
+          span(style="color:#ff00ff; text-shadow: 0 0 10px rgb(232, 184, 232), 0 0 20px rgba(242, 170, 242, 0.8); font-weight: 500;") NomNom 
+          | ✨
 
-        p(class="text-lg font-bold text-gray-800 leading-relaxed mt-6")
-          | NomNom was developed by Aneeta, Maahia, Sumana, and Shaiza — a team of passionate developers who wanted to bring cultures together with a twist.
-          br
-          | It was built during the Software Engineering module as a way to combine great food, community, and technology.
-          br
-          | To learn more about the team you can click 
-          a(href="/video", class="text-blue-600 hover:underline font-bold") here.
+        // 📝 Description (centered text inside)
+        .description-container
+          p
+            | NomNom is a calm, elegant platform for recipe sharing and swapping.
+            br
+            | Discover unique and authentic recipes, post your creations, connect with passionate food lovers, and swap dishes to try something new.
+            br
+            | Built to inspire creativity in the kitchen, NomNom celebrates home cooking across cultures and generations.
 
-        // 🟩 Features
-        ul.mt-8.text-left.text-gray-700.text-base.font-medium
-          li.mb-2 * Share your recipes with ease
-          li.mb-2 * Swap meals from all cultures
-          li.mb-2 * Leave reviews, give ratings
-          li.mb-2 * Build your culinary profile
+          p
+            | NomNom was developed by Aneeta, Maahia, Sumana, and Shaiza — a team of passionate developers who wanted to bring cultures together with a twist.
+            br
+            | It was built during the Software Engineering module as a way to combine great food, community, and technology.
+            br
+            | To learn more, please visit the 
+            a(href="/about", style="color:#2563eb; font-weight: 600; text-decoration: underline;") about page.
 
-        // 🔹 CTA Button
-        a(
-          href="/dashboard",
-          class="mt-10 inline-block bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-600 hover:from-pink-600 hover:to-indigo-700 text-white font-extrabold tracking-wide py-3 px-10 rounded-full shadow-xl transition-all duration-300 ease-in-out transform hover:scale-110 hover:rotate-1"
-        ) Start Exploring
-
-      // 🖼️ Right Side: Floating Animated Image
-      .flex-1.flex.justify-center(class="md:justify-end")
+      // 🖼️ Right Side: Chef Icon with bounce
+      .flex-1.flex.justify-center
         img(
           src="/homepage.jpg",
           alt="Chef Icon",

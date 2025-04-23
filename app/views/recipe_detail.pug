@@ -3,30 +3,30 @@ extends layout
 block content
   h2 Recipe Details: #{recipe.name}
 
-  // 📸 Recipe Image
+  // Recipe Image
   if recipe.image_url
     img(src=recipe.image_url, alt=recipe.name, style="width: 300px; border-radius: 10px;")
 
-  // 📄 Description
+  //  Description
   p #{recipe.description}
 
-  // 🧂 Ingredients
+  // Ingredients
   h3 Ingredients:
   ul
     each ingredient in recipe.ingredients.split(',')
       li= ingredient.trim()
 
-  // 🔪 Instructions
+  //  Instructions
   h3 Instructions:
   ol
     each step in recipe.instructions.split(',')
       li= step.trim()
 
-  // ⭐ Average Rating
+  // Average Rating
   if typeof averageRating !== 'undefined' && reviews.length
     h3 Average Rating: #{averageRating} / 5 ⭐
 
-  // 💬 Reviews Section
+  // Reviews Section
   h3 Reviews
 
   if reviews && reviews.length > 0
@@ -38,7 +38,7 @@ block content
   else
     p No reviews yet. Be the first to review this recipe!
 
-  // ✍️ Submit Review Form
+  // Submit Review Form
   h3 Leave a Review
 
   form(action="/reviews" method="POST" style="margin-top: 20px;")

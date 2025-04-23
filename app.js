@@ -73,9 +73,7 @@ app.get('/about', (req, res) => {
 
 app.get('/home', (req, res) => res.render('home'));
 
-app.get('/video', (req, res) => {
-  res.render('video'); 
-});
+
 
 // ✅ View profile page
 app.get('/profile/:id', async (req, res) => {
@@ -259,13 +257,23 @@ app.post('/swap/send', async (req, res) => {
 app.get('/dashboard', async (req, res) => {
   if (!req.session.user) return res.redirect('/login');
   try {
-    const [recipes] = await db.query('SELECT * FROM recipes');
+    const [recipes] = await db.query(`
+      SELECT r.*, 
+        COALESCE((
+          SELECT ROUND(AVG(rating), 1)
+          FROM reviews
+          WHERE recipe_id = r.recipe_id
+        ), 0) AS rating
+      FROM recipes r
+    `);
+
     res.render('dashboard', { recipes });
   } catch (err) {
     console.error('Error fetching dashboard:', err);
     res.status(500).send('Error loading dashboard.');
   }
 });
+
 
 //admin stuff dont ttouch 
 function isAdmin(req, res, next) {
