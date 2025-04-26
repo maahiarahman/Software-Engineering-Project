@@ -19,16 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const recipeId = button.dataset.id;
       const recipeNameValue = button.dataset.name;
       const recipeUser = button.dataset.user;
-
+  
       recipeName.textContent = `You’re requesting a swap for: ${recipeNameValue}`;
       recipeIdField.value = recipeId;
       userIdField.value = recipeUser;
       recipeIdFieldNew.value = recipeId;
       userIdFieldNew.value = recipeUser;
-
+  
+      // THIS IS KEY: remove .hidden before setting display:flex
       modal.classList.remove('hidden');
       modal.style.display = 'flex';
-
+  
       existingForm.classList.add('hidden');
       existingForm.style.display = 'none';
       newForm.classList.add('hidden');
@@ -36,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
       optionsBlock.style.display = 'flex';
     });
   });
-
+  
   chooseExisting?.addEventListener('click', () => {
     existingForm.classList.remove('hidden');
     existingForm.style.display = 'block';

@@ -46,17 +46,17 @@ block content
               span(class=`badge badge-${recipe.dietary_category.replace(/[\s\-]/g, '').toLowerCase()}`)= recipe.dietary_category
             button.swap-button(
               type="button"
-              class="bg-green-600 text-white px-4 py-2 mt-3 rounded hover:bg-green-700 w-full"
+              class="bg-green-600 ..."
               data-id=recipe.recipe_id
               data-name=recipe.name
-              data-user=recipe.user_id
+              data-user=recipe.user_id 
             ) Request Swap
     else
       p(class="text-center text-gray-500 mt-10") No matching recipes found.
 
     // 🌿 Modal
     div#swap-modal.hidden.fixed.inset-0.z-50.bg-black.bg-opacity-50.flex.items-center.justify-center
-      div.modal-content(class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-xl relative overflow-y-auto transition-all duration-300 max-h-[90vh]")(data-user-id=user.user_ID)
+      div.modal-content(class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-xl relative overflow-y-auto transition-all duration-300 max-h-[90vh]")(data-user-id=user.id)
         button.absolute.top-2.right-3.text-gray-400.text-xl.font-bold(type="button" onclick="closeModal()") ×
         h2.text-2xl.font-bold.text-green-800.mb-4.text-center Swap Request
         p#modal-recipe-name.text-center.text-gray-600.mb-4

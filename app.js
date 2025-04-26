@@ -257,27 +257,22 @@ app.post('/swap/send', async (req, res) => {
   }
 });
 
-// ✅ User dashboard redirect (real logic lives in /user/dashboard)
-<<<<<<< HEAD
-app.get('/dashboard', (req, res) => res.redirect('/user/dashboard'));
-app.get('/user/dashboard', userController.getUserDashboard);
-=======
-app.get('/dashboard', async (req, res) => {
-  if (!req.session.user) return res.redirect('/login');
+  app.get('/dashboard', async (req, res) => {
+    if (!req.session.user) return res.redirect('/login');
     
-  try {
-    const [recipes] = await db.query(`
-      SELECT r.*, u.first_name, u.user_id
-      FROM recipes r
-      JOIN users u ON r.user_id = u.user_id
-    `);
-    res.render('dashboard', { recipes });
-  } catch (err) {
-    console.error('Error fetching dashboard:', err);
-    res.status(500).send('Error loading dashboard.');
-  }
-});
->>>>>>> 0c502462c67bfc3ef315b2454786fa0d2be9651c
+    try {
+      const [recipes] = await db.query(`
+        SELECT r.*, u.first_name, u.user_id
+        FROM recipes r
+        JOIN users u ON r.user_id = u.user_id
+      `);
+      res.render('dashboard', { recipes });
+    } catch (err) {
+      console.error('Error fetching dashboard:', err);
+      res.status(500).send('Error loading dashboard.');
+    }
+  });
+  
 
 // ✅ Admin auth check
 function isAdmin(req, res, next) {
