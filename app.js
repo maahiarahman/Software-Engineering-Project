@@ -255,6 +255,7 @@ app.get('/swap', async (req, res) => {
 });
 
 // ✅ Send swap request
+// ✅ Send swap request (with correct schema for swaps table)
 app.post('/swap/send', async (req, res) => {
   const { target_recipe_id, your_recipe_id } = req.body;
   const userId = req.session.user?.id;
@@ -264,25 +265,38 @@ app.post('/swap/send', async (req, res) => {
     return res.redirect('/login');
   }
 
-  if (!target_recipe_id || !your_recipe_id) {
-    req.flash('error', 'Please select a valid recipe for swapping.');
-    return res.redirect('/swap');
-  }
-
+  // 1. Get the owner of the recipe you want to swap with (target)
   try {
+    // Find the user (receiver) who owns the target_recipe_id
+    const [[targetRecipe]] = await db.query(
+      'SELECT user_id FROM recipes WHERE recipe_id = ?',
+      [target_recipe_id]
+    );
+
+    if (!targetRecipe) {
+      req.flash('error', 'Target recipe not found.');
+      return res.redirect('/swap');
+    }
+
+    const receiverId = targetRecipe.user_id;
+
+    // 2. Insert swap into DB using the correct fields
     await db.query(
-      'INSERT INTO swaps (recipe_id, user_id, swapped_recipe_id, swap_status) VALUES (?, ?, ?, ?)',
-      [your_recipe_id, userId, target_recipe_id, 'pending']
+      `INSERT INTO swaps (sender_id, receiver_id, recipe_sent, recipe_received, status, created_at)
+       VALUES (?, ?, ?, ?, 'pending', NOW())`,
+      [userId, receiverId, your_recipe_id, target_recipe_id]
     );
 
     req.flash('success', 'Your swap request has been sent! ✅');
-    res.redirect('/swap');
+    // Redirect to profile page for instant feedback
+    res.redirect(`/profile/${userId}`);
   } catch (err) {
     console.error('Error processing swap:', err);
     req.flash('error', 'There was an error processing your swap.');
     res.redirect('/swap');
   }
 });
+
 
   app.get('/dashboard', async (req, res) => {
     if (!req.session.user) return res.redirect('/login');
