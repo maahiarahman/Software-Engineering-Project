@@ -169,24 +169,41 @@ app.get('/recipes/:id', async (req, res) => {
 });
 
 // Route to handle the swap request
-app.post('/swap', async (req, res) => {
-  const { recipe_id, swapped_recipe_id } = req.body;
-  const userId = req.session.user ? req.session.user.id : null;
+app.post('/swap/send', async (req, res) => {
+  const { target_recipe_id, your_recipe_id } = req.body;
+  const senderId = req.session.user?.id;
 
-  if (!userId) {
-    return res.status(400).send("You must be logged in to swap a recipe.");
+  if (!senderId) {
+    req.flash('error', 'You must be logged in to request a swap.');
+    return res.redirect('/login');
+  }
+  if (!target_recipe_id || !your_recipe_id) {
+    req.flash('error', 'Please select a valid recipe for swapping.');
+    return res.redirect('/swap');
   }
 
+  // Get receiver id
+  const [[targetRecipe]] = await db.query(
+    'SELECT user_id FROM recipes WHERE recipe_id = ?',
+    [target_recipe_id]
+  );
+  if (!targetRecipe) {
+    req.flash('error', 'Target recipe does not exist.');
+    return res.redirect('/swap');
+  }
+  const receiverId = targetRecipe.user_id;
+
   try {
-    // Insert the swap request into the swaps table
     await db.query(
-      'INSERT INTO swaps (recipe_id, user_id, swapped_recipe_id, swap_status) VALUES (?, ?, ?, ?)',
-      [recipe_id, userId, swapped_recipe_id, 'pending']
+      'INSERT INTO swaps (sender_id, receiver_id, recipe_sent, recipe_received, status) VALUES (?, ?, ?, ?, ?)',
+      [senderId, receiverId, your_recipe_id, target_recipe_id, 'pending']
     );
-    res.redirect('/dashboard');  // Redirect to dashboard after swap
+    req.flash('success', 'Your swap request has been sent! ✅');
+    res.redirect('/swap');
   } catch (err) {
     console.error('Error processing swap:', err);
-    res.status(500).send('Error processing swap');
+    req.flash('error', 'There was an error processing your swap.');
+    res.redirect('/swap');
   }
 });
 

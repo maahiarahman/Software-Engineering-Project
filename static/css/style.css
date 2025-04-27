@@ -483,23 +483,210 @@ footer.site-footer {
 /* 🔄 Swap Modal Styling */
 /* === Modal Overlay === */
 #swap-modal {
-  display: none;
+  background: rgba(0, 0, 0, 0.6) !important;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
 }
 
-/* === Modal Content Scrollable Box === */
+
 #swap-modal .modal-content {
-  background: white;
-  max-width: 100%;
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  padding: 2rem 2.5rem;
+  min-width: 320px;
+  max-width: 420px;
   width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  margin: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  animation: fadeIn 0.2s cubic-bezier(0.45,0,0.55,1);
+}
+
+@media (max-width: 640px) {
+  #swap-modal .modal-content {
+    min-width: 90vw;
+    padding: 1rem;
+    max-width: 98vw;
+  }
+}
+
+/* Animation for modal pop in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+.animate-fadeIn { animation: fadeIn 0.2s; }
+/* Modern Swap Modal Styles */
+
+#swap-modal .modal-content {
+  background: #fff;
+  border-radius: 2rem;
+  box-shadow: 0 6px 32px 0 rgba(25, 135, 84, 0.18), 0 1.5px 6px 0 rgba(0,0,0,0.11);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 420px;
+  width: 95vw;
+  position: relative;
+  text-align: center;
+  animation: popIn 0.28s cubic-bezier(.44,1.6,.61,.93);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+#swap-modal button[type="button"], #swap-modal button[type="submit"] {
+  font-weight: 600;
+  border-radius: 0.75rem;
+  padding: 0.8rem 1.5rem;
+  background: #fff;
+  color: #198754;
+  border: 2px solid #198754;
+  margin: 0.3rem 0.7rem;
+  font-size: 1.09rem;
+  cursor: pointer;
+  transition: all 0.14s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+#swap-modal button[type="button"]:hover,
+#swap-modal button[type="submit"]:hover {
+  background: #198754;
+  color: #fff;
+}
+
+#swap-modal .modal-content h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #18482d;
+  margin-bottom: 0.4rem;
+  letter-spacing: -1px;
+}
+
+#swap-modal p {
+  color: #444;
+  font-size: 1.16rem;
+  margin-bottom: 1.3rem;
+}
+
+#swap-modal .absolute.top-3.right-4,
+#swap-modal .absolute.top-2.right-3 {
+  background: none !important;
+  border: none;
+  font-size: 1.7rem;
+  color: #aaa;
+  position: absolute;
+  right: 1.2rem;
+  top: 0.9rem;
+  cursor: pointer;
+}
+
+@media (max-width: 500px) {
+  #swap-modal .modal-content {
+    padding: 1.3rem 0.5rem 1rem 0.5rem;
+    max-width: 98vw;
+  }
+}
+
+/* User Swaps Section Styling */
+#user-swaps {
+  background: #f9fdfb;
+  border-radius: 18px;
+  box-shadow: 0 6px 24px 0 rgba(16, 112, 80, 0.08);
+  padding: 2.5rem 2rem 2rem 2rem;
+  margin-bottom: 2.5rem;
+}
+
+#user-swaps h3 {
+  color: #247443;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.5px;
+}
+
+.swaps-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.swaps-tabs button {
+  background: #e7f8ef;
+  border: none;
+  outline: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.65rem 2rem;
+  border-radius: 30px;
+  color: #247443;
+  box-shadow: 0 2px 8px 0 rgba(36,116,67,0.08);
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.swaps-tabs button.active, .swaps-tabs button:focus {
+  background: #247443;
+  color: #fff;
+  box-shadow: 0 3px 10px 0 rgba(36,116,67,0.15);
+}
+
+.swap-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px 0 rgba(70,170,110,0.08);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+
+.swap-card .fa-solid, .swap-card .fa-regular {
+  font-size: 1.55rem;
+  margin-right: 1rem;
+}
+
+.swap-card .font-semibold {
+  font-weight: 600;
+}
+
+.swap-card .swap-status {
+  display: inline-block;
+  border-radius: 100px;
+  font-size: 0.93rem;
+  padding: 0.2rem 1rem;
+  margin-top: 0.45rem;
+  font-weight: 700;
+  background: #dcfce7;
+  color: #21753c;
+}
+
+.swaps-empty {
+  text-align: center;
+  color: #b0b8b2;
+  font-size: 1.15rem;
+  padding: 2.5rem 0;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+}
+
+@media (max-width: 600px) {
+  #user-swaps { padding: 1rem 0.3rem 1rem 0.3rem; }
+  .swap-card { flex-direction: column; align-items: flex-start; }
+  .swaps-tabs button { padding: 0.65rem 1rem; font-size: 1rem; }
 }
 
 /* === Swap Option Buttons === */
