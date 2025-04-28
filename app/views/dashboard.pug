@@ -17,14 +17,22 @@ block content
     input(type="search" id="usersearch" onkeyup="searchFunction()" placeholder="Search for a recipe here...")
     ul#searchcontainer
       each recipe in recipes
-        .searchresults
-          a(href=`/recipes/${recipe.recipe_id}`) #{recipe.name}
+        .searchresults(data-rating=recipe.rating || 0)
+          a(href=`/recipes/${recipe.recipe_id}`) #{recipe.name} - #{recipe.rating || 0}
+
+  // HIGH/LOW RATING
+  #sortRatingContainer.mt-4
+    label(for="sortSelect", class="font-semibold mr-2") Sort by:
+    select#sortSelect(onchange="sortRecipes()" class="px-4 py-2 border rounded")
+      option(value="") Select
+      option(value="highest") Highest Rating
+      option(value="lowest") Lowest Rating
 
   // Recipe Grid
   if recipes && recipes.length
     .recipe-grid
       each recipe in recipes
-        .recipe-card
+        .recipe-card(data-rating=recipe.rating || 0)
           a(href=`/recipes/${recipe.recipe_id}`)
             img(src=recipe.image_url, alt=recipe.name)
             h3= recipe.name
@@ -33,6 +41,13 @@ block content
               a(href=`/profile/${recipe.user_id}`) Recipe by #{recipe.first_name}
   else
     p No recipes found.
+
+  // 🍰 Dessert Challenge
+  #dessertcontainer.mt-10.text-center
+    h3.text-lg.font-bold.text-purple-700 Try to recreate me!
+    #imageContainer.mt-4
+      img#dessertImage(src="", alt="Dessert Image", class="w-64 h-64 object-cover rounded border mx-auto")
+    p.mt-2.text-orange-300.font-bold.uppercase NO HINTS!
 
   // 🧭 Floating Daily Challenge Button
   button#challengeBtn(class="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 z-50")
@@ -63,14 +78,10 @@ block content
     else
       p No reviews available.
 
-  // Dessert Container
-  #dessertcontainer
-    p Try to recreate me!
-    #imageContainer
-      img(src="" alt="Dessert Image")
-    p NO HINTS!
-
   // Scripts
+  script(src="/js/filter.js", defer)
+  script(src="/js/api.js", defer) // 🍰 Dessert image logic
+
   script.
     document.addEventListener('DOMContentLoaded', function () {
       // WELCOME MODAL
@@ -140,4 +151,25 @@ block content
         challengeModal.classList.add('hidden');
         challengeModal.style.display = 'none';
       });
+
+      // Sort recipes
+      const sortSelect = document.getElementById('sortSelect');
+      if (sortSelect) {
+        sortSelect.addEventListener('change', sortRecipes);
+      }
+
+      function sortRecipes() {
+        const container = document.querySelector('.recipe-grid');
+        const cards = Array.from(container.querySelectorAll('.recipe-card'));
+        const sortBy = sortSelect.value;
+
+        if (sortBy === "highest") {
+          cards.sort((a, b) => parseFloat(b.dataset.rating || 0) - parseFloat(a.dataset.rating || 0));
+        } else if (sortBy === "lowest") {
+          cards.sort((a, b) => parseFloat(a.dataset.rating || 0) - parseFloat(b.dataset.rating || 0));
+        }
+
+        container.innerHTML = "";
+        cards.forEach(card => container.appendChild(card));
+      }
     });
