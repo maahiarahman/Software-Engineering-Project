@@ -17,14 +17,22 @@ block content
     input(type="search" id="usersearch" onkeyup="searchFunction()" placeholder="Search for a recipe here...")
     ul#searchcontainer
       each recipe in recipes
-        .searchresults
-          a(href=`/recipes/${recipe.recipe_id}`) #{recipe.name}
+        .searchresults(data-rating=recipe.rating || 0)
+          a(href=`/recipes/${recipe.recipe_id}`) #{recipe.name} - #{recipe.rating || 0}
+
+  // HIGH/LOW RATING
+  #sortRatingContainer.mt-4
+    label(for="sortSelect", class="font-semibold mr-2") Sort by:
+    select#sortSelect(onchange="sortRecipes()" class="px-4 py-2 border rounded")
+      option(value="") Select
+      option(value="highest") Highest Rating
+      option(value="lowest") Lowest Rating
 
   // Recipe Grid
   if recipes && recipes.length
     .recipe-grid
       each recipe in recipes
-        .recipe-card
+        .recipe-card(data-rating=recipe.rating || 0)
           a(href=`/recipes/${recipe.recipe_id}`)
             img(src=recipe.image_url, alt=recipe.name)
             h3= recipe.name
@@ -143,4 +151,25 @@ block content
         challengeModal.classList.add('hidden');
         challengeModal.style.display = 'none';
       });
+
+      // Sort recipes
+      const sortSelect = document.getElementById('sortSelect');
+      if (sortSelect) {
+        sortSelect.addEventListener('change', sortRecipes);
+      }
+
+      function sortRecipes() {
+        const container = document.querySelector('.recipe-grid');
+        const cards = Array.from(container.querySelectorAll('.recipe-card'));
+        const sortBy = sortSelect.value;
+
+        if (sortBy === "highest") {
+          cards.sort((a, b) => parseFloat(b.dataset.rating || 0) - parseFloat(a.dataset.rating || 0));
+        } else if (sortBy === "lowest") {
+          cards.sort((a, b) => parseFloat(a.dataset.rating || 0) - parseFloat(b.dataset.rating || 0));
+        }
+
+        container.innerHTML = "";
+        cards.forEach(card => container.appendChild(card));
+      }
     });
