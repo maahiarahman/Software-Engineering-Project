@@ -1,0 +1,137 @@
+extends layout
+
+block content
+  #swappage
+    h2.text-center.text-3xl.font-bold.text-green-800.mb-2 SWAP A RECIPE
+
+    // Search Bar
+    #usersearchcontainer.flex.justify-center.mb-6
+      input#wusersearch(
+        type="search"
+        onkeyup="searchFunction()"
+        placeholder="Search for a recipe here..."
+        class="w-full max-w-xl border rounded-lg p-2 shadow-md"
+      )
+      ul#searchcontainer.hidden
+        if recipes && recipes.length
+          each recipe in recipes
+            li.searchresults
+              a(href="/recipes/#{recipe.recipe_id}") #{recipe.name}
+
+    // Filter Options
+    form(method="GET" action="/swap" class="flex flex-wrap gap-6 justify-center mb-10")
+      div.flex.flex-col
+        label(for="category-filter" class="text-sm font-medium mb-1 text-green-900") Category
+        select#category-filter(name="category" class="border rounded p-2" onchange="this.form.submit()")
+          option(value="None") All
+          option(value="1") African
+          option(value="2") Asian
+          option(value="3") European
+          option(value="4") Middle Eastern
+          option(value="5") North American
+          option(value="6") South American
+          option(value="7") Australian
+
+      div.flex.flex-col
+        label(for="diet-filter" class="text-sm font-medium mb-1 text-green-900") Dietary
+        select#diet-filter(name="diet" class="border rounded p-2" onchange="this.form.submit()")
+          option(value="None") All
+          option(value="Vegan") Vegan
+          option(value="Vegetarian") Vegetarian
+          option(value="Halal") Halal
+          option(value="Gluten Free") Gluten Free
+          option(value="Dairy Free") Dairy Free
+          option(value="Nut Free") Nut Free
+
+    // Recipe Grid Centered
+    if recipes && recipes.length
+      div(class="recipe-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center")
+        each recipe in recipes
+          - var finalImage = (recipe.image_url && recipe.image_url.trim()) ? recipe.image_url : '/images/placeholder.jpg'
+          div(class="recipe-card bg-white p-6 rounded-2xl shadow flex flex-col items-center text-center")
+            img(src=finalImage, alt="Recipe Image", class="w-full h-48 object-cover rounded mb-3")
+            h3.text-lg.font-semibold.text-green-800.mb-1 #{recipe.name}
+            p.text-sm.text-gray-700.mb-2 #{recipe.description}
+            if recipe.dietary_category
+              - var badgeClass = 'badge badge-' + recipe.dietary_category.replace(/[\s\-]/g, '').toLowerCase()
+              span(class=badgeClass)= recipe.dietary_category
+            button.swap-button(
+              type="button"
+              class="bg-green-600 text-white px-4 py-2 mt-3 rounded hover:bg-green-700 w-full"
+              data-id=recipe.recipe_id
+              data-name=recipe.name
+              data-user=recipe.user_id
+            ) Request Swap
+    else
+      p.text-center.text-gray-500.mt-10 No matching recipes found.
+
+    // 🌿 Modal (always hidden at start)
+    #swap-modal.hidden.fixed.inset-0.z-50.bg-black.bg-opacity-50.flex.items-center.justify-center
+      div(class="modal-content bg-white rounded-xl shadow-2xl p-6 w-full max-w-xl relative overflow-y-auto transition-all duration-300 max-h-[90vh]")
+        button.absolute.top-2.right-3.text-gray-400.text-xl.font-bold(type="button" onclick="closeModal()") ×
+        h2.text-2xl.font-bold.text-green-800.mb-4.text-center Swap Request
+        p#modal-recipe-name.text-center.text-gray-600.mb-4
+
+        div#option-buttons.flex.justify-center.gap-4.mb-6
+          button#choose-existing(type="button" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600") Use Existing Recipe
+          button#choose-new(type="button" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700") Create New Recipe
+
+        // 🔁 Existing Form
+        form#existing-form.hidden(method="POST" action="/swap/send")
+          input(type="hidden" name="target_recipe_id" id="targetRecipeId")
+          input(type="hidden" name="target_user_id" id="targetUserId")
+          button#back-from-existing(type="button" class="text-sm text-blue-600 hover:underline mb-3") ← Back to options
+          label(for="yourRecipe" class="block mb-1 font-semibold") Select your recipe:
+          select#yourRecipe(name="your_recipe_id" required class="w-full border rounded p-2 mb-3")
+            if userRecipes && userRecipes.length
+              each recipe in userRecipes
+                option(value=recipe.recipe_id) #{recipe.name}
+            else
+              option(disabled selected value='') You have no recipes to swap
+          button(type="submit" class="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 w-full") Send Swap Request
+
+        // 🆕 New Recipe Form
+        form#new-form.hidden(method="POST" action="/recipes" enctype="multipart/form-data")
+          input(type="hidden" name="target_recipe_id" id="targetRecipeIdNew")
+          input(type="hidden" name="target_user_id" id="targetUserIdNew")
+          button#back-from-new(type="button" class="text-sm text-blue-600 hover:underline mb-3") ← Back to options
+
+          each field in ['name', 'description', 'ingredients', 'instructions']
+            div(class="form-group mb-3")
+              label(for=field) #{field.charAt(0).toUpperCase() + field.slice(1)}:
+              if field === 'description' || field === 'ingredients' || field === 'instructions'
+                textarea(name=field required class="w-full border p-2 rounded")
+              else
+                input(type="text" name=field required class="w-full border p-2 rounded")
+
+          div(class="form-group mb-3")
+            label(for="category-new") Category:
+            select#category-new(name="category" class="w-full border p-2 rounded")
+              option(value="1") Asian
+              option(value="2") European
+              option(value="3") African
+              option(value="4") Australian
+              option(value="5") Middle Eastern
+              option(value="6") North American
+              option(value="7") South American
+
+          div(class="form-group mb-3")
+            label(for="dietary_category") Dietary:
+            select#dietary_category(name="dietary_category" class="w-full border p-2 rounded")
+              option(value="") All Categories
+              option(value="Vegan") Vegan
+              option(value="Halal") Halal
+              option(value="Gluten-Free") Gluten-Free
+              option(value="Dairy-Free") Dairy-Free
+              option(value="Nut-Free") Nut-Free
+
+          div(class="form-group mb-3")
+            label(for="image") Image:
+            input#image(type="file" name="image" accept="image/*" class="w-full")
+
+          button(type="submit" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 w-full") Submit Recipe & Swap
+
+append scripts
+  script(src="/js/swap.js")
+  script.
+    window.user = { id: !{JSON.stringify(user.id)} };

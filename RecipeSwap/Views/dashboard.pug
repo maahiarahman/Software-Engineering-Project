@@ -1,0 +1,37 @@
+extends layout
+
+block content
+  h2 Recipe Dashboard
+
+  if recipes && recipes.length
+    .recipe-grid
+      each recipe in recipes
+        .recipe-card
+          a(href=`/recipes/${recipe.recipe_id}`)
+            img(src=recipe.image, alt=recipe.name)
+            h3= recipe.name
+            p= recipe.description
+  else
+    p No recipes found.
+
+  // Link to view profile
+  a(href=`/profile/${user.user_ID}`) View Profile
+
+  // Reviews Section
+  h2 User Reviews
+  .review-section
+    .review-card
+      img(src="https://via.placeholder.com/50", alt="User Profile")
+      .review-content
+        h4 John Doe
+        p "Absolutely loved this recipe! Super easy to follow and turned out great."
+    .review-card
+      img(src="https://via.placeholder.com/50", alt="User Profile")
+      .review-content
+        h4 Jane Smith
+        p "The flavors were amazing! Will definitely make this again."
+    .review-card
+      img(src="https://via.placeholder.com/50", alt="User Profile")
+      .review-content
+        h4 Alex Johnson
+        p "Tried this recipe with my family and they all loved it!"

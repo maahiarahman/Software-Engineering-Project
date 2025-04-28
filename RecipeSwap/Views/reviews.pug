@@ -1,0 +1,94 @@
+extends layout
+
+block content
+  // ========================
+  // REVIEWS SECTION
+  // ========================
+  section.reviews-container
+    h2 Recipe Reviews
+
+    // Loop through all reviews (these would be passed in from the backend)
+    if reviews && reviews.length
+      .review-list
+        each review in reviews
+          .review-card
+            h3= review.recipe_name  // Display the recipe name
+            p= `"${review.comment}"`
+            span= `⭐⭐⭐⭐⭐ - ${review.first_name} ${review.last_name}` // Display rating and user name
+    else
+      p No reviews yet for this recipe.
+
+    // ========================
+    // ADD REVIEW FORM SECTION
+    // ========================
+    h3 Leave a Review
+
+    form(action="/reviews/#{recipe.recipe_id}" method="POST")
+  input(type="hidden" name="recipeId" value=recipe.recipe_id)
+  .form-group
+    label(for="review-text") Your Review:
+    textarea(id="review-text" name="reviewText" placeholder="Write your review here..." required)
+  
+  .form-group
+    label(for="rating") Rating:
+    select(name="rating" id="rating" required)
+      option(value="5") ⭐⭐⭐⭐⭐ - Excellent
+      option(value="4") ⭐⭐⭐⭐ - Great
+      option(value="3") ⭐⭐⭐ - Good
+      option(value="2") ⭐⭐ - Average
+      option(value="1") ⭐ - Poor
+
+  .form-group
+    button.btn.btn-green(type="submit") Submit Review
+
+
+  // ========================
+  // FOOTER
+  // ========================
+  footer
+    .container
+      p &copy; 2025 Recipe Swap. All Rights Reserved.
+
+  // ========================
+  // INLINE JAVASCRIPT (for handling review form submission dynamically)
+  // ========================
+  script.
+    document.querySelector("form").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent page reload
+
+      // Collect form data
+      const reviewText = document.querySelector("#review-text").value;
+      const rating = document.querySelector("#rating").value;
+      const recipeId = document.querySelector("input[name='recipeId']").value;
+
+      if (!reviewText || !rating) {
+        alert("Please fill out all fields.");
+        return;
+      }
+
+      // Perform an AJAX POST request to submit the review
+      fetch('/reviews', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ recipeId, reviewText, rating })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Add the new review to the list (you can also reload the page if you prefer)
+        const newReview = document.createElement("div");
+        newReview.classList.add("review-card");
+        newReview.innerHTML = `
+          <h3>${data.recipeName}</h3>
+          <p>"${data.reviewText}"</p>
+          <span>⭐⭐⭐⭐⭐ - ${data.user.first_name} ${data.user.last_name}</span>
+        `;
+        document.querySelector(".review-list").appendChild(newReview);
+        document.querySelector("form").reset(); // Reset the form
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        alert("There was an error submitting the review.");
+      });
+    });

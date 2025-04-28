@@ -1,0 +1,17 @@
+extends adminlayout
+
+block content
+  .container(style="max-width: 400px; margin: 50px auto; padding: 25px; border-radius: 10px; background: #fff; text-align: center; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); border: 2px solid #ff5733;")
+    h2(style="margin-bottom: 20px; color:rgb(181, 106, 90); font-weight: bold;") Login to Your Account
+
+    // ✅ FIXED: route now goes to /admin
+    form(action="/adminLogin" method="POST")
+      .form-group(style="margin-bottom: 15px; text-align: left;")
+        label(for="email" style="font-weight: bold; color: #333;") Email:
+        input#email.form-control(type="email" name="email" required style="width:100%; padding:12px; margin-top:5px; border: 1px solid #ccc; border-radius: 5px;")
+
+      .form-group(style="margin-bottom: 20px; text-align: left;")
+        label(for="password" style="font-weight: bold; color: #333;") Password:
+        input#password.form-control(type="password" name="password" required style="width:100%; padding:12px; margin-top:5px; border: 1px solid #ccc; border-radius: 5px;")
+
+      button.btn.btn-primary(type="submit" style="width:100%; padding:12px; background: linear-gradient(to right, #ff5733, #ffbd33); border: none; border-radius: 5px; font-size: 16px; color: white; cursor: pointer; font-weight: bold;") Login

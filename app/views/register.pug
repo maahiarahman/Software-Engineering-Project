@@ -1,0 +1,32 @@
+extends layout
+
+block content
+    .container(style="max-width: 400px; margin: 50px auto; padding: 25px; border-radius: 10px; background: #fff; text-align: center; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); border: 2px solid #ff5733;")
+        h2(style="margin-bottom: 20px; color: #ff5733; font-weight: bold;") Create an Account
+        
+        form(action="/register" method="POST")
+            .form-group(style="margin-bottom: 15px; text-align: left;")
+                label(for="first_name" style="font-weight: bold; color: #333;") First Name:
+                input#first_name.form-control(type="text" name="first_name" required style="width:100%; padding:12px; margin-top:5px; border: 1px solid #ccc; border-radius: 5px;")
+
+            .form-group(style="margin-bottom: 15px; text-align: left;")
+                label(for="last_name" style="font-weight: bold; color: #333;") Last Name:
+                input#last_name.form-control(type="text" name="last_name" required style="width:100%; padding:12px; margin-top:5px; border: 1px solid #ccc; border-radius: 5px;")
+
+            .form-group(style="margin-bottom: 15px; text-align: left;")
+                label(for="email" style="font-weight: bold; color: #333;") Email:
+                input#email.form-control(type="email" name="email" required style="width:100%; padding:12px; margin-top:5px; border: 1px solid #ccc; border-radius: 5px;")
+
+            .form-group(style="margin-bottom: 15px; text-align: left;")
+                label(for="password" style="font-weight: bold; color: #333;") Password:
+                input#password.form-control(type="password" name="password" required style="width:100%; padding:12px; margin-top:5px; border: 1px solid #ccc; border-radius: 5px;")
+
+            .form-group(style="margin-bottom: 15px; text-align: left;")
+                label(for="date_of_birth" style="font-weight: bold; color: #333;") Date of Birth:
+                input#date_of_birth.form-control(type="date" name="date_of_birth" required style="width:100%; padding:12px; margin-top:5px; border: 1px solid #ccc; border-radius: 5px;")
+
+            button.btn.btn-success(type="submit" style="width:100%; padding:12px; background: linear-gradient(to right, #ff5733, #ffbd33); border: none; border-radius: 5px; font-size: 16px; color: white; cursor: pointer; font-weight: bold;") Register
+
+        // ✅ Clear "Login" Link
+        p(style="margin-top: 15px; font-size: 14px; color: #555;") Already have an account?
+            a(href="/login" style="color: #ff5733; font-weight: bold; text-decoration: none;") Login here

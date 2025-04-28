@@ -1,0 +1,87 @@
+extends secondlayout.pug
+
+block content
+  // ========================
+  // RECIPE FORM SECTION
+  // ========================
+  section.form-container
+    h2 Post a New Recipe
+
+    form(action="/recipes" method="POST" enctype="multipart/form-data")
+      // === Recipe Name ===
+      .form-group
+        label(for="name") Recipe Name:
+        input(
+          type="text"
+          name="name"
+          id="name"
+          placeholder="Enter Recipe Name"
+          required
+        )
+
+      // === Short Description ===
+      .form-group
+        label(for="description") Description:
+        textarea(
+          name="description"
+          id="description"
+          placeholder="Write a short description..."
+          required
+        )
+
+      // === Ingredients (comma-separated list) ===
+      .form-group
+        label(for="ingredients") Ingredients:
+        textarea(
+          name="ingredients"
+          id="ingredients"
+          placeholder="Enter ingredients, separated by commas"
+          required
+        )
+
+      // === Instructions ===
+      .form-group
+        label(for="instructions") Instructions:
+        textarea(
+          name="instructions"
+          id="instructions"
+          placeholder="Step-by-step instructions..."
+          required
+        )
+
+      // === Category Selection ===
+      .form-group
+        label(for="category") Category (Cuisine/Continent):
+        select(name="category" id="category")
+          optgroup(label="Cuisines")
+            option(value="1") Asian
+            option(value="2") European
+            option(value="3") African
+            option(value="4") Australian
+            option(value="5") Middle Eastern
+            option(value="6") North American
+            option(value="7") South American
+
+      .form-group
+        label(for="dietary_category") Dietary Category:
+        select(name="dietary_category" id="dietary_category")
+          option(value="") All Categories
+          option(value="Vegan") Vegan
+          option(value="Halal") Halal
+          option(value="Gluten-Free") Gluten-Free
+          option(value="Dairy-Free") Dairy-Free
+          option(value="Nut-Free") Nut-Free
+
+      // === Upload Image ===
+      .form-group
+        label(for="image") Upload Recipe Image:
+        input(
+          type="file"
+          name="image"
+          id="image"
+          accept="image/*"
+        )
+
+      // === Submit Button ===
+      .form-group
+        button.btn.btn-green(type="submit") Submit Recipe

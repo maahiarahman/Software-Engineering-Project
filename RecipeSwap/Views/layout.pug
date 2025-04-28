@@ -1,0 +1,40 @@
+doctype html
+html(lang="en")
+  head
+    title Recipe Swap
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+
+    // Only include CSS for non-admin pages
+    if !isAdminPage
+      link(rel="stylesheet", href="/css/style.css")
+      link(rel="stylesheet", href="/css/buttons.css")
+      link(rel="stylesheet", href="/css/components.css")
+      link(rel="stylesheet", href="/css/dark-mode.css")
+      link(rel="stylesheet", href="/css/forms.css")
+
+  body
+    nav.navbar
+      a(href="/splash") Home
+      a(href="/about") About Us
+      a(href="/contact") Contact Us
+      if !user
+        a(href="/login") Login
+        a(href="/register") Register
+      else
+        a(href="/dashboard") Dashboard
+        a(href="/profile/#{user.id}") View Profile 
+        a(href="/logout") Logout
+
+    .container
+      block content
+
+    footer
+      p © #{year} Recipe Swap. All rights reserved.
+
+    // Scripts
+    script(src="/js/script.js")
+    script(src="/js/dark-mode.js")
+    script(src="/js/reviews.js")
+    script(src="/js/recipe.js")
+    script(src="/js/swap.js")

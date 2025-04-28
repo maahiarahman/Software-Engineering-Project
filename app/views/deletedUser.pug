@@ -1,0 +1,33 @@
+extends adminlayout
+
+block content
+  h1 Deleted User Profile
+
+  if user
+    table(border=1)
+      tr
+        th User ID
+        td= user.user_ID
+      tr
+        th First Name
+        td= user.first_name
+      tr
+        th Last Name
+        td= user.last_name
+      tr
+        th Email
+        td= user.email
+      tr
+        th Date of Birth
+        td= user.date_of_birth
+      tr
+        th Age
+        td= user.age
+      tr
+        th Badge
+        td= user.badge
+
+    form(action=`/deleted-user/${user.delete_ID}/restore`, method="POST")
+      button(type="submit" onclick="return confirm('Restore this user?')") remove Delete
+  else
+    p(style="color: red;") Deleted user not found.

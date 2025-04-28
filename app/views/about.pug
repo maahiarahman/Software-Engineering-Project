@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  .about-page-wrapper
+    .hero-section
+      h1 About NomNom
+      p
+        | NomNom is the product of four Software Engineering students brought together by a shared love of food, tech, and solving real-world problems.
+        br
+        | What began as a class assignment quickly turned into a platform built to connect communities through sustainable recipe sharing.
+
+    .origin-section
+      h2 How It Started
+      p
+        | The idea came to us during a brainstorming session. We wanted to build something meaningful, something everyone could relate to — food.
+        br
+        | But not just recipes. We wanted to encourage people to think sustainably, reuse ingredients, and celebrate diverse cuisines.
+        br
+        | That’s how NomNom was born — a space where users can swap recipes, track sustainable actions, and engage with a growing food-loving community.
+
+    .team-section
+      h2.section-heading Meet the Team
+
+      .grid-team
+        each member in team
+          .team-box
+            h3.member-name= member.name
+            p.member-role= member.role
+            p.member-desc= member.desc
+
+      p.signature 
+        em NomNom reflects our combined skills, creativity, and passion – and we’re proud of how it all came together.

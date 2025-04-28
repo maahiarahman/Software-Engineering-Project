@@ -1,0 +1,13 @@
+body.dark {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+.navbar.dark {
+    background: linear-gradient(to right, #333333, #444444);
+}
+
+.btn.dark {
+    background-color: #555;
+    color: white;
+}

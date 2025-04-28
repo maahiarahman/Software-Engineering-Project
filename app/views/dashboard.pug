@@ -1,0 +1,175 @@
+extends layout
+
+block content
+  #recipedashboard
+    h2 Recipe Dashboard
+
+  // Welcome Modal
+  if userName
+    #welcomeModal.fixed.inset-0.bg-black.bg-opacity-50.flex.items-center.justify-center.z-50(style="display: flex;")
+      .bg-white.rounded-xl.shadow-lg.p-8.max-w-md.text-center
+        h2.text-2xl.font-bold.text-green-700.mb-2 Welcome, #{userName}!
+        p.mb-4 Glad to have you back on Recipe Swap.
+        button#welcomeCloseBtn(class="mt-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700") Let's Go!
+
+  // Search
+  #usersearchcontainer
+    input(type="search" id="usersearch" onkeyup="searchFunction()" placeholder="Search for a recipe here...")
+    ul#searchcontainer
+      each recipe in recipes
+        .searchresults(data-rating=recipe.rating || 0)
+          a(href=`/recipes/${recipe.recipe_id}`) #{recipe.name} - #{recipe.rating || 0}
+
+  // HIGH/LOW RATING
+  #sortRatingContainer.mt-4
+    label(for="sortSelect", class="font-semibold mr-2") Sort by:
+    select#sortSelect(onchange="sortRecipes()" class="px-4 py-2 border rounded")
+      option(value="") Select
+      option(value="highest") Highest Rating
+      option(value="lowest") Lowest Rating
+
+  // Recipe Grid
+  if recipes && recipes.length
+    .recipe-grid
+      each recipe in recipes
+        .recipe-card(data-rating=recipe.rating || 0)
+          a(href=`/recipes/${recipe.recipe_id}`)
+            img(src=recipe.image_url, alt=recipe.name)
+            h3= recipe.name
+            p= recipe.description
+            p
+              a(href=`/profile/${recipe.user_id}`) Recipe by #{recipe.first_name}
+  else
+    p No recipes found.
+
+  // 🍰 Dessert Challenge
+  #dessertcontainer.mt-10.text-center
+    h3.text-lg.font-bold.text-purple-700 Try to recreate me!
+    #imageContainer.mt-4
+      img#dessertImage(src="", alt="Dessert Image", class="w-64 h-64 object-cover rounded border mx-auto")
+    p.mt-2.text-orange-300.font-bold.uppercase NO HINTS!
+
+  // 🧭 Floating Daily Challenge Button
+  button#challengeBtn(class="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 z-50")
+    i.fas.fa-box-open
+
+  // 📦 Challenge Modal
+  #challengeModal.hidden.fixed.inset-0.bg-black.bg-opacity-50.flex.items-center.justify-center.z-50
+    .bg-white.p-6.rounded-xl.shadow-xl.max-w-sm.w-full.text-center.relative
+      button#closeChallengeBtn.absolute.top-2.right-4.text-gray-500.text-xl &times;
+      h2.text-xl.font-bold.text-green-700.mb-4 Daily Ingredient Challenge
+      img#ingredientImage.w-32.h-32.mx-auto.rounded-full.mb-4.object-cover(src="", alt="Ingredient")
+      h3#ingredientName.text-lg.font-semibold.mb-2
+      p.text-sm.text-gray-700.mb-4 Daily Challenge: incorporate this ingredient in one of your recipes today!
+
+  // Profile Link
+  a(href=`/profile/${user.user_ID}`) View Profile
+
+  // Reviews Section
+  h2 User Reviews
+  .review-section
+    if reviews && reviews.length
+      each review in reviews
+        .review-card
+          img(src="/profile%20image.jpg" alt="User Profile")
+          .review-content
+            h4= review.name
+            p= review.text
+    else
+      p No reviews available.
+
+  // Scripts
+  script(src="/js/filter.js", defer)
+  script(src="/js/api.js", defer) // 🍰 Dessert image logic
+
+  script.
+    document.addEventListener('DOMContentLoaded', function () {
+      // WELCOME MODAL
+      const modal = document.getElementById('welcomeModal');
+      const closeBtn = document.getElementById('welcomeCloseBtn');
+      if (modal) modal.style.display = 'flex';
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function () {
+          modal.style.display = 'none';
+        });
+      }
+
+      // CHALLENGE MODAL
+      const btn = document.getElementById('challengeBtn');
+      const challengeModal = document.getElementById('challengeModal');
+      const closeChallengeBtn = document.getElementById('closeChallengeBtn');
+      const nameEl = document.getElementById('ingredientName');
+      const imgEl = document.getElementById('ingredientImage');
+
+      const API_URL = 'https://www.themealdb.com/api/json/v1/1/random.php';
+
+      function shouldFetchNew() {
+        const lastDate = localStorage.getItem('challengeDate');
+        const today = new Date().toDateString();
+        return lastDate !== today;
+      }
+
+      async function fetchDailyIngredient() {
+        try {
+          const res = await fetch(API_URL);
+          const data = await res.json();
+          const ingredient = data.meals[0].strIngredient1 || 'Tomato';
+          const image = `https://www.themealdb.com/images/ingredients/${ingredient}-Small.png`;
+
+          const today = new Date().toDateString();
+          localStorage.setItem('challengeDate', today);
+          localStorage.setItem('dailyIngredient', ingredient);
+          localStorage.setItem('ingredientImage', image);
+
+          displayIngredient(ingredient, image);
+        } catch (err) {
+          console.error('Failed to fetch ingredient:', err);
+          displayIngredient('Tomato', '/images/placeholder.jpg');
+        }
+      }
+
+      function displayIngredient(name, img) {
+        nameEl.textContent = name;
+        imgEl.src = img;
+      }
+
+      btn.addEventListener('click', () => {
+        const ingredient = localStorage.getItem('dailyIngredient');
+        const image = localStorage.getItem('ingredientImage');
+
+        if (!ingredient || shouldFetchNew()) {
+          fetchDailyIngredient();
+        } else {
+          displayIngredient(ingredient, image);
+        }
+
+        challengeModal.classList.remove('hidden');
+        challengeModal.style.display = 'flex';
+      });
+
+      closeChallengeBtn.addEventListener('click', () => {
+        challengeModal.classList.add('hidden');
+        challengeModal.style.display = 'none';
+      });
+
+      // Sort recipes
+      const sortSelect = document.getElementById('sortSelect');
+      if (sortSelect) {
+        sortSelect.addEventListener('change', sortRecipes);
+      }
+
+      function sortRecipes() {
+        const container = document.querySelector('.recipe-grid');
+        const cards = Array.from(container.querySelectorAll('.recipe-card'));
+        const sortBy = sortSelect.value;
+
+        if (sortBy === "highest") {
+          cards.sort((a, b) => parseFloat(b.dataset.rating || 0) - parseFloat(a.dataset.rating || 0));
+        } else if (sortBy === "lowest") {
+          cards.sort((a, b) => parseFloat(a.dataset.rating || 0) - parseFloat(b.dataset.rating || 0));
+        }
+
+        container.innerHTML = "";
+        cards.forEach(card => container.appendChild(card));
+      }
+    });

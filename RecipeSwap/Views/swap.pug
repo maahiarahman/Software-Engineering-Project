@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h2 Swap Recipe
+
+  // Display the current recipe the user wants to swap
+  h3= recipe.name
+  p= recipe.description
+
+  // Display the user's own recipes to choose from
+  form(action="/swap", method="POST")
+    label(for="swapped_recipe_id") Choose a recipe to swap with:
+    select(name="swapped_recipe_id", id="swapped_recipe_id")
+      each userRecipe in userRecipes
+        option(value=userRecipe.recipe_id)= userRecipe.name
+    input(type="hidden", name="recipe_id", value=recipe.recipe_id)
+    button(type="submit") Swap

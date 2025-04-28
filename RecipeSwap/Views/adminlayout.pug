@@ -1,0 +1,73 @@
+doctype html
+html
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        title #{title}
+        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css")
+        style.
+            body {
+                background: linear-gradient(135deg, #ebbf86, #f5a3c7);
+                font-family: 'Arial', sans-serif;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+            .container {
+                max-width: 900px;
+                margin: auto;
+                padding: 20px;
+                background: rgba(255, 255, 255, 0.85);
+                border-radius: 12px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+                 backdrop-filter: blur(5px);
+                overflow-x: auto; /* Allows horizontal scrolling if needed */
+            }
+            .navbar {
+                background: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(10px);
+                box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.05);
+            }
+            .navbar-brand {
+                font-weight: bold;
+                font-size: 1.2rem;
+                color: #d63384;
+            }
+            .navbar-nav .nav-link {
+                font-size: 1rem;
+                padding: 10px 15px;
+                transition: 0.3s;
+            }
+            .navbar-nav .nav-link:hover {
+                color:rgb(217, 146, 46);
+                transform: scale(1.05);
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            th, td {
+                padding: 12px;
+                text-align: left;
+                border: 2px solid ; /* Ensure table has borders */
+            }
+            th {
+                background-color:rgb(235, 149, 189);
+                color: #fff;
+            }
+            tr:nth-child(even) {
+                background-color:rgb(228, 179, 179);
+            }
+            tr:hover {
+                background-color: #f1e6f1;
+            }
+    body  
+        nav.navbar.navbar-expand-lg
+            .container
+                a.navbar-brand(href="/")
+                #navbarNav.collapse.navbar-collapse
+        .container.mt-4
+            block content
+
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js")

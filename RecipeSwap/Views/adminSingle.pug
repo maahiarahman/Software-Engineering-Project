@@ -1,0 +1,17 @@
+// adminSingle.pug
+extends adminlayout.pug
+
+block content
+    h1 Admin Details
+
+    table
+        thead
+            tr
+                th Admin ID
+                th Name
+                th Email
+        tbody
+            tr
+                td= data.admin_ID
+                td= data.name
+                td= data.email
