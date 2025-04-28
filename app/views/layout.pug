@@ -27,13 +27,16 @@ html(lang="en")
         button#closeSidebar(onclick="closeSidebar()") ×
       h3 Cooking Articles
       ul
-        li: a(href="#") 10 Spices Every Home Cook Should Know
-        li: a(href="#") Fermentation Around the World
-        li: a(href="#") Essential Techniques in Indian Cuisine
-        li: a(href="#") Plant-Based Traditions from Asia
-        li: a(href="#") Watch: The Art of Turkish Breadmaking
+        ul
+          ul
+            li: a(href="https://www.2foodtrippers.com/best-food-in-asia/" target="_blank") Best Food in Asia
+            li: a(href="https://www.bbcgoodfood.com/travel/global/top-10-foods-try-south-africa" target="_blank") Top 10 Foods to Try in South Africa
+            li: a(href="https://www.seriouseats.com/shepherds-pie-beef-lamb-recipe" target="_blank") Shepherd’s Pie Recipe (Beef & Lamb)
+            li: a(href="https://feastinthemiddleeast.com/2021/11/04/my-favorite-dessert-of-all-time-knafeh/" target="_blank") Favorite Dessert: Knafeh
+            li: a(href="https://edition.cnn.com/travel/article/australian-food/index.html" target="_blank") Guide to Australian Food
+
       h3.mt-4 Video Inspiration
-      each video, i in ["X_2NnFAfHOo", "0qSm029ROn4", "p_YFkEB6B8A", "BWv5eQUazdg"]
+      each video, i in ["3gwk0e3wgoM ", "0qSm029ROn4", "p_YFkEB6B8A", "BWv5eQUazdg"]
         .video-card
           iframe(
             src=`https://www.youtube.com/embed/${video}`,
@@ -61,6 +64,7 @@ html(lang="en")
           a(href="/home") Home
           a(href="/about") About
           a(href="/contact") Contact
+          a(href="/membership") Membership
           a(href="/swap") Swap
           a(href="/dashboard") Dashboard
 
