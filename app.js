@@ -33,17 +33,23 @@ app.use(session({
 }));
 
 // Global locals
+// Set global locals for all templates
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   res.locals.year = new Date().getFullYear();
   res.locals.isAdminPage = req.originalUrl.startsWith('/admin');
+  res.locals.currentPath = req.path; // 👈 must be here and early
   next();
 });
+
+
+
 
 // Routes
 app.get('/', (req, res) => res.redirect('/splash'));
 app.get('/splash', (req, res) => res.render('splash'));
 app.get('/contact', (req, res) => res.render('contact'));
+app.get('/membership', (req, res) => res.render('membership'));
 app.get('/terms', (req, res) => res.render('terms'));
 
 app.get('/register', (req, res) => res.render('register'));
@@ -61,14 +67,32 @@ app.get('/logout', (req, res) => {
   });
 });
 
+
 app.get('/about', (req, res) => {
-  const teamMembers = [
-    { name: 'Sumana', role: 'The Creative Force', desc: 'Sumana crafted the branding...', img: 'sumana.jpg' },
-    { name: 'Shaiza', role: 'The Technical Chef', desc: 'Shaiza engineered the backend...', img: 'shaiza.jpg' },
-    { name: 'Aneeta', role: 'The Perfectionist', desc: 'Aneeta refined the UI...', img: 'aneeta.jpg' },
-    { name: 'Maahia', role: 'The Architect', desc: 'Maahia tied it all together...', img: 'maahia.jpg' }
+  const team = [
+    {
+      name: "Sumana",
+      role: "Design & UX",
+      desc: "Led the visual design and user experience. Took care of the details that bring the site together – from styling to layouts and UI polish."
+    },
+    {
+      name: "Shaiza",
+      role: "Backend & Database",
+      desc: "Engineered the backend. Set up the database, API routes, and made sure the whole app runs smoothly under the hood."
+    },
+    {
+      name: "Maahia",
+      role: "User Systems",
+      desc: "Built the authentication system and user-facing features like login, registration, and the dashboard experience."
+    },
+    {
+      name: "Aneeta",
+      role: "Recipes & Profiles",
+      desc: "Focused on recipes and profile functionalities, making sure users could create, view, and interact with personalized content."
+    }
   ];
-  res.render('about', { teamMembers });
+
+  res.render('about', { team }); // Pass the team array to the template
 });
 
 app.get('/home', (req, res) => res.render('home'));
@@ -76,33 +100,55 @@ app.get('/home', (req, res) => res.render('home'));
 
 
 // ✅ View profile page
+// ✅ View profile page - WITH SENT & RECEIVED SWAPS
 app.get('/profile/:id', async (req, res) => {
   const userId = req.params.id;
 
   try {
+    // Get user info
     const [userResult] = await db.query(
       `SELECT *, DATE_FORMAT(date_of_birth,"%Y-%m-%d") as date_of_birth FROM users WHERE user_ID = ?`,
       [userId]
     );
     const user = userResult[0];
-
     if (!user) return res.status(404).send("User not found");
 
+    // Get recipes and reviews for user
     const [recipes] = await db.query('SELECT * FROM recipes WHERE user_id = ?', [user.user_ID]);
     const [reviews] = await db.query('SELECT * FROM reviews WHERE user_id = ?', [user.user_ID]);
-    const [posts] = await db.query('SELECT * FROM posts WHERE user_id = ?', [user.user_ID]);
-    const [swaps] = await db.query(`
-      SELECT * FROM swaps WHERE user_id = ? OR swapped_recipe_id IN (
-        SELECT recipe_id FROM recipes WHERE user_id = ?
-      )
-    `, [user.user_ID, user.user_ID]);
+
+    // GET SWAPS SENT: user is sender
+    const [swapsSent] = await db.query(
+      `SELECT s.*, 
+              u2.first_name AS target_user_name, 
+              r2.name AS target_recipe_name 
+       FROM swaps s 
+       LEFT JOIN users u2 ON s.receiver_id = u2.user_ID 
+       LEFT JOIN recipes r2 ON s.recipe_received = r2.recipe_id 
+       WHERE s.sender_id = ? 
+       ORDER BY s.created_at DESC`,
+      [userId]
+    );
+
+    // GET SWAPS RECEIVED: user is receiver
+    const [swapsReceived] = await db.query(
+      `SELECT s.*, 
+              u1.first_name AS from_user_name, 
+              r1.name AS requested_recipe_name 
+       FROM swaps s 
+       LEFT JOIN users u1 ON s.sender_id = u1.user_ID 
+       LEFT JOIN recipes r1 ON s.recipe_sent = r1.recipe_id 
+       WHERE s.receiver_id = ? 
+       ORDER BY s.created_at DESC`,
+      [userId]
+    );
 
     res.render('profile', {
       user,
       recipes,
       reviews,
-      posts,
-      swaps,
+      swapsSent,        // <--- you now have both!
+      swapsReceived,
       isAdmin: req.session.admin || false
     });
   } catch (err) {
