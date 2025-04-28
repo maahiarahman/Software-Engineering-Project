@@ -1,101 +1,104 @@
-extends layout
+extends adminlayout.pug
 
 block content
-  .dashboard-container
-    // 🧍 Sidebar
-    aside.sidebar
-      .user-info
-        img.profile-thumb(src="/img/user-default.png", alt="User Avatar")
-        h3 #{user.first_name} #{user.last_name}
-        p.email #{user.email}
+  h1 User Profile
 
-        // 🏅 Badge Display
-        if user.badge === 'Gold'
-          div.user-badge
-            i.fa-solid.fa-medal.text-yellow-400
-            span Gold Member
-        else if user.badge === 'Silver'
-          div.user-badge
-            i.fa-solid.fa-trophy.text-gray-400
-            span Silver Member
-        else if user.badge === 'Bronze'
-          div.user-badge
-            i.fa-solid.fa-award.text-orange-400
-            span Bronze Member
-
-      nav
-        ul
-          li.active: a(href="#dashboard") Dashboard Overview
-          if recipes.length
-            li: a(href="#user-recipes") My Recipes (#{recipes.length})
-          if reviews.length
-            li: a(href="#user-reviews") My Reviews (#{reviews.length})
-          if posts.length
-            li: a(href="#user-posts") My Posts (#{posts.length})
-          if swaps.length
-            li: a(href="#user-swaps") My Swaps (#{swaps.length})
-
-    // 📦 Main Profile Content
-    main.content
-      header.profile-header
-        .profile-meta
-          h2 #{user.first_name} #{user.last_name}
-          p Age: #{user.age} | DOB: #{user.date_of_birth.toDateString()}
-          p User ID: #{user.user_ID}
-          if user.badge
-            span.user-badge(class=user.badge.toLowerCase())
-              i.fa-solid.fa-medal
-              | #{user.badge.toUpperCase()} MEMBER
-
-        if isAdmin
-          .admin-actions
+  table(border=1)
+    thead
+      tr
+        th ID
+        th First Name
+        th Last Name 
+        th Email 
+        th DOB
+        th Age 
+        th User Password
+    tbody
+      if user 
+        tr
+          td= user.user_ID
+          td= user.first_name
+          td= user.last_name 
+          td= user.email
+          td= user.date_of_birth 
+          td= user.age
+          td= user.user_password
+          td
             if !user.isBanned
-              form(action=`/user/${user.user_ID}/ban`, method="POST")
-                button.ban-btn(type="submit") Ban User
+              form(action="/user/" + user.user_ID + "/ban", method="POST")
+                button(type="submit" onclick="return confirm('Are you sure you want to ban this user?')") Ban User
             else
-              p.text-red-600.font-bold This user is banned.
-            form(action=`/user/${user.user_ID}/delete`, method="POST")
-              button.delete-btn(type="submit") Delete User
+              p(style="color:red") This user is banned.
 
-      // 📊 Stats Section
-      section#dashboard.metrics
-        .card
-          h3 Recipes Uploaded
-          p #{recipes.length}
-        .card
-          h3 Reviews Written
-          p #{reviews.length}
-        .card
-          h3 Posts Made
-          p #{posts.length}
-        .card
-          h3 Swap Requests
-          p #{swaps.length}
+            form(action="/user/" + user.user_ID + "/delete", method="POST")
+              button(type="submit" style="background:red; color:white;" onclick="return confirm('⚠️ Are you sure you want to permanently delete this user?')") Delete User
+      else
+        tr
+          td(colspan="8") User not found.
 
-      // 🍳 Recipes Section
-      if recipes.length
-        section#user-recipes
-          h3 User Recipes
-          each recipe in recipes
-            p= recipe.name || recipe.title || 'Untitled Recipe'
+  h2 User Recipes
+  table(border=1)
+    thead
+      tr
+        th Recipe ID
+        th Title
+        th Description
+        th Action
+    tbody
+      if recipes && recipes.length
 
-      // 💬 Reviews Section
-      if reviews.length
-        section#user-reviews
-          h3 User Reviews
-          each review in reviews
-            p= review.comment
+        each recipe in recipes
+          tr
+            td= recipe.recipe_id
+            td= recipe.name
+            td= recipe.description
+            td
+              form(action="/user/" + user.user_ID + "/recipes/" + recipe.recipe_id + "/delete", method="POST")
+                button(type="submit" onclick="return confirm('Are you sure you want to delete this recipe?')") Delete Recipe
+      else
+        tr
+          td(colspan="4") No recipes found.
 
-      // 📝 Posts Section
-      if posts.length
-        section#user-posts
-          h3 User Posts
-          each post in posts
-            p= post.content
+  h2 User Reviews
+  table(border=1)
+    thead
+      tr
+        th Review ID
+        th Review Content
+        th Rating
+        th Created
+        th Action
+    tbody
+      if reviews && reviews.length
+        each review in reviews
+          tr
+            td= review.review_ID
+            td= review.comment
+            td= review.rating
+            td= review.created_at
+            td
+              form(action="/user/" + user.user_ID + "/review/" + review.review_ID + "/delete", method="POST")
+                button(type="submit" onclick="return confirm('Are you sure you want to delete this review?')") Delete Review
+      else
+        tr
+          td(colspan="5") No reviews found.
 
-      // 🔁 Swaps Section
-      if swaps.length
-        section#user-swaps
-          h3 User Swaps
-          each swap in swaps
-            p Swap with Recipe ID #{swap.swapped_recipe_id} | Status: #{swap.swap_status}
+  h2 User Posts
+  table(border=1)
+    thead
+      tr
+        th Post ID 
+        th User ID 
+        th Recipe ID 
+        th Date posted 
+    tbody
+      if posts && posts.length
+        each post in posts 
+          tr 
+            td= post.post_ID 
+            td= post.user_ID 
+            td= post.recipe_ID 
+            td= post.date_posted
+      else
+        tr
+          td(colspan="4") No posts found.

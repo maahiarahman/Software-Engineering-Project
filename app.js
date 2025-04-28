@@ -95,6 +95,8 @@ app.get('/about', (req, res) => {
   res.render('about', { team }); // Pass the team array to the template
 });
 
+app.get('/home', (req, res) => res.render('home'));
+
 
 
 // ✅ View profile page
@@ -187,7 +189,8 @@ app.get('/recipes', async (req, res) => {
   }
 });
 
-// ✅ Recipe details with reviews
+// Recipe details with reviews
+// Recipe details with reviews
 app.get('/recipes/:id', async (req, res) => {
   const recipeId = req.params.id;
   try {
@@ -201,13 +204,25 @@ app.get('/recipes/:id', async (req, res) => {
         WHERE r.recipe_id = ?
       `, [recipeId]);
 
-      res.render('recipe_detail', { recipe: recipe[0], reviews });
+      // ✅ Calculate average rating
+      let averageRating = 0;
+      if (reviews.length > 0) {
+        const total = reviews.reduce((sum, r) => sum + r.rating, 0);
+        averageRating = (total / reviews.length).toFixed(1);
+      }
+
+      // ✅ Render view with averageRating
+      res.render('recipe_detail', {
+        recipe: recipe[0],
+        reviews,
+        averageRating
+      });
     } else {
       res.status(404).send('Recipe not found');
     }
   } catch (err) {
     console.error('Error fetching recipe details:', err);
-    res.status(500).send('Internal Server Error');
+    Mres.status(500).send('Internal Server Error');
   }
 });
 
@@ -284,37 +299,41 @@ app.post('/swap/send', async (req, res) => {
   }
 });
 
-  app.get('/dashboard', async (req, res) => {
-    if (!req.session.user) return res.redirect('/login');
-    
-    try {
-      const [recipes] = await db.query(`
-        SELECT r.*, u.first_name, u.user_id
-        FROM recipes r
-        JOIN users u ON r.user_id = u.user_id
-      `);
-      res.render('dashboard', { recipes });
-    } catch (err) {
-      console.error('Error fetching dashboard:', err);
-      res.status(500).send('Error loading dashboard.');
-    }
-  });
-  
+//  dashboard redirect 
+app.get('/dashboard', async (req, res) => {
+  if (!req.session.user) return res.redirect('/login');
+  try {
+    const [recipes] = await db.query(`
+      SELECT r.*, 
+        COALESCE((
+          SELECT ROUND(AVG(rating), 1)
+          FROM reviews
+          WHERE recipe_id = r.recipe_id
+        ), 0) AS rating
+      FROM recipes r
+    `);
 
-// ✅ Admin auth check
+    res.render('dashboard', { recipes });
+  } catch (err) {
+    console.error('Error fetching dashboard:', err);
+    res.status(500).send('Error loading dashboard.');
+  }
+});
+
+
+//admin stuff dont ttouch 
 function isAdmin(req, res, next) {
-  if (req.session.admin) return next();
+  if (req.session.admin) {
+    return next(); // Allow access
+  }
   res.status(403).send("Access denied. Admins only.");
 }
 
-// ✅ Admin login form + auth
 app.get('/adminlogin', (req, res) => res.render('admin-login'));
 app.post('/adminlogin', userController.adminLogin);
-
-// ✅ Admin dashboard
-app.get('/admin', isAdmin, async function (req, res) {
-  console.log('Admin route is being accessed');
-
+//admin route 
+app.get('/admin',isAdmin, async function (req, res) {
+  console.log('Admin route is being accessed');  // Check if this is logged
   try {
     const adminQuery = "SELECT * FROM Admin_info";
     const usersQuery = "SELECT * FROM users";
@@ -330,20 +349,21 @@ app.get('/admin', isAdmin, async function (req, res) {
       FROM Banned_users b
       JOIN users u ON b.user_ID = u.user_ID;
     `;
-
+    
     const [admins, users, banned, approved, deleted, categories, favourites, posts, recipes, reviews] = await Promise.all([
-      db.query(adminQuery),
-      db.query(usersQuery),
-      db.query(bannedQuery),
-      db.query(approvedQuery),
-      db.query(deletedQuery),
-      db.query(categoriesQuery),
-      db.query(favouritesQuery),
-      db.query(postQuery),
-      db.query(recipesQuery),
-      db.query(reviewsQuery)
+        db.query(adminQuery),
+        db.query(usersQuery),
+        db.query(bannedQuery),
+        db.query(approvedQuery),
+        db.query(deletedQuery),
+        db.query(categoriesQuery),
+        db.query(favouritesQuery),
+        db.query(postQuery),
+        db.query(recipesQuery),
+        db.query(reviewsQuery)
     ]);
 
+    // Render the admin page without any admin login requirement
     res.render("admin", {
       admin: req.session.admin,
       admins: admins[0],
@@ -357,20 +377,23 @@ app.get('/admin', isAdmin, async function (req, res) {
       recipes: recipes[0],
       reviews: reviews[0]
     });
-
   } catch (error) {
     console.error("Database error:", error);
     res.status(500).send("Failed to fetch admin data.");
   }
 });
-// ✅ View single admin
+
+// Route to display a single admin member's details
 app.get("/adminSingle/:id", function(req, res) {
   const adminId = req.params.id;
+  console.log("Requested Admin ID:", adminId);
+
   const sql = "SELECT admin_ID, name, email FROM Admin_info WHERE admin_ID = ?";
 
   db.query(sql, [adminId])
     .then(([results]) => {
       if (results.length > 0) {
+        console.log("Admin Found:", results[0]); // ✅ add this log
         res.render('adminSingle', { data: results[0] });
       } else {
         res.status(404).send("Admin not found");
@@ -382,55 +405,61 @@ app.get("/adminSingle/:id", function(req, res) {
     });
 });
 
-// ✅ View specific user
 app.get("/user/:id", async (req, res) => {
   try {
     const userId = req.params.id;
-
-    // 🔍 Debug log
-    console.log("Fetching profile for user ID:", userId);
+    console.log("Fetching user with ID:", userId);
 
     const userQuery = `
-      SELECT u.user_ID, u.first_name, u.last_name, u.email, u.date_of_birth, u.age, u.user_password, u.badge,
-        CASE WHEN b.user_ID IS NOT NULL THEN 1 ELSE 0 END AS isBanned
+      SELECT u.user_ID, u.first_name, u.last_name, u.email, DATE_FORMAT(u.date_of_birth,"%m/%d/%Y") AS format_dob,
+             u.date_of_birth, u.age, u.user_password,
+             CASE WHEN b.user_ID IS NOT NULL THEN 1 ELSE 0 END AS isBanned
       FROM users u
       LEFT JOIN Banned_users b ON u.user_ID = b.user_ID
       WHERE u.user_ID = ?;
     `;
 
-    const recipesQuery = `SELECT * FROM recipes WHERE user_id = ?`;
-    const reviewsQuery = `SELECT * FROM reviews WHERE user_id = ?`;
-    const postsQuery = `SELECT * FROM posts WHERE user_id = ?`;
-    const swapsQuery = `SELECT * FROM swaps WHERE user_id = ?`;
+    const recipesQuery = `SELECT * FROM recipes WHERE user_ID = ?`;
+    const reviewsQuery = `SELECT * FROM reviews WHERE user_ID = ?`;
+    const postsQuery = `SELECT * FROM posts WHERE user_ID = ?`;
 
-    const [[user]] = await db.query(userQuery, [userId]);
-    const [recipes] = await db.query(recipesQuery, [userId]);
-    const [reviews] = await db.query(reviewsQuery, [userId]);
-    const [posts] = await db.query(postsQuery, [userId]);
-    const [swaps] = await db.query(swapsQuery, [userId]);
+    const [userResult, recipes, posts, reviews] = await Promise.all([
+      db.query(userQuery, [userId]),
+      db.query(recipesQuery, [userId]),
+      db.query(postsQuery, [userId]),
+      db.query(reviewsQuery, [userId])
+    ]);
 
-    if (!user) return res.status(404).send("User not found");
+    const user = userResult[0][0]; // Extract the actual user data row
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    // ✅ Log the user to the terminal
+    console.log("User object being passed:", user);
 
     res.render("userProfile", {
       user,
-      recipes,
-      reviews,
-      posts,
-      swaps,
-      isAdmin: req.session.admin ? true : false
+      recipes: recipes[0],
+      posts: posts[0],
+      reviews: reviews[0]
     });
+
   } catch (error) {
-    console.error("Error fetching user profile:", error);
-    res.status(500).send("Internal server error");
+    console.error("Database error:", error);
+    res.status(500).send("Failed to fetch user data.");
   }
 });
 
-// ✅ Ban a user
 app.post("/user/:id/ban", async (req, res) => {
   try {
     const userId = req.params.id;
 
+    // ✅ Insert user_ID into Banned_users (ban_ID auto-increments now)
     const query = `INSERT INTO Banned_users (user_ID) VALUES (?);`;
+
+    // Optional: remove from approve_users table
     const deleteQuery = `DELETE FROM approve_users WHERE user_ID = ?`;
 
     await db.query(query, [userId]);
@@ -443,69 +472,82 @@ app.post("/user/:id/ban", async (req, res) => {
   }
 });
 
-// ✅ Delete a specific review
 app.post("/user/:userId/review/:reviewId/delete", async (req, res) => {
   try {
-    const { userId, reviewId } = req.params;
+      const { userId, reviewId } = req.params;
 
-    const deleteQuery = `DELETE FROM reviews WHERE review_ID = ? AND user_ID = ?`;
-    await db.query(deleteQuery, [reviewId, userId]);
+      
+      const deleteQuery = `DELETE FROM reviews WHERE review_ID = ? AND user_ID = ?`;
 
-    console.log(`Deleted review ${reviewId} for user ${userId}`);
-    res.redirect("/user/" + userId);
+      await db.query(deleteQuery, [reviewId, userId]);
+
+      console.log(`Deleted review ${reviewId} for user ${userId}`);
+
+      
+      res.redirect("/user/" + userId);
   } catch (error) {
-    console.error("Error deleting review:", error);
-    res.status(500).send("Failed to delete review.");
+      console.error("Error deleting review:", error);
+      res.status(500).send("Failed to delete review.");
   }
 });
 
-// ✅ Delete a user's recipe and related post
 app.post("/user/:userId/recipes/:recipeId/delete", async (req, res) => {
   try {
-    const { userId, recipeId } = req.params;
+      const { userId, recipeId } = req.params;
 
-    const deletePostsQuery = `DELETE FROM posts WHERE recipe_ID = ? AND user_ID = ?`;
-    const deleteRecipesQuery = `DELETE FROM recipes WHERE recipe_ID = ? AND user_ID = ?`;
+      // Delete from the posts table first (if a post is linked to the recipe)
+      const deletePostsQuery = `DELETE FROM posts WHERE recipe_ID = ? AND user_ID = ?`;
+      await db.query(deletePostsQuery, [recipeId, userId]);
 
-    await db.query(deletePostsQuery, [recipeId, userId]);
-    await db.query(deleteRecipesQuery, [recipeId, userId]);
+      // Then delete from the recipes table
+      const deleteRecipesQuery = `DELETE FROM recipes WHERE recipe_ID = ? AND user_ID = ?`;
+      await db.query(deleteRecipesQuery, [recipeId, userId]);
 
-    console.log(`Deleted recipe ${recipeId} and post for user ${userId}`);
-    res.redirect("/user/" + userId);
-  } catch (error) {
-    console.error("Error deleting recipe/post:", error);
-    res.status(500).send("Failed to delete recipe/post.");
+      console.log(`Deleted recipe ${recipeId} and its post for user ${userId}`);
+
+      res.redirect("/user/" + userId);
+  } 
+  catch (error) {
+      console.error("Error deleting recipe and post:", error);
+      res.status(500).send("Failed to delete recipe and post.");
   }
 });
-
-// ✅ Permanently delete user (soft-delete to Deleted_users)
 app.post("/user/:id/delete", async (req, res) => {
   try {
     const userId = req.params.id;
 
+    // Fetch user before deleting for logging or archiving (optional)
     const [[user]] = await db.query('SELECT * FROM users WHERE user_ID = ?', [userId]);
-    if (!user) return res.status(404).send("User not found");
 
-    await db.query(`
-      INSERT INTO Deleted_users (user_ID, admin_ID, delete_states, delete_date)
-      VALUES (?, ?, ?, NOW())
-    `, [userId, req.session.admin?.id || null, 'Deleted by admin']);
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
 
+    // Move to Deleted_users table
+    await db.query(
+      `INSERT INTO Deleted_users (user_ID, admin_ID, delete_states, delete_date)
+       VALUES (?, ?, ?, NOW())`,
+      [userId, req.session.admin?.id || null, 'Deleted by admin']
+    );
+
+    // Delete from users table
     await db.query('DELETE FROM users WHERE user_ID = ?', [userId]);
 
-    res.redirect("/admin");
+    res.redirect("/admin"); 
   } catch (error) {
-    console.error("Error deleting user:", error);
+    console.error(" Error deleting user:", error);
     res.status(500).send("Failed to delete user.");
   }
 });
-// ✅ View a banned user (by ban ID)
+//admin unban 
 app.get('/banned-user/:id', async (req, res) => {
   const banId = req.params.id;
   try {
     const [[user]] = await db.query('SELECT * FROM Banned_users WHERE ban_ID = ?', [banId]);
 
-    if (!user) return res.status(404).send('Banned user not found');
+    if (!user) {
+      return res.status(404).send('Banned user not found');
+    }
 
     res.render('bannedusers', { bannedUsers: [user], singleView: true });
   } catch (err) {
@@ -514,14 +556,19 @@ app.get('/banned-user/:id', async (req, res) => {
   }
 });
 
-// ✅ Unban a user
+// POST: Unban the user
 app.post('/banned-user/:id/unban', async (req, res) => {
   const banId = req.params.id;
+
   try {
     const [[bannedUser]] = await db.query('SELECT * FROM Banned_users WHERE ban_ID = ?', [banId]);
-    if (!bannedUser) return res.status(404).send('User not found');
+
+    if (!bannedUser) {
+      return res.status(404).send('User not found');
+    }
 
     await db.query('DELETE FROM Banned_users WHERE ban_ID = ?', [banId]);
+
     res.redirect('/admin');
   } catch (err) {
     console.error('Unban Error:', err);
@@ -529,7 +576,6 @@ app.post('/banned-user/:id/unban', async (req, res) => {
   }
 });
 
-// ✅ View deleted user
 app.get('/deleted-user/:id', async (req, res) => {
   const deleteId = req.params.id;
   try {
@@ -540,8 +586,11 @@ app.get('/deleted-user/:id', async (req, res) => {
       WHERE d.delete_ID = ?
     `, [deleteId]);
 
-    if (!deleted) return res.status(404).send('Deleted user not found');
+    if (!deleted) {
+      return res.status(404).send('Deleted user not found');
+    }
 
+   
     const [[userBackup]] = await db.query(`
       SELECT * FROM users WHERE user_ID = ?
     `, [deleted.user_ID]);
@@ -555,17 +604,22 @@ app.get('/deleted-user/:id', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
-
-// ✅ Restore a deleted user
 app.post('/deleted-user/:id/restore', async (req, res) => {
   const deleteId = req.params.id;
   try {
-    const [[deleted]] = await db.query(`SELECT * FROM Deleted_users WHERE delete_ID = ?`, [deleteId]);
-    if (!deleted) return res.status(404).send("Deleted user not found.");
+    const [[deleted]] = await db.query(`
+      SELECT * FROM Deleted_users WHERE delete_ID = ?
+    `, [deleteId]);
 
+    if (!deleted) {
+      return res.status(404).send("Deleted user not found.");
+    }
+
+   
     const [[userInfo]] = await db.query(`SELECT * FROM users WHERE user_ID = ?`, [deleted.user_ID]);
 
     if (!userInfo) {
+      
       await db.query(`
         INSERT INTO users (user_ID, first_name, last_name, email, date_of_birth, age, user_password, badge)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -582,12 +636,14 @@ app.post('/deleted-user/:id/restore', async (req, res) => {
     }
 
     await db.query(`DELETE FROM Deleted_users WHERE delete_ID = ?`, [deleteId]);
+
     res.redirect('/admin');
   } catch (error) {
     console.error('Error restoring deleted user:', error);
     res.status(500).send('Failed to restore user');
   }
 });
+
 // ✅ Fallback route
 app.use((req, res) => {
   res.status(404).send('Page Not Found');

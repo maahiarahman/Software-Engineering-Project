@@ -29,7 +29,7 @@ exports.register = async (req, res) => {
   }
 };
 
-// ✅ LOGIN user
+//  LOGIN user
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -38,14 +38,14 @@ exports.login = async (req, res) => {
     const user = rows[0];
 
     if (!user) {
-      req.flash('error', 'Email not found.');
+      req.flash('error', 'Invalid email or password. Please try again.');
       return res.redirect('/login');
     }
 
     const isMatch = await bcrypt.compare(password, user.user_password);
 
     if (!isMatch) {
-      req.flash('error', 'Incorrect password.');
+      req.flash('error', 'Invalid email or password. Please try again.');
       return res.redirect('/login');
     }
 
@@ -58,10 +58,11 @@ exports.login = async (req, res) => {
     res.redirect('/dashboard');
   } catch (error) {
     console.error('Login Error:', error);
-    req.flash('error', 'Something went wrong.');
+    req.flash('error', 'Something went wrong. Please try again.');
     res.redirect('/login');
   }
 };
+
 ///login ffor admin
 exports.adminLogin = async (req, res) => {
   const { email, password } = req.body;
