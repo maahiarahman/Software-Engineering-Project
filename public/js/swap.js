@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const old = document.getElementById('swap-confirm-box');
     if (old) old.remove();
   
-    let seconds = 3=;
+    let seconds = 3;
     // Inline styles for absolute, simple pop up
     const confirmBox = document.createElement('div');
     confirmBox.id = 'swap-confirm-box';
