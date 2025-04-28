@@ -1,0 +1,104 @@
+extends adminlayout.pug
+
+block content
+  h1 User Profile
+
+  table(border=1)
+    thead
+      tr
+        th ID
+        th First Name
+        th Last Name 
+        th Email 
+        th DOB
+        th Age 
+        th User Password
+    tbody
+      if user 
+        tr
+          td= user.user_ID
+          td= user.first_name
+          td= user.last_name 
+          td= user.email
+          td= user.date_of_birth 
+          td= user.age
+          td= user.user_password
+          td
+            if !user.isBanned
+              form(action="/user/" + user.user_ID + "/ban", method="POST")
+                button(type="submit" onclick="return confirm('Are you sure you want to ban this user?')") Ban User
+            else
+              p(style="color:red") This user is banned.
+
+            form(action="/user/" + user.user_ID + "/delete", method="POST")
+              button(type="submit" style="background:red; color:white;" onclick="return confirm('⚠️ Are you sure you want to permanently delete this user?')") Delete User
+      else
+        tr
+          td(colspan="8") User not found.
+
+  h2 User Recipes
+  table(border=1)
+    thead
+      tr
+        th Recipe ID
+        th Title
+        th Description
+        th Action
+    tbody
+      if recipes && recipes.length
+
+        each recipe in recipes
+          tr
+            td= recipe.recipe_id
+            td= recipe.name
+            td= recipe.description
+            td
+              form(action="/user/" + user.user_ID + "/recipes/" + recipe.recipe_id + "/delete", method="POST")
+                button(type="submit" onclick="return confirm('Are you sure you want to delete this recipe?')") Delete Recipe
+      else
+        tr
+          td(colspan="4") No recipes found.
+
+  h2 User Reviews
+  table(border=1)
+    thead
+      tr
+        th Review ID
+        th Review Content
+        th Rating
+        th Created
+        th Action
+    tbody
+      if reviews && reviews.length
+        each review in reviews
+          tr
+            td= review.review_ID
+            td= review.comment
+            td= review.rating
+            td= review.created_at
+            td
+              form(action="/user/" + user.user_ID + "/review/" + review.review_ID + "/delete", method="POST")
+                button(type="submit" onclick="return confirm('Are you sure you want to delete this review?')") Delete Review
+      else
+        tr
+          td(colspan="5") No reviews found.
+
+  h2 User Posts
+  table(border=1)
+    thead
+      tr
+        th Post ID 
+        th User ID 
+        th Recipe ID 
+        th Date posted 
+    tbody
+      if posts && posts.length
+        each post in posts 
+          tr 
+            td= post.post_ID 
+            td= post.user_ID 
+            td= post.recipe_ID 
+            td= post.date_posted
+      else
+        tr
+          td(colspan="4") No posts found.
